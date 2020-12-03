@@ -6,28 +6,18 @@
   <meta name="keywords" content=" 注入 , sql server ">
   <meta name="description" content="SQL SERVER 注入（三） | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
-<meta name="keywords" content="内网渗透">
+<meta name="description" content="这里有东西被加密了，需要输入密码查看哦。">
+<meta name="keywords" content="内网渗透,代理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内网渗透之平台搭建">
-<meta property="og:url" content="https://luckdogiii.github.io/2020/09/29/12/index.html">
+<meta property="og:title" content="内网穿透-FRP流量改造">
+<meta property="og:url" content="https://luckdogiii.github.io/2020/11/30/13/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
+<meta property="og:description" content="这里有东西被加密了，需要输入密码查看哦。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/1.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/2.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/3.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/4.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/5.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/6.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/7.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/8.png">
-<meta property="og:image" content="https://luckdogiii.github.io/images/12/9.png">
-<meta property="og:updated_time" content="2020-09-30T04:08:56.654Z">
+<meta property="og:updated_time" content="2020-12-01T02:51:34.120Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内网渗透之平台搭建">
-<meta name="twitter:description" content="Ubuntu + Metasploit + CobaltStrike4.0内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。 Ubuntu 搭建Ubuntu 18.04 http://mirrors.aliyun.com/ubuntu-releases/18.04/之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下">
-<meta name="twitter:image" content="https://luckdogiii.github.io/images/12/1.png">
+<meta name="twitter:title" content="内网穿透-FRP流量改造">
+<meta name="twitter:description" content="这里有东西被加密了，需要输入密码查看哦。">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -147,7 +137,7 @@
 
 
 <ul>
-    <li><div class="all active" data-rel="All">All<small>(12)</small></div></li>
+    <li><div class="all active" data-rel="All">All<small>(14)</small></div></li>
     
         
             
@@ -175,7 +165,7 @@
     
         
             
-            <li><div data-rel="内网">内网<small>(1)</small></div>
+            <li><div data-rel="内网">内网<small>(3)</small></div>
                 
             </li>
             
@@ -199,7 +189,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">About</a><a style="width: 50%"  class="friends">Friends</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="12">
+<input type="hidden" id="yelog_site_posts_number" value="14">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -258,6 +248,10 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代理</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>内网渗透</a>
             </li>
         
@@ -287,6 +281,22 @@
 
     
     <nav id="title-list-nav">
+        
+        <a  class="All 内网 "
+           href="/2020/12/01/14/"
+           data-tag="漏洞复现"
+           data-author="" >
+            <span class="post-title" title="域内提权CVE-2020-1472">域内提权CVE-2020-1472</span>
+            <span class="post-date" title="2020-12-01 21:18:55">2020/12/01</span>
+        </a>
+        
+        <a  class="All 内网 "
+           href="/2020/11/30/13/"
+           data-tag="内网渗透,代理"
+           data-author="" >
+            <span class="post-title" title="内网穿透-FRP流量改造">内网穿透-FRP流量改造</span>
+            <span class="post-date" title="2020-11-30 20:16:00">2020/11/30</span>
+        </a>
         
         <a  class="All 内网 "
            href="/2020/09/29/12/"
