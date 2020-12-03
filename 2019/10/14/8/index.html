@@ -6,18 +6,26 @@
   <meta name="keywords" content=" 注入 , sql server ">
   <meta name="description" content="SQL SERVER 注入（三） | WLSMILE Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="这里有东西被加密了，需要输入密码查看哦。">
-<meta name="keywords" content="内网渗透,代理">
+<meta name="description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
+<meta name="keywords" content="漏洞复现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内网穿透-FRP流量改造">
-<meta property="og:url" content="https://luckdogiii.github.io/2020/11/30/13/index.html">
+<meta property="og:title" content="域内提权CVE-2020-1472">
+<meta property="og:url" content="https://luckdogiii.github.io/2020/12/01/14/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="这里有东西被加密了，需要输入密码查看哦。">
+<meta property="og:description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-01T02:51:34.120Z">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/1.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/2.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/3.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/4.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/5.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/6.png">
+<meta property="og:image" content="https://luckdogiii.github.io/images/14/7.png">
+<meta property="og:updated_time" content="2020-12-03T08:51:28.580Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内网穿透-FRP流量改造">
-<meta name="twitter:description" content="这里有东西被加密了，需要输入密码查看哦。">
+<meta name="twitter:title" content="域内提权CVE-2020-1472">
+<meta name="twitter:description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
+<meta name="twitter:image" content="https://luckdogiii.github.io/images/14/1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -249,6 +257,10 @@
         
             <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>代理</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代理 password:klforever.cn</a>
             </li>
         
             <li class="article-tag-list-item">
