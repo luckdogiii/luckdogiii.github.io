@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://klforever.cn/images/6/5.png">
 <meta property="og:image" content="http://klforever.cn/images/6/6.png">
 <meta property="og:image" content="http://klforever.cn/images/6/7.png">
-<meta property="og:updated_time" content="2021-04-25T07:36:18.167Z">
+<meta property="og:updated_time" content="2021-04-25T09:06:36.175Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL SERVER 注入（一）">
 <meta name="twitter:description" content="SQL server 的基础知识部分系统库的简介Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。而我们在注入的过程当中就要用">
@@ -52,14 +52,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -286,13 +287,15 @@
 <p><img src="/images/6/5.png" alt></p>
 <p>Tip:在对 sysobjects 和 syscolumns 使用的时候我们需要增加一个 xtype 作为限制条件，<br>而在两个视图当中也都有着不同的含义。具体参照：</p>
 <p><a href="https://www.cnblogs.com/zhaomengmeng/p/4933828.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaomengmeng/p/4933828.html</a></p>
-<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre><code>/*
--- 常用
-;%00
-</code></pre><h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre><code>01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,1415,16,17,18,19,1A,1B,1
-C,1D,1E,1F,20
-/**/
-</code></pre><h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
+<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">/</span><span class="token operator">*</span>
+<span class="token operator">--</span> 常用
+<span class="token punctuation">;</span><span class="token operator">%</span><span class="token number">00</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token number">01</span><span class="token punctuation">,</span><span class="token number">02</span><span class="token punctuation">,</span><span class="token number">03</span><span class="token punctuation">,</span><span class="token number">04</span><span class="token punctuation">,</span><span class="token number">05</span><span class="token punctuation">,</span><span class="token number">06</span><span class="token punctuation">,</span><span class="token number">07</span><span class="token punctuation">,</span><span class="token number">08</span><span class="token punctuation">,</span><span class="token number">09</span><span class="token punctuation">,</span>0A<span class="token punctuation">,</span>0B<span class="token punctuation">,</span>0C<span class="token punctuation">,</span><span class="token number">0D</span><span class="token punctuation">,</span>0E<span class="token punctuation">,</span><span class="token number">0F</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">1415</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span>1A<span class="token punctuation">,</span>1B<span class="token punctuation">,</span><span class="token number">1</span>
+C<span class="token punctuation">,</span><span class="token number">1D</span><span class="token punctuation">,</span>1E<span class="token punctuation">,</span><span class="token number">1F</span><span class="token punctuation">,</span><span class="token number">20</span>
+<span class="token comment" spellcheck="true">/**/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
 <thead>
 <tr>
 <th align="center">+</th>
@@ -324,39 +327,41 @@ C,1D,1E,1F,20
 <td align="left">位异或运算，从两个表达式中取对应的位。如果输入表达式中两个位只有一个的值为 1 时，结果中的位就被设置为 1；只有当两个位的值都为 0 或 1 时，结果中的位才被设置为 0</td>
 </tr>
 </tbody></table>
-<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre><code>@@VERSION,@@SERVERNAME,@@SERVICENAME; 
---Microsoft SQL Server 2008 (RTM) - 10.0.1600.22 (X64) 
---WIN-2008
---MSSQLSERVER
+<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre class="line-numbers language-java"><code class="language-java">@<span class="token annotation punctuation">@VERSION</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVERNAME</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVICENAME</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>Microsoft SQL Server <span class="token function">2008</span> <span class="token punctuation">(</span>RTM<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">10.0</span><span class="token punctuation">.</span><span class="token number">1600</span><span class="token punctuation">.</span><span class="token function">22</span> <span class="token punctuation">(</span>X64<span class="token punctuation">)</span> 
+<span class="token operator">--</span>WIN<span class="token operator">-</span><span class="token number">2008</span>
+<span class="token operator">--</span>MSSQLSERVER
 
-USER,CURRENT_USER,SESSION_USER,SYSTEM_USER; 
---dbo
---dbo
---dbo
---sa
+USER<span class="token punctuation">,</span>CURRENT_USER<span class="token punctuation">,</span>SESSION_USER<span class="token punctuation">,</span>SYSTEM_USER<span class="token punctuation">;</span> 
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>sa
 
-USER_NAME(),HOST_NAME(),HOST_ID(),SUSER_NAME(); 
---dbo
---wyb
---46530
---sa
+<span class="token function">USER_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">HOST_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">HOST_ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">SUSER_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>wyb
+<span class="token operator">--</span><span class="token number">46530</span>
+<span class="token operator">--</span>sa
 
-USER_ID(),USER_SID(); 
---1
---&lt;01&gt;
-ORIGINAL_LOGIN(); 
---sa
-</code></pre><h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
+<span class="token function">USER_ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">USER_SID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span><span class="token number">1</span>
+<span class="token operator">--</span><span class="token operator">&lt;</span><span class="token number">01</span><span class="token operator">></span>
+<span class="token function">ORIGINAL_LOGIN</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>sa
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
 <p>(1)在查询数据库名称时利用 dbid 进行限制查询</p>
 <p>由于 dbid 是系统数据库所特有的，所有可以依次从 1 到 n 注出所有的数据库名</p>
 <p><img src="/images/6/6.png" alt></p>
 <p>(2)在查询表和字段时利用 top 语法进行查询</p>
 <p>在 sysobjects 和 syscolumns 视图当拥有大量的数据，如果依据 id 值进行限制会非常的繁<br>琐，浪费时间。所以可以用到如下 sql 查询语法：</p>
 <p>取第 m 条到第 n 条记录</p>
-<pre><code>select top (n-m+1) id from tablename
-where id not in (
-    select top m-1 id from tablename
-)</code></pre><p>具体利用：</p>
+<pre class="line-numbers language-java"><code class="language-java">select <span class="token function">top</span> <span class="token punctuation">(</span>n<span class="token operator">-</span>m<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> id from tablename
+where id not <span class="token function">in</span> <span class="token punctuation">(</span>
+    select top m<span class="token operator">-</span><span class="token number">1</span> id from tablename
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>具体利用：</p>
 <p><img src="/images/6/7.png" alt></p>
 <p>这样我们在 DNSlog 注入时才能拼接完整的 payload。要学习新的sql注入，就要从基本的sql语句开始。</p>
 

