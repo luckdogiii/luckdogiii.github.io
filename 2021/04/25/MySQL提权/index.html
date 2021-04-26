@@ -6,17 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://klforever.cn">
-  <title>Category: Web安全 | WLSMILE Blog</title>
+  <title>MySQL提权（UDF,MOF） | WLSMILE Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="WLSMILE Blog">
-<meta property="og:url" content="http://klforever.cn/categories/Web安全/index.html">
+  <meta name="description" content="提权背景 内网服务弱口令探测到MySQL弱口令时 通过一个Webshell提权时">
+<meta name="keywords" content="内网渗透,Web安全,提权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL提权（UDF,MOF）">
+<meta property="og:url" content="http://klforever.cn/2021/04/25/MySQL提权/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
+<meta property="og:description" content="提权背景 内网服务弱口令探测到MySQL弱口令时 通过一个Webshell提权时">
 <meta property="og:locale" content="cn">
+<meta property="og:image" content="http://klforever.cn/images/17/1.png">
+<meta property="og:image" content="http://klforever.cn/images/17/2.png">
+<meta property="og:image" content="http://klforever.cn/images/17/3.png">
+<meta property="og:image" content="http://klforever.cn/images/17/4.png">
+<meta property="og:image" content="http://klforever.cn/images/17/5.png">
+<meta property="og:image" content="http://klforever.cn/images/17/6.png">
+<meta property="og:image" content="http://klforever.cn/images/17/7.png">
+<meta property="og:updated_time" content="2021-04-26T02:42:32.351Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WLSMILE Blog">
+<meta name="twitter:title" content="MySQL提权（UDF,MOF）">
+<meta name="twitter:description" content="提权背景 内网服务弱口令探测到MySQL弱口令时 通过一个Webshell提权时">
+<meta name="twitter:image" content="http://klforever.cn/images/17/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -202,47 +215,101 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-MySQL提权" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/14/8/" class="archive-article-date">
-        <time datetime="2019-10-14T11:13:59.452Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-14</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/14/8/" target="_blank">SQL SERVER 注入（三）</a>
   
+    <h1 class="article-title" itemprop="name">
+      MySQL提权（UDF,MOF）
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+<a href="/2021/04/25/MySQL提权/" class="archive-article-date">
+        <time datetime="2021-04-25T14:46:04.526Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-25</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">552字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2><span id="提权背景">提权背景</span></h2><ul>
+<li>内网服务弱口令探测到MySQL弱口令时</li>
+<li>通过一个Webshell提权时<a id="more"></a>
+其实通过mysql提权的条件比较苛刻，实战中仅成功过一次。</li>
+</ul>
+<h2><span id="udf提权">UDF提权</span></h2><p><strong>了解UDF：</strong></p>
+<blockquote>
+<p>UDF (user defined function)，是用户自定义函数在mysql中函数是什么，比如mysql中常见的sleep(),sum(),ascii()等都是函数udf就是为了让我们开发者能够自己写方便自己函数，它有3种返回值，这三种分别是STRING，INTEGER，REAL。</p>
+</blockquote>
+<h3><span id="提权步骤">提权步骤</span></h3><p>1.查看secure_file_priv 的值</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> <span class="token keyword">global</span> variables <span class="token operator">like</span> <span class="token string">'%secure%'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>secure-file-priv参数是限制LOAD DATA, SELECT … OUTFILE, and LOAD_FILE()传到哪个指定目录的。<br>但是MYSQL新特性secure_file_priv对读写文件的影响，此开关默认为NULL，即不允许导入导出。</p>
+<ul>
+<li>当secure_file_priv的值为null ，表示限制mysqld 不允许导入|导出</li>
+<li>当secure_file_priv的值为/tmp/ ，表示限制mysqld 的导入|导出只能发生在/tmp/目录下</li>
+<li>当secure_file_priv的值没有具体值时，表示不对mysqld 的导入|导出做限制<br><img src="/images/17/1.png" alt></li>
+</ul>
+<p>如果secure_file_priv的值查出不为空或者目录不是在MySQL插件目录时，无法提权。为了复现，我这里修改了配置文件，允许导入绕出。<br>在 my.ini中将secure_file_priv改为空即可。<br><img src="/images/17/2.png" alt></p>
+<p>2.查看plugin的值<br>查看plugin的值</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> Host<span class="token punctuation">,</span><span class="token keyword">user</span><span class="token punctuation">,</span>plugin <span class="token keyword">from</span> mysql<span class="token punctuation">.</span><span class="token keyword">user</span> <span class="token keyword">where</span> <span class="token keyword">user</span> <span class="token operator">=</span> substring_index<span class="token punctuation">(</span><span class="token keyword">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'@'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        当 plugin 的值为空时不可提权
+        当 plugin 值为 mysql_native_password 时可通过账户连接提权<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/17/3.png" alt></p>
+<p>3.查看系统架构以及plugin目录</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> variables <span class="token operator">like</span> <span class="token string">'%compile%'</span><span class="token punctuation">;</span>             <span class="token comment" spellcheck="true">#查看主机版本及架构</span>
+<span class="token keyword">show</span> variables <span class="token operator">like</span> <span class="token string">'plugin%'</span><span class="token punctuation">;</span>               <span class="token comment" spellcheck="true">#查看 plugin 目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这个仅仅只是查看MySQL插件目录，并不代表真实存在该目录！<br><img src="/images/17/4.png" alt><br>而我为了复现，手动创建了该目录。。。<br>然后根据主机版本架构去kali中拿出对应的文件。<br>文件路径<code>/usr/share/metasploit-framework/data/exploits/mysql/</code><br><img src="/images/17/5.png" alt><br>分别对应了windows x86/64 和 linux x86/64位的文件<br>这里我拿出Windows 64位的.dll文件，将它合并为一行后把所有空格删除。这里可利用word替换。<br><img src="/images/17/6.png" alt></p>
+<p>4.将dll文件写入plugin目录,并且创建函数</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">'处理过的二进制数据'</span> <span class="token keyword">into</span> <span class="token keyword">dumpfile</span> <span class="token string">'G:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\lib\\plugin\\udf.dll'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/17/7.png" alt></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -250,160 +317,135 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">提权</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
+    
 
+    
 
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://klforever.cn/2021/04/25/MySQL提权/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/7/" class="archive-article-date">
-        <time datetime="2019-10-11T13:09:17.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
 
+
+<nav id="article-nav">
+  
+    <a href="/2021/04/26/解析漏洞总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          解析漏洞总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/25/面试/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">面试过程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/7/" target="_blank">SQL SERVER 注入（二）</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">提权背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">UDF提权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">提权步骤</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/6/" class="archive-article-date">
-        <time datetime="2019-10-11T02:28:47.791Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/6/" target="_blank">SQL SERVER 注入（一）</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
+
+
+
+
+
+
 
 
           </div>
@@ -432,10 +474,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",

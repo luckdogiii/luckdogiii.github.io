@@ -6,17 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://klforever.cn">
-  <title>Category: Web安全 | WLSMILE Blog</title>
+  <title>解析漏洞总结 | WLSMILE Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="WLSMILE Blog">
-<meta property="og:url" content="http://klforever.cn/categories/Web安全/index.html">
+  <meta name="description" content="什么是解析漏洞Web中间件在配置不当时，中间件（iis，apache，nginx）会将非网站脚本语言当作网站的脚本语言所解析，从而导致漏洞的产生。">
+<meta name="keywords" content="Web安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解析漏洞总结">
+<meta property="og:url" content="http://klforever.cn/2021/04/26/解析漏洞总结/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
+<meta property="og:description" content="什么是解析漏洞Web中间件在配置不当时，中间件（iis，apache，nginx）会将非网站脚本语言当作网站的脚本语言所解析，从而导致漏洞的产生。">
 <meta property="og:locale" content="cn">
+<meta property="og:image" content="http://klforever.cn/images/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/1.png">
+<meta property="og:image" content="http://klforever.cn/images/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/2.png">
+<meta property="og:updated_time" content="2021-04-26T02:42:54.109Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WLSMILE Blog">
+<meta name="twitter:title" content="解析漏洞总结">
+<meta name="twitter:description" content="什么是解析漏洞Web中间件在配置不当时，中间件（iis，apache，nginx）会将非网站脚本语言当作网站的脚本语言所解析，从而导致漏洞的产生。">
+<meta name="twitter:image" content="http://klforever.cn/images/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -202,208 +210,280 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-解析漏洞总结" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/14/8/" class="archive-article-date">
-        <time datetime="2019-10-14T11:13:59.452Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-14</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/14/8/" target="_blank">SQL SERVER 注入（三）</a>
   
+    <h1 class="article-title" itemprop="name">
+      解析漏洞总结
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+<a href="/2021/04/26/解析漏洞总结/" class="archive-article-date">
+        <time datetime="2021-04-26T01:56:10.763Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">1.4k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">5分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2><span id="什么是解析漏洞">什么是解析漏洞</span></h2><p>Web中间件在配置不当时，中间件（iis，apache，nginx）会将非网站脚本语言当作网站的脚本语言所解析，从而导致漏洞的产生。</p>
+<a id="more"></a>
+<h2><span id="nginx解析漏洞">nginx解析漏洞</span></h2><h3><span id="php-cgi解析漏洞">PHP CGI解析漏洞</span></h3><ul>
+<li><strong>漏洞原理</strong><blockquote>
+<p>Nginx默认是用CGI的方式支持PHP解析的，通常的做法时在Nginx配置文件中通过正则匹配设置SCRIPT_FILENAME。当访问 <a href="http://www.xx.com/phpinfo.jpg/1.php" target="_blank" rel="noopener">www.xx.com/phpinfo.jpg/1.php</a> 时，$fastcgi_script_name会被设置为“phpinfo.jpg/1.php”，然后构造成SCRIPT_FILENAME传递给PHP CGI，但是PHP为什么会接受这样的参数，并将phpinfo.jpg作为PHP文件解析呢?这就要说到fix_pathinfo这个选项了。 如果开启了这个选项，那么就会触发在PHP中的如下逻辑：PHP会认为SCRIPT_FILENAME是phpinfo.jpg，而1.php是PATH_INFO，所以就会将phpinfo.jpg作为PHP文件来解析了</p>
+</blockquote>
+</li>
+</ul>
+<p>这是在网上都能找到的原理，但是我不明白fix_pathinfo这个选项是如何控制的。最后在一位师傅的博客中找到的答案。</p>
+<p><strong><code>fix_pathinfo PHP cig SAPI中一个参数</code></strong></p>
+<p>即当我们开启了fix_pathinfo=1时（nginx+php时一般为默认开启）</p>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token comment" spellcheck="true">/*
+ * if the file doesn't exist, try to extract PATH_INFO out
+ * of it by stat'ing back through the '/'
+ * this fixes url's like /info.php/test
+ */</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>script_path_translated <span class="token operator">&amp;&amp;</span>
+     <span class="token punctuation">(</span>script_path_translated_len <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>script_path_translated<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span>
+     <span class="token punctuation">(</span>script_path_translated<span class="token punctuation">[</span>script_path_translated_len<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'/'</span> <span class="token operator">||</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//以下省略.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>例如url：<a href="http://www.xx.com/upload/test.jpg/1.php" target="_blank" rel="noopener">www.xx.com/upload/test.jpg/1.php</a><br>这段代码会认为SCRIPT_FILENEMA 是test.jpg,而1.php被判定为PATH_INFO，然后test.jpg就会被当作一个PHP文件来解析了。</p>
+<ul>
+<li><strong>利用方式</strong></li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>php 
+www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">%</span><span class="token number">00</span><span class="token punctuation">.</span>php 
+www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">/</span><span class="token operator">%</span><span class="token number">20</span>\<span class="token number">0</span><span class="token punctuation">.</span>php <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>另外一种手法：上传一个名字为test.jpg，以下内容的文件。</p>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token delimiter">&lt;?PHP</span> <span class="token function">fputs</span><span class="token punctuation">(</span><span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string">'shell.php'</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'&lt;?php eval($_POST[cmd])?>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter">?></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后访问test.jpg/.php,在这个目录下就会生成一句话木马shell.php。</p>
+<h3><span id="空字节代码执行漏洞">空字节代码执行漏洞</span></h3><p>在nginx的旧版本中（0.5.x，xx0.6.x，0.7，0.8&lt;=0.7.65&lt;=0.8.37）。可以配合PHP的FastCGI漏洞解析服务器任意文件。即可将服务器任意文件以PHP解析。</p>
+<pre class="line-numbers language-php"><code class="language-php">xxx<span class="token punctuation">.</span>jpg<span class="token operator">%</span><span class="token number">00</span><span class="token punctuation">.</span>php   
+<span class="token comment" spellcheck="true">//gnix在遇到%00空字节时与后端FastCGI处理不一致，导致可以在图片中嵌入PHP代码然后通过访问xxx.jpg%00.php来执行其中的代码。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3><span id="修复方案">修复方案</span></h3><p>1.修改php.ini文件，将cgi.fix_pathinfo的值设置为0;<br>2.在Nginx配置文件中添加以下代码：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">if</span> <span class="token punctuation">(</span> $fastcgi_script_name <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">*</span><span class="token operator">/</span><span class="token punctuation">.</span><span class="token operator">*</span>php <span class="token punctuation">)</span> {
+<span class="token keyword">return</span> <span class="token number">403</span><span class="token punctuation">;</span>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>fix_pathinfo PHP cig SAPI 讲解：<br><a href="https://www.laruence.com/2010/05/20/1495.html" target="_blank" rel="noopener">https://www.laruence.com/2010/05/20/1495.html</a></p>
+<h2><span id="iis解析漏洞">IIS解析漏洞</span></h2><h3><span id="iis-5x-6x">IIS 5.x-6.x</span></h3><ul>
+<li>使用iis5.x-6.x的服务器一般都比较老，大概率的windows server 2003.脚本语言只能使用asp文件，不能解析aspx文件了。</li>
+</ul>
+<h3><span id="iis-60">IIS 6.0</span></h3><p><strong>目录解析</strong><br>形式：<a href="http://www.xxx.com/xx.asp/xx.jpg" target="_blank" rel="noopener">www.xxx.com/xx.asp/xx.jpg</a><br>原理：服务器默认将 .asp .asa目录下的文件以asp脚本语言来解析了。</p>
+<p><strong>文件解析</strong><br>形式：<a href="http://www.xx.com/xx.asp;.jpg" target="_blank" rel="noopener">www.xx.com/xx.asp;.jpg</a><br>原理：服务器默认不解析 分号后面的内容，所以xx.asp;.jpg被解析为asp文件了。</p>
+<p>iis6.0 默认还可以解析以下文件类型：</p>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token operator">/</span>aaa<span class="token punctuation">.</span>asa
+<span class="token operator">/</span>aaa<span class="token punctuation">.</span>cer
+<span class="token operator">/</span>aaa<span class="token punctuation">.</span>cdx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这是因为在iis6中，asp.dll文件同时执行了asa,cdx,cer,asp这四种后缀名文件。</p>
+<p><img src="/images/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/1.png" alt></p>
+<p><strong>修复方案</strong></p>
+<ul>
+<li>过编写正则，阻止上传xx.asp;.jpg类型的文件名。</li>
+<li>做好权限设置，限制用户创建文件夹目录。</li>
+</ul>
+<h3><span id="iis75-解析漏洞">IIS7.5 解析漏洞</span></h3><p>该漏洞与Nginx + PHP 形成的漏洞原理一样，都是 PHP CGI 中的 cgi.fix_pathinfo=1 时所产生的漏洞。不过一般很少见有IIS + PHP的组合。<br>上传时可配合windows命名规则来绕过</p>
+<pre class="line-numbers language-php"><code class="language-php">test<span class="token punctuation">.</span>asp<span class="token punctuation">.</span>
+test<span class="token punctuation">.</span><span class="token function">asp</span><span class="token punctuation">(</span>空格<span class="token punctuation">)</span>
+test<span class="token punctuation">.</span>php<span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">.</span>jpg
+test<span class="token punctuation">.</span>php<span class="token punctuation">:</span><span class="token punctuation">:</span> <span class="token variable">$DATA</span> <span class="token shell-comment comment"># php在window的时候如果文件名+</span><span class="token string">"::$DATA"</span>会把<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token variable">$DATA</span>之后的数据当成文件流处理<span class="token punctuation">,</span>不会检测后缀名<span class="token punctuation">.</span>且保持<span class="token string">"::$DATA"</span>之前的文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>利用方式</p>
+<pre class="line-numbers language-php"><code class="language-php">www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>php 
+www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">%</span><span class="token number">00</span><span class="token punctuation">.</span>php 
+www<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token operator">/</span>UploadFiles<span class="token operator">/</span>image<span class="token operator">/</span><span class="token number">1</span><span class="token punctuation">.</span>jpg<span class="token operator">/</span><span class="token operator">%</span><span class="token number">20</span>\<span class="token package">0</span><span class="token punctuation">.</span>php <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2><span id="apache解析漏洞">apache解析漏洞</span></h2><h3><span id="漏洞原理">漏洞原理</span></h3><blockquote>
+<p>Apache1.x 2.x  解析文件的规则是从右到左开始判断解析,如果后缀名为不可识别文件解析,就再往左判断。比如 test.php.owf.rar “.owf”和”.rar” 这两种后缀是apache不可识别解析,apache就会把xxxx.php.owf.rar解析成php。</p>
+</blockquote>
+<p>例如上传了个，test.phpaaaaaaa文件，apache就会解析为test.php文件。</p>
+<p>mime.types文件里描述了Apache所知道的文件，即后缀为这些文件时，不会从左向右解析文件。<br>文件路径<br><strong><code>\Apache2.4.39\conf\original\mime.types</code></strong></p>
+<p><img src="/images/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/2.png" alt></p>
+<p><strong>利用方式</strong><br>注意后缀名不要有mime.types中的。</p>
+<p><strong><code>上传 test.phpaaaaaaaa等任意可绕过的文件</code></strong></p>
+<h3><span id="htaccess文件突破黑名单解析">.htaccess文件突破黑名单解析</span></h3><p><strong>文件介绍</strong></p>
+<blockquote>
+<p>.htaccess是一个纯文本文件，它里面存放着Apache服务器配置相关的指令。 .htaccess主要的作用有：URL重写、自定义错误页面、MIME类型配置以及访问权限控制等。主要体现在伪静态的应用、图片防盗链、自定义404错</p>
+</blockquote>
+<p>如果可以上传.htaccess文件的话，可以写入</p>
+<pre class="line-numbers language-php"><code class="language-php"><span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FilesMatch</span> <span class="token attr-name">"test.jpg"</span><span class="token punctuation">></span></span></span>
+  SetHandler application<span class="token operator">/</span>x<span class="token operator">-</span>httpd<span class="token operator">-</span>php
+<span class="token markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FilesMatch</span><span class="token punctuation">></span></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这样配置会让Apache把.htaccess当前目录及其子目录下的test.jpg文件解析为php文件，相当于一个白名单并且以php来执行。这样就可以结合图片马来绕过一些WAF来getshell。</p>
+<p><a href="https://paper.seebug.org/92/#0x02-htaccess" target="_blank" rel="noopener">https://paper.seebug.org/92/#0x02-htaccess</a></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
+    
 
+    
 
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://klforever.cn/2021/04/26/解析漏洞总结/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/7/" class="archive-article-date">
-        <time datetime="2019-10-11T13:09:17.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
 
+
+<nav id="article-nav">
+  
+    <a href="/2021/04/26/域名+CDN隐匿C2服务器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          域名+CDN隐匿C2服务器【白嫖yysd】
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/25/MySQL提权/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL提权（UDF,MOF）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/7/" target="_blank">SQL SERVER 注入（二）</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">什么是解析漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">nginx解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">PHP CGI解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.2.</span> <span class="toc-text">空字节代码执行漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.3.</span> <span class="toc-text">修复方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">IIS解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.1.</span> <span class="toc-text">IIS 5.x-6.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.2.</span> <span class="toc-text">IIS 6.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.3.</span> <span class="toc-text">IIS7.5 解析漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">4.</span> <span class="toc-text">apache解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.1.</span> <span class="toc-text">漏洞原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.2.</span> <span class="toc-text">.htaccess文件突破黑名单解析</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/6/" class="archive-article-date">
-        <time datetime="2019-10-11T02:28:47.791Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/6/" target="_blank">SQL SERVER 注入（一）</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
+
+
+
+
+
+
 
 
           </div>
@@ -432,10 +512,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",

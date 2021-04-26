@@ -6,17 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://klforever.cn">
-  <title>Tag: 免杀 | WLSMILE Blog</title>
+  <title>域名+CDN隐匿C2服务器【白嫖yysd】 | WLSMILE Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="WLSMILE Blog">
-<meta property="og:url" content="http://klforever.cn/tags/免杀/index.html">
+  <meta name="description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
+<meta name="keywords" content="内网渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="域名+CDN隐匿C2服务器【白嫖yysd】">
+<meta property="og:url" content="http://klforever.cn/2021/04/26/域名+CDN隐匿C2服务器/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
+<meta property="og:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
 <meta property="og:locale" content="cn">
+<meta property="og:image" content="http://klforever.cn/images/17/1.png">
+<meta property="og:image" content="http://klforever.cn/images/17/2.png">
+<meta property="og:image" content="http://klforever.cn/images/17/CDN.png">
+<meta property="og:updated_time" content="2021-04-26T08:20:48.934Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WLSMILE Blog">
+<meta name="twitter:title" content="域名+CDN隐匿C2服务器【白嫖yysd】">
+<meta name="twitter:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
+<meta name="twitter:image" content="http://klforever.cn/images/17/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -42,6 +51,22 @@
  	  <script src="/lib/clickLove.js"></script>
   
   
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+
+</script>
+
 
 
   
@@ -70,17 +95,17 @@
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/" target="_blank">主页</a></li>
+				<li><a href="/" >主页</a></li>
 			
-				<li><a href="/tags/Web安全" target="_blank">Web安全</a></li>
+				<li><a href="/tags/Web安全" >Web安全</a></li>
 			
-				<li><a href="/tags/内网渗透" target="_blank">内网渗透</a></li>
+				<li><a href="/tags/内网渗透" >内网渗透</a></li>
 			
-				<li><a href="/tags/漏洞复现" target="_blank">漏洞复现</a></li>
+				<li><a href="/tags/漏洞复现" >漏洞复现</a></li>
 			
-				<li><a href="/tags/工具使用" target="_blank">工具使用</a></li>
+				<li><a href="/tags/工具使用" >工具使用</a></li>
 			
-				<li><a href="/tags/Linux" target="_blank">Linux</a></li>
+				<li><a href="/tags/Linux" >Linux</a></li>
 			
 			</ul>
 		</nav>
@@ -186,41 +211,84 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-域名+CDN隐匿C2服务器" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2021/04/25/16/" class="archive-article-date">
-        <time datetime="2021-04-25T04:40:34.689Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-25</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2021/04/25/16/" target="_blank">内网渗透-PowerShell免杀制作[绕过火绒，360和Windows Defender]</a>
   
+    <h1 class="article-title" itemprop="name">
+      域名+CDN隐匿C2服务器【白嫖yysd】
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+<a href="/2021/04/26/域名+CDN隐匿C2服务器/" class="archive-article-date">
+        <time datetime="2021-04-26T08:10:45.811Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">387字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2><span id="c2隐匿">C2隐匿</span></h2><p>其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。<br>但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。<br>今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~</p>
+<p>公众号原文链接：<a href="https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ</a></p>
+<h2><span id="注册免费域名">注册免费域名</span></h2><p><a href="https://www.freenom.com/" target="_blank" rel="noopener">https://www.freenom.com/</a></p>
+<p>这个站最好是挂美国的代理去注册，不过我的梯子在美国的节点貌似被这个站给拉黑了，所以就只能直接去注册域名了。<br>不过还是需要一个插件<code>Gooreplacer</code> , 这个直接去谷歌商城去下载就好了。然后配置下重定向：</p>
+<pre class="line-numbers language-python"><code class="language-python">www<span class="token punctuation">.</span>google<span class="token punctuation">.</span>com<span class="token operator">/</span>recaptcha       <span class="token comment" spellcheck="true">#匹配模式</span>
+
+www<span class="token punctuation">.</span>recaptcha<span class="token punctuation">.</span>net<span class="token operator">/</span>recaptcha    <span class="token comment" spellcheck="true">#目标地址</span>
+
+<span class="token operator">-</span><span class="token operator">-</span> 其他默认<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>国内具体注册步骤：<br><a href="https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930</a></p>
+<p><img src="/images/17/1.png" alt></p>
+<h2><span id="设置cdn解析">设置CDN解析</span></h2><p><a href="https://dash.cloudflare.com/login" target="_blank" rel="noopener">https://dash.cloudflare.com/login</a></p>
+<p>这里注册后增加自己刚才注册的域名，使用免费的套餐。最后在DNS解析中添加一条A记录，解析到自己的VPS。最后设置缓存打开，增加访问速度。</p>
+<p><img src="/images/17/2.png" alt></p>
+<h2><span id="设置监听">设置监听</span></h2><p>最后设置下cs的监听，需要注意cdn可支持端口</p>
+<pre class="line-numbers language-python"><code class="language-python">http<span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span><span class="token number">8080</span><span class="token punctuation">,</span><span class="token number">8880</span><span class="token punctuation">,</span><span class="token number">2052</span><span class="token punctuation">,</span><span class="token number">2082</span><span class="token punctuation">,</span><span class="token number">2086</span><span class="token punctuation">,</span><span class="token number">2095</span>
+https<span class="token punctuation">:</span><span class="token number">43</span><span class="token punctuation">,</span><span class="token number">2053</span><span class="token punctuation">,</span><span class="token number">2083</span><span class="token punctuation">,</span><span class="token number">2087</span><span class="token punctuation">,</span><span class="token number">2096</span><span class="token punctuation">,</span><span class="token number">8443</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>host和hosts填写自己注册的域名即可。<br>最终效果</p>
+<p><img src="/images/17/CDN.png" alt></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -228,38 +296,124 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">免杀</a>
-        		</li>
       		
 		</ul>
 	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/内网//" class="article-tag-list-link color3">内网</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
     
+
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://klforever.cn/2021/04/26/域名+CDN隐匿C2服务器/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/04/26/解析漏洞总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">解析漏洞总结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">C2隐匿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">注册免费域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">设置CDN解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">4.</span> <span class="toc-text">设置监听</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
           </div>
@@ -269,7 +423,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
+    		&copy; 2019-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
     	</div>
       	<div class="footer-right">
 			
@@ -288,9 +442,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
@@ -376,10 +530,6 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
               </li>
              
@@ -392,15 +542,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -413,6 +559,14 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -530,7 +684,7 @@
     	<section class="tools-section tools-section-me" q-show="aboutme">
         
           
-  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的小白~</div>
+  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的人儿。</div>
   	  	
     	</section>
     
@@ -610,7 +764,7 @@
 <script type="text/javascript" src="/plugins/activate-power-mode/activate-power-mode.js"></script>
 <script>
   POWERMODE.colorful = true; // make power mode colorful
-  POWERMODE.shake = false; // turn off shake
+  POWERMODE.shake = true; // turn off shake
   document.body.addEventListener('input', POWERMODE);
 </script>
 
@@ -661,7 +815,7 @@
        scale: 0.6 
     },
     react: {
-       opacity: 0.8 
+       opacity: 1 
     }
   })
 

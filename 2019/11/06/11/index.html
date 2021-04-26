@@ -48,6 +48,22 @@
   
   
 
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+
+</script>
+
+
 
   
 
@@ -75,17 +91,17 @@
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/" target="_blank">主页</a></li>
+				<li><a href="/" >主页</a></li>
 			
-				<li><a href="/tags/Web安全" target="_blank">Web安全</a></li>
+				<li><a href="/tags/Web安全" >Web安全</a></li>
 			
-				<li><a href="/tags/内网渗透" target="_blank">内网渗透</a></li>
+				<li><a href="/tags/内网渗透" >内网渗透</a></li>
 			
-				<li><a href="/tags/漏洞复现" target="_blank">漏洞复现</a></li>
+				<li><a href="/tags/漏洞复现" >漏洞复现</a></li>
 			
-				<li><a href="/tags/工具使用" target="_blank">工具使用</a></li>
+				<li><a href="/tags/工具使用" >工具使用</a></li>
 			
-				<li><a href="/tags/Linux" target="_blank">Linux</a></li>
+				<li><a href="/tags/Linux" >Linux</a></li>
 			
 			</ul>
 		</nav>
@@ -594,26 +610,6 @@
     
 
     
-    <div class="declare"> 
-      <ul class="post-copyright">
-        <li>
-          <strong>本文作者：</strong>
-          WLSMILE
-        </li>
-        <li>
-          <strong>本文链接：</strong>
-          <a href="http://klforever.cn/2019/11/06/11/" title="端口信息及漏洞利用总结（转）" target="_blank">http://klforever.cn/2019/11/06/11/</a>
-        </li>
-        
-        <li>
-          <strong>版权声明： </strong>
-          
-          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
-        </li>
-        
-      </ul>
-    </div>
-    
 
   </div>
   <div class="article-info article-info-index">
@@ -741,6 +737,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#端口信息及漏洞利用总结"><span class="toc-number">1.</span> <span class="toc-text">端口信息及漏洞利用总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#21端口利用"><span class="toc-number">1.1.</span> <span class="toc-text">21端口利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22端口渗透剖析"><span class="toc-number">1.2.</span> <span class="toc-text">22端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23端口渗透剖析"><span class="toc-number">1.3.</span> <span class="toc-text">23端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#25-465端口渗透剖析"><span class="toc-number">1.4.</span> <span class="toc-text">25/465端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#53端口渗透剖析"><span class="toc-number">1.5.</span> <span class="toc-text">53端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#80端口渗透剖析"><span class="toc-number">1.6.</span> <span class="toc-text">80端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#135端口渗透剖析"><span class="toc-number">1.7.</span> <span class="toc-text">135端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#139-445端口渗透剖析"><span class="toc-number">1.8.</span> <span class="toc-text">139/445端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1433端口渗透剖析"><span class="toc-number">1.9.</span> <span class="toc-text">1433端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1521端口渗透剖析"><span class="toc-number">1.10.</span> <span class="toc-text">1521端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2049端口渗透剖析"><span class="toc-number">1.11.</span> <span class="toc-text">2049端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3306端口渗透剖析"><span class="toc-number">1.12.</span> <span class="toc-text">3306端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3389端口渗透剖析"><span class="toc-number">1.13.</span> <span class="toc-text">3389端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4899端口渗透剖析"><span class="toc-number">1.14.</span> <span class="toc-text">4899端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5432端口渗透剖析"><span class="toc-number">1.15.</span> <span class="toc-text">5432端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5631端口渗透剖析"><span class="toc-number">1.16.</span> <span class="toc-text">5631端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5900端口渗透剖析"><span class="toc-number">1.17.</span> <span class="toc-text">5900端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6379端口渗透剖析"><span class="toc-number">1.18.</span> <span class="toc-text">6379端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7001-7002端口渗透剖析"><span class="toc-number">1.19.</span> <span class="toc-text">7001/7002端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8080端口渗透剖析"><span class="toc-number">1.20.</span> <span class="toc-text">8080端口渗透剖析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#27017端口渗透剖析"><span class="toc-number">1.21.</span> <span class="toc-text">27017端口渗透剖析</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -764,7 +773,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
+    		&copy; 2019-2021 <a href="http://klforever.cn/" target="_blank">WLSMILE</a>
     	</div>
       	<div class="footer-right">
 			
@@ -871,10 +880,6 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
               </li>
              
@@ -887,15 +892,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -908,6 +909,14 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1025,7 +1034,7 @@
     	<section class="tools-section tools-section-me" q-show="aboutme">
         
           
-  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的小白~</div>
+  	  		<div class="aboutme-wrap" id="aboutme">一个在网络安全道路上漂泊的人儿。</div>
   	  	
     	</section>
     
@@ -1105,7 +1114,7 @@
 <script type="text/javascript" src="/plugins/activate-power-mode/activate-power-mode.js"></script>
 <script>
   POWERMODE.colorful = true; // make power mode colorful
-  POWERMODE.shake = false; // turn off shake
+  POWERMODE.shake = true; // turn off shake
   document.body.addEventListener('input', POWERMODE);
 </script>
 
@@ -1156,7 +1165,7 @@
        scale: 0.6 
     },
     react: {
-       opacity: 0.8 
+       opacity: 1 
     }
   })
 
