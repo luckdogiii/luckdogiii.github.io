@@ -265,25 +265,25 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="Ubuntu-Metasploit-CobaltStrike4-0"><a href="#Ubuntu-Metasploit-CobaltStrike4-0" class="headerlink" title="Ubuntu + Metasploit + CobaltStrike4.0"></a>Ubuntu + Metasploit + CobaltStrike4.0</h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
-<h2 id="Ubuntu-搭建"><a href="#Ubuntu-搭建" class="headerlink" title="Ubuntu 搭建"></a>Ubuntu 搭建</h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
-<h3 id="Ⅰ-使用root登陆"><a href="#Ⅰ-使用root登陆" class="headerlink" title="Ⅰ 使用root登陆"></a>Ⅰ 使用root登陆</h3><pre class="line-numbers language-python"><code class="language-python">sudo passwd root
+    <h1><span id="ubuntu-metasploit-cobaltstrike40">Ubuntu + Metasploit + CobaltStrike4.0</span></h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
+<h2><span id="ubuntu-搭建">Ubuntu 搭建</span></h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
+<h3><span id="i-使用root登陆">Ⅰ 使用root登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo passwd root
 设置密码
 重复密码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>使用root进行登录</p>
-<h3 id="Ⅱ-安装SSH服务"><a href="#Ⅱ-安装SSH服务" class="headerlink" title="Ⅱ 安装SSH服务"></a>Ⅱ 安装SSH服务</h3><pre class="line-numbers language-python"><code class="language-python">sudo apt install openssh<span class="token operator">-</span>server
+<h3><span id="ii-安装ssh服务">Ⅱ 安装SSH服务</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo apt install openssh<span class="token operator">-</span>server
 sudo service ssh start
 sudo apt install openssh<span class="token operator">-</span>client<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="Ⅲ-SSH开启ROOT登陆"><a href="#Ⅲ-SSH开启ROOT登陆" class="headerlink" title="Ⅲ SSH开启ROOT登陆"></a>Ⅲ SSH开启ROOT登陆</h3><pre class="line-numbers language-python"><code class="language-python">vim <span class="token operator">/</span>etc<span class="token operator">/</span>ssh<span class="token operator">/</span>sshd_config
+<h3><span id="iii-ssh开启root登陆">Ⅲ SSH开启ROOT登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">vim <span class="token operator">/</span>etc<span class="token operator">/</span>ssh<span class="token operator">/</span>sshd_config
 添加或修改 PermitRootLogin yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="/images/12/1.png" alt></p>
 <p>最后SSH使用ROOT登陆<br><img src="/images/12/2.png" alt></p>
-<h2 id="Metasploit-搭建"><a href="#Metasploit-搭建" class="headerlink" title="Metasploit 搭建"></a>Metasploit 搭建</h2><p>在根目录创建msf文件进入后执行</p>
+<h2><span id="metasploit-搭建">Metasploit 搭建</span></h2><p>在根目录创建msf文件进入后执行</p>
 <pre class="line-numbers language-python"><code class="language-python">curl https<span class="token punctuation">:</span><span class="token operator">//</span>raw<span class="token punctuation">.</span>githubusercontent<span class="token punctuation">.</span>com<span class="token operator">/</span>rapid7<span class="token operator">/</span>metasploit<span class="token operator">-</span>omnibus<span class="token operator">/</span>master<span class="token operator">/</span>config<span class="token operator">/</span>templates<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">-</span>wrappers<span class="token operator">/</span>msfupdate<span class="token punctuation">.</span>erb <span class="token operator">></span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> chmod <span class="token number">755</span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> <span class="token punctuation">.</span><span class="token operator">/</span>msfinstall<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安装后<code>msfconsole</code>进入</p>
 <p><img src="/images/12/3.png" alt></p>
 <p>简单无脑，直接进入。</p>
-<h2 id="CobaltStrike4-0-搭建"><a href="#CobaltStrike4-0-搭建" class="headerlink" title="CobaltStrike4.0 搭建"></a>CobaltStrike4.0 搭建</h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
+<h2><span id="cobaltstrike40-搭建">CobaltStrike4.0 搭建</span></h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
 <pre class="line-numbers language-python"><code class="language-python">unzip CobaltStrike4<span class="token number">.0</span><span class="token punctuation">.</span>zip
 cd CobaltStrike4<span class="token number">.0</span><span class="token operator">/</span>
 <span class="token punctuation">.</span><span class="token operator">/</span>teamserver <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span> wlsmile123<span class="token punctuation">.</span><span class="token punctuation">.</span>
@@ -293,7 +293,7 @@ cd CobaltStrike4<span class="token number">.0</span><span class="token operator"
 <p>在本地windows打cs客户端，输入用户名密码。</p>
 <p><img src="/images/12/5.png" alt></p>
 <p>连接。<br><img src="/images/12/6.png" alt></p>
-<h1 id="小试牛刀-msf与cs互传shell"><a href="#小试牛刀-msf与cs互传shell" class="headerlink" title="小试牛刀 msf与cs互传shell"></a>小试牛刀 msf与cs互传shell</h1><h2 id="复现-cve-2019-0708-bluekeep-rce"><a href="#复现-cve-2019-0708-bluekeep-rce" class="headerlink" title="复现 cve_2019_0708_bluekeep_rce"></a>复现 cve_2019_0708_bluekeep_rce</h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
+<h1><span id="小试牛刀-msf与cs互传shell">小试牛刀 msf与cs互传shell</span></h1><h2><span id="复现-cve_2019_0708_bluekeep_rce">复现 cve_2019_0708_bluekeep_rce</span></h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
 <p>启动msf后搜索0708</p>
 <pre class="line-numbers language-python"><code class="language-python">msf6 <span class="token operator">></span> search <span class="token number">0708</span>
 
@@ -528,7 +528,7 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu-Metasploit-CobaltStrike4-0"><span class="toc-number">1.</span> <span class="toc-text">Ubuntu + Metasploit + CobaltStrike4.0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-搭建"><span class="toc-number">1.1.</span> <span class="toc-text">Ubuntu 搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅰ-使用root登陆"><span class="toc-number">1.1.1.</span> <span class="toc-text">Ⅰ 使用root登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅱ-安装SSH服务"><span class="toc-number">1.1.2.</span> <span class="toc-text">Ⅱ 安装SSH服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ⅲ-SSH开启ROOT登陆"><span class="toc-number">1.1.3.</span> <span class="toc-text">Ⅲ SSH开启ROOT登陆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Metasploit-搭建"><span class="toc-number">1.2.</span> <span class="toc-text">Metasploit 搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CobaltStrike4-0-搭建"><span class="toc-number">1.3.</span> <span class="toc-text">CobaltStrike4.0 搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小试牛刀-msf与cs互传shell"><span class="toc-number">2.</span> <span class="toc-text">小试牛刀 msf与cs互传shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复现-cve-2019-0708-bluekeep-rce"><span class="toc-number">2.1.</span> <span class="toc-text">复现 cve_2019_0708_bluekeep_rce</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">Ubuntu + Metasploit + CobaltStrike4.0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.1.</span> <span class="toc-text">Ubuntu 搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.1.1.</span> <span class="toc-text">Ⅰ 使用root登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.1.2.</span> <span class="toc-text">Ⅱ 安装SSH服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.1.3.</span> <span class="toc-text">Ⅲ SSH开启ROOT登陆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.2.</span> <span class="toc-text">Metasploit 搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.3.</span> <span class="toc-text">CobaltStrike4.0 搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">小试牛刀 msf与cs互传shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">复现 cve_2019_0708_bluekeep_rce</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -668,6 +668,10 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -676,11 +680,11 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -688,19 +692,11 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

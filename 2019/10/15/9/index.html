@@ -259,9 +259,9 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="0X01-漏洞描述"><a href="#0X01-漏洞描述" class="headerlink" title="0X01  漏洞描述"></a>0X01  漏洞描述</h1><p>2019年9月19日，泛微e-cology OA系统被爆出存在远程代码执行漏洞。该漏洞存在于泛微协同管理应用平台OA系统的BeanShell组件中，该组件为系统自带且允许未授权访问。攻击者通过调用BeanShell组件的问题接口可直接在目标服务器上执行任意命令，目前该漏洞安全补丁已发布，请使用泛微e-cology OA系统的用户尽快采取防护措施。<br>该漏洞CNVD编号：CNVD-2019-32204</p>
-<h1 id="0x02-影响版本："><a href="#0x02-影响版本：" class="headerlink" title="0x02  影响版本："></a>0x02  影响版本：</h1><p><code>泛微e-cology&lt;=9.0</code></p>
-<h1 id="0x03-漏洞复现"><a href="#0x03-漏洞复现" class="headerlink" title="0x03  漏洞复现"></a>0x03  漏洞复现</h1><p>访问正常页面如图，且可以看到泛微OA的版本号<br><img src="/images/9/1.png" alt></p>
+    <h1><span id="0x01-漏洞描述">0X01  漏洞描述</span></h1><p>2019年9月19日，泛微e-cology OA系统被爆出存在远程代码执行漏洞。该漏洞存在于泛微协同管理应用平台OA系统的BeanShell组件中，该组件为系统自带且允许未授权访问。攻击者通过调用BeanShell组件的问题接口可直接在目标服务器上执行任意命令，目前该漏洞安全补丁已发布，请使用泛微e-cology OA系统的用户尽快采取防护措施。<br>该漏洞CNVD编号：CNVD-2019-32204</p>
+<h1><span id="0x02-影响版本">0x02  影响版本：</span></h1><p><code>泛微e-cology&lt;=9.0</code></p>
+<h1><span id="0x03-漏洞复现">0x03  漏洞复现</span></h1><p>访问正常页面如图，且可以看到泛微OA的版本号<br><img src="/images/9/1.png" alt></p>
 <p>如果版本号小于等于9.0可尝试访问如下目录<br>（在网站根目录下加或者多级目录下依次尝试）</p>
 <p><code>/weaver/bsh.servlet.BshServlet/</code></p>
 <p>如果出现<strong>BeanShell Test Servlet</strong>字样即可直接命令执行</p>
@@ -404,7 +404,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0X01-漏洞描述"><span class="toc-number">1.</span> <span class="toc-text">0X01  漏洞描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-影响版本："><span class="toc-number">2.</span> <span class="toc-text">0x02  影响版本：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-漏洞复现"><span class="toc-number">3.</span> <span class="toc-text">0x03  漏洞复现</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">0X01  漏洞描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">0x02  影响版本：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">0x03  漏洞复现</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -544,6 +544,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -552,11 +556,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -564,19 +568,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -10,22 +10,22 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
+  <meta name="description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~">
 <meta name="keywords" content="内网渗透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="域名+CDN隐匿C2服务器【白嫖yysd】">
 <meta property="og:url" content="http://klforever.cn/2021/04/26/域名+CDN隐匿C2服务器/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
+<meta property="og:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~">
 <meta property="og:locale" content="cn">
-<meta property="og:image" content="http://klforever.cn/images/17/1.png">
-<meta property="og:image" content="http://klforever.cn/images/17/2.png">
-<meta property="og:image" content="http://klforever.cn/images/17/CDN.png">
-<meta property="og:updated_time" content="2021-04-26T08:20:48.934Z">
+<meta property="og:image" content="http://klforever.cn/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/1.png">
+<meta property="og:image" content="http://klforever.cn/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/2.png">
+<meta property="og:image" content="http://klforever.cn/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/CDN.png">
+<meta property="og:updated_time" content="2021-04-26T08:28:23.427Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="域名+CDN隐匿C2服务器【白嫖yysd】">
-<meta name="twitter:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~ 公众号原文链接：https://mp.weixin.qq.co">
-<meta name="twitter:image" content="http://klforever.cn/images/17/1.png">
+<meta name="twitter:description" content="C2隐匿其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~">
+<meta name="twitter:image" content="http://klforever.cn/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -260,6 +260,8 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h2><span id="c2隐匿">C2隐匿</span></h2><p>其实C2隐匿技术有很多，比如CDN域前置，修改c2.profile，添加新的证书，外置C2服务器（Heroku）等等。<br>但自己实际做到的也只有修改c2.profile文件，更换默认证书和改个端口了。昨天看到公众号上发了白嫖cdn隐匿c2服务器的文章，每两分钟就删除了。。<br>今天看到公众号上又发了这篇文章，所以赶快白嫖去了，yyds~</p>
+<a id="more"></a>
+
 <p>公众号原文链接：<a href="https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/S_REwcYlJGpyiJb3PIwsOQ</a></p>
 <h2><span id="注册免费域名">注册免费域名</span></h2><p><a href="https://www.freenom.com/" target="_blank" rel="noopener">https://www.freenom.com/</a></p>
 <p>这个站最好是挂美国的代理去注册，不过我的梯子在美国的节点貌似被这个站给拉黑了，所以就只能直接去注册域名了。<br>不过还是需要一个插件<code>Gooreplacer</code> , 这个直接去谷歌商城去下载就好了。然后配置下重定向：</p>
@@ -269,15 +271,15 @@ www<span class="token punctuation">.</span>recaptcha<span class="token punctuati
 
 <span class="token operator">-</span><span class="token operator">-</span> 其他默认<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>国内具体注册步骤：<br><a href="https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1NK4y1P7tW?from=search&amp;seid=14191777004779154930</a></p>
-<p><img src="/images/17/1.png" alt></p>
+<p><img src="/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/1.png" alt></p>
 <h2><span id="设置cdn解析">设置CDN解析</span></h2><p><a href="https://dash.cloudflare.com/login" target="_blank" rel="noopener">https://dash.cloudflare.com/login</a></p>
 <p>这里注册后增加自己刚才注册的域名，使用免费的套餐。最后在DNS解析中添加一条A记录，解析到自己的VPS。最后设置缓存打开，增加访问速度。</p>
-<p><img src="/images/17/2.png" alt></p>
+<p><img src="/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/2.png" alt></p>
 <h2><span id="设置监听">设置监听</span></h2><p>最后设置下cs的监听，需要注意cdn可支持端口</p>
 <pre class="line-numbers language-python"><code class="language-python">http<span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span><span class="token number">8080</span><span class="token punctuation">,</span><span class="token number">8880</span><span class="token punctuation">,</span><span class="token number">2052</span><span class="token punctuation">,</span><span class="token number">2082</span><span class="token punctuation">,</span><span class="token number">2086</span><span class="token punctuation">,</span><span class="token number">2095</span>
 https<span class="token punctuation">:</span><span class="token number">43</span><span class="token punctuation">,</span><span class="token number">2053</span><span class="token punctuation">,</span><span class="token number">2083</span><span class="token punctuation">,</span><span class="token number">2087</span><span class="token punctuation">,</span><span class="token number">2096</span><span class="token punctuation">,</span><span class="token number">8443</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>host和hosts填写自己注册的域名即可。<br>最终效果</p>
-<p><img src="/images/17/CDN.png" alt></p>
+<p><img src="/images/%E5%9F%9F%E5%90%8D+CDN%E9%9A%90%E5%8C%BFC2%E6%9C%8D%E5%8A%A1%E5%99%A8/CDN.png" alt></p>
 
     
 
@@ -534,6 +536,10 @@ https<span class="token punctuation">:</span><span class="token number">43</span
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -542,11 +548,11 @@ https<span class="token punctuation">:</span><span class="token number">43</span
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -554,19 +560,11 @@ https<span class="token punctuation">:</span><span class="token number">43</span
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

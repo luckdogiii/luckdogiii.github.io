@@ -261,8 +261,8 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="Linux提权"><a href="#Linux提权" class="headerlink" title="Linux提权"></a>Linux提权</h2><p>上一次提权提到了内核漏洞本地提权，SUID提权，但是在面对复杂的服务器环境时需要了解更多的提权方法。上次在ny护网的时候搞到了一台Linux服务器的低权限oracle账号，然后尝试提权成功，所以有了这篇文章。</p>
-<h2 id="低内核版本提权"><a href="#低内核版本提权" class="headerlink" title="低内核版本提权"></a>低内核版本提权</h2><p>发行版本是rhel5.5内核版本是比较低的 2.6.18，但是脏牛漏洞是对内核版本大于2.6.22可以利用，所以我们可以利用tmp目录权限、suid 权限和C语言使普通帐号提权为ROOT权限。<br><code>tmp目录具有777权限</code></p>
+    <h2><span id="linux提权">Linux提权</span></h2><p>上一次提权提到了内核漏洞本地提权，SUID提权，但是在面对复杂的服务器环境时需要了解更多的提权方法。上次在ny护网的时候搞到了一台Linux服务器的低权限oracle账号，然后尝试提权成功，所以有了这篇文章。</p>
+<h2><span id="低内核版本提权">低内核版本提权</span></h2><p>发行版本是rhel5.5内核版本是比较低的 2.6.18，但是脏牛漏洞是对内核版本大于2.6.22可以利用，所以我们可以利用tmp目录权限、suid 权限和C语言使普通帐号提权为ROOT权限。<br><code>tmp目录具有777权限</code></p>
 <p>1.进入tmp目录并创建目录exploit</p>
 <pre class="line-numbers language-java"><code class="language-java">cd <span class="token operator">/</span>tmp
 mkdir exploit
@@ -309,7 +309,7 @@ Usage<span class="token operator">:</span> ping <span class="token punctuation">
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/5/1.png" alt></p>
 <p>等到执行完之后就是root权限了。这是一个老版本的gcc编译器漏洞了，虽然老，但是还是学习一下的好。</p>
-<h2 id="sudo配置错误"><a href="#sudo配置错误" class="headerlink" title="sudo配置错误"></a>sudo配置错误</h2><p>这个方法是在freebuf上的一篇文章上看到的，但是实际情况下还没有见到过。</p>
+<h2><span id="sudo配置错误">sudo配置错误</span></h2><p>这个方法是在freebuf上的一篇文章上看到的，但是实际情况下还没有见到过。</p>
 <p>1.查看 <code>/home/</code>目录下是否有<code>.sudo_as_admin_successful</code>文件，如果有的话直接可以输入当前低权限账号的密码直接<code>sudo su</code>切换为root用户。</p>
 <hr>
 <p>原文链接：<a href="https://www.freebuf.com/vuls/211847.html" target="_blank" rel="noopener">https://www.freebuf.com/vuls/211847.html</a><br>以下是原文的利用过程：</p>
@@ -464,7 +464,7 @@ Usage<span class="token operator">:</span> ping <span class="token punctuation">
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux提权"><span class="toc-number">1.</span> <span class="toc-text">Linux提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#低内核版本提权"><span class="toc-number">2.</span> <span class="toc-text">低内核版本提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sudo配置错误"><span class="toc-number">3.</span> <span class="toc-text">sudo配置错误</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">Linux提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">低内核版本提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">sudo配置错误</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -604,6 +604,10 @@ Usage<span class="token operator">:</span> ping <span class="token punctuation">
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
@@ -612,11 +616,11 @@ Usage<span class="token operator">:</span> ping <span class="token punctuation">
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">免杀</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -624,19 +628,11 @@ Usage<span class="token operator">:</span> ping <span class="token punctuation">
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
               </li>
              
               <li class="article-tag-list-item">
