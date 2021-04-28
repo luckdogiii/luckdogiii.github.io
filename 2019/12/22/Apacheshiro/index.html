@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://klforever.cn/images/apache/6.png">
 <meta property="og:image" content="http://klforever.cn/images/apache/7.png">
 <meta property="og:image" content="http://klforever.cn/images/apache/8.png">
-<meta property="og:updated_time" content="2021-04-28T12:28:09.926Z">
+<meta property="og:updated_time" content="2021-04-28T12:42:56.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ApacheShiro5.x - 8.2.0 RCE 复现">
 <meta name="twitter:description" content="之前在塞克社区的文章，搬运一下。。 什么是solr服务器 Solr是一个独立的企业级搜索应用服务器，它对外提供类似于Web-service的API接口。用户可以通过http请求，向搜索引擎服务器提交一定格式的XML文件，生成索引；也可以通过Http Get操作提出查找请求，并得到XML格式的返回结果   –百度百科">
@@ -269,6 +269,7 @@
 <p>Solr是一个独立的企业级搜索应用服务器，它对外提供类似于Web-service的API接口。用户可以通过http请求，向搜索引擎服务器提交一定格式的XML文件，生成索引；也可以通过Http Get操作提出查找请求，并得到XML格式的返回结果   –百度百科</p>
 </blockquote>
 <a id="more"></a>
+
 <h3><span id="影响范围及原因">影响范围及原因</span></h3><p>影响范围：Apache Solr 5.x - 8.2.0 存在config API版本<br>原因：</p>
 <blockquote>
 <p>1.当攻击者可以直接访问Solr控制台时，可以通过发送类似/节点名/config的POST请求对该节点的配置文件做更改。<br>2.Apache Solr默认集成VelocityResponseWriter插件，在该插件的初始化参数中的params.resource.loader.enabled这个选项是用来控制是否允许参数资源加载器在Solr请求参数中指定模版，默认设置是false。<br>当设置params.resource.loader.enabled为true时，将允许用户通过设置请求中的参数来指定相关资源的加载，这也就意味着攻击者可以通过构造一个具有威胁的攻击请求，在服务器上进行命令执行。                    ——–360CERT</p>
