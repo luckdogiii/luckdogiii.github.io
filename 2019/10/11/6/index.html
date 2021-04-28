@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://klforever.cn/images/6/5.png">
 <meta property="og:image" content="http://klforever.cn/images/6/6.png">
 <meta property="og:image" content="http://klforever.cn/images/6/7.png">
-<meta property="og:updated_time" content="2021-04-25T09:06:36.175Z">
+<meta property="og:updated_time" content="2021-04-28T12:30:59.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL SERVER 注入（一）">
 <meta name="twitter:description" content="SQL server 的基础知识部分系统库的简介Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。而我们在注入的过程当中就要用">
@@ -264,6 +264,7 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h1><span id="sql-server-的基础知识部分">SQL server 的基础知识部分</span></h1><h2><span id="系统库的简介">系统库的简介</span></h2><p>Sqlserver数据库有四个系统数据库，分别是master，model，msdb，tempdb。我<br>们最经常使用到的时master 库，它与 MySQL 中的information_schema 库有几分相似，<br>都存储了所有数据库库名（sysdatabases），表名（sysobjects），字段名（syscolumns）。<br>而我们在注入的过程当中就要用的 master 库中的这三个视图，无论是联合查询注入还是盲<br>注与 DNSlog 注入都离不开这三个视图表。</p>
+<a id="more"></a>
 <p>系统库简述：</p>
 <table>
 <thead>
@@ -660,27 +661,15 @@ where id not <span class="token function">in</span> <span class="token punctuati
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -693,6 +682,18 @@ where id not <span class="token function">in</span> <span class="token punctuati
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

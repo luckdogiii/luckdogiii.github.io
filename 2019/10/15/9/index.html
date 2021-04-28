@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://klforever.cn/images/9/1.png">
 <meta property="og:image" content="http://klforever.cn/images/9/2.png">
 <meta property="og:image" content="http://klforever.cn/images/9/3.png">
-<meta property="og:updated_time" content="2019-10-15T08:50:27.034Z">
+<meta property="og:updated_time" content="2021-04-28T12:32:17.634Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="泛微OA远程代码执行">
 <meta name="twitter:description" content="0X01  漏洞描述2019年9月19日，泛微e-cology OA系统被爆出存在远程代码执行漏洞。该漏洞存在于泛微协同管理应用平台OA系统的BeanShell组件中，该组件为系统自带且允许未授权访问。攻击者通过调用BeanShell组件的问题接口可直接在目标服务器上执行任意命令，目前该漏洞安全补丁已发布，请使用泛微e-cology OA系统的用户尽快采取防护措施。该漏洞CNVD编号：CNVD-2">
@@ -260,6 +260,8 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h1><span id="0x01-漏洞描述">0X01  漏洞描述</span></h1><p>2019年9月19日，泛微e-cology OA系统被爆出存在远程代码执行漏洞。该漏洞存在于泛微协同管理应用平台OA系统的BeanShell组件中，该组件为系统自带且允许未授权访问。攻击者通过调用BeanShell组件的问题接口可直接在目标服务器上执行任意命令，目前该漏洞安全补丁已发布，请使用泛微e-cology OA系统的用户尽快采取防护措施。<br>该漏洞CNVD编号：CNVD-2019-32204</p>
+<a id="more"></a>
+
 <h1><span id="0x02-影响版本">0x02  影响版本：</span></h1><p><code>泛微e-cology&lt;=9.0</code></p>
 <h1><span id="0x03-漏洞复现">0x03  漏洞复现</span></h1><p>访问正常页面如图，且可以看到泛微OA的版本号<br><img src="/images/9/1.png" alt></p>
 <p>如果版本号小于等于9.0可尝试访问如下目录<br>（在网站根目录下加或者多级目录下依次尝试）</p>
@@ -540,27 +542,15 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -573,6 +563,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

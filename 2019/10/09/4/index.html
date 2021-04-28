@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://klforever.cn/images/4/9.png">
 <meta property="og:image" content="http://klforever.cn/images/4/10.png">
 <meta property="og:image" content="http://klforever.cn/images/4/11.png">
-<meta property="og:updated_time" content="2021-04-25T09:06:00.643Z">
+<meta property="og:updated_time" content="2021-04-28T12:31:42.475Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux提权（一）">
 <meta name="twitter:description" content="信息收集内核，操作系统和设备信息uname -a    打印所有可用的系统信息 uname -r    内核版本 uname -n    系统主机名 uname -m    查看系统内核架构（64位/32位） hostname    系统主机名 cat /proc/version    内核信息 cat /etc/*-release   分发信息 cat /etc/issue       分发信息">
@@ -267,7 +267,7 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1><span id="信息收集">信息收集</span></h1><h2><span id="内核操作系统和设备信息">内核，操作系统和设备信息</span></h2><pre class="line-numbers language-java"><code class="language-java">uname <span class="token operator">-</span>a    打印所有可用的系统信息
+    <h1><span id="信息收集">信息收集</span></h1><h2><span id="内核操作系统和设备信息">内核，操作系统和设备信息</span></h2><pre class="line-numbers language-php"><code class="language-php">uname <span class="token operator">-</span>a    打印所有可用的系统信息
 uname <span class="token operator">-</span>r    内核版本
 uname <span class="token operator">-</span>n    系统主机名
 uname <span class="token operator">-</span>m    查看系统内核架构（<span class="token number">64</span>位<span class="token operator">/</span><span class="token number">32</span>位）
@@ -275,8 +275,9 @@ hostname    系统主机名
 cat <span class="token operator">/</span>proc<span class="token operator">/</span>version    内核信息
 cat <span class="token operator">/</span>etc<span class="token operator">/</span><span class="token operator">*</span><span class="token operator">-</span>release   分发信息
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>issue       分发信息
-cat <span class="token operator">/</span>proc<span class="token operator">/</span>cpuinfo    CPU信息
+cat <span class="token operator">/</span>proc<span class="token operator">/</span>cpuinfo    <span class="token constant">CPU</span>信息
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<a id="more"></a>
 <h2><span id="用户和群组">用户和群组</span></h2><pre class="line-numbers language-java"><code class="language-java">cat <span class="token operator">/</span>etc<span class="token operator">/</span>passwd     列出系统上的所有用户
 cat <span class="token operator">/</span>etc<span class="token operator">/</span>group      列出系统上的所有组
 grep <span class="token operator">-</span>v <span class="token operator">-</span>E <span class="token string">"^#"</span> <span class="token operator">/</span>etc<span class="token operator">/</span>passwd <span class="token operator">|</span> awk <span class="token operator">-</span>F<span class="token operator">:</span> <span class="token string">'$3 == 0 { print $1}'</span>
@@ -643,27 +644,15 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -676,6 +665,18 @@ bash<span class="token operator">-</span><span class="token number">3.2</span># 
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

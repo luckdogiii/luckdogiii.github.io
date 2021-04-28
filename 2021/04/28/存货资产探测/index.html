@@ -10,18 +10,18 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
+  <meta name="description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本">
 <meta name="keywords" content="工具使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="存活资产探测-python">
 <meta property="og:url" content="http://klforever.cn/2021/04/28/存货资产探测/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
+<meta property="og:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2021-04-28T11:37:21.199Z">
+<meta property="og:updated_time" content="2021-04-28T12:38:03.944Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="存活资产探测-python">
-<meta name="twitter:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
+<meta name="twitter:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -235,7 +235,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">580字</span>
+      <span class="post-count">593字</span>
     </span>
   </span>
 
@@ -256,6 +256,8 @@
   <div class="article-entry" itemprop="articleBody">
     
     <p>一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本</p>
+<a id="more"></a>
+
 <h2><span id="批量探测">批量探测</span></h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
 <span class="token keyword">import</span> threading
 <span class="token keyword">import</span> time
@@ -294,7 +296,7 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
             url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span>
             <span class="token keyword">if</span> url <span class="token operator">not</span> <span class="token keyword">in</span> line_seen<span class="token punctuation">:</span>
                 line_seen<span class="token punctuation">.</span>add<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
 
 <span class="token keyword">def</span> <span class="token function">Get_Code</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
     host <span class="token operator">=</span> url<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"https://"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span>
@@ -354,7 +356,7 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
     end <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"-------用时{end - start}s-------"</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>直接把收集到的子域名放在url.txt下后直接运行就好。代码糙的一，轻喷。。。</p>
+<p>直接把收集到的子域名放在url.txt下后直接运行就好。代码功底不行，所以比较粗糙，后面应该会完善。</p>
 
     
 
@@ -607,27 +609,15 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -640,6 +630,18 @@ threads1 <span class="token operator">=</span> <span class="token punctuation">[
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://klforever.cn/images/15/7.png">
 <meta property="og:image" content="http://klforever.cn/images/15/8.png">
 <meta property="og:image" content="http://klforever.cn/images/15/9.png">
-<meta property="og:updated_time" content="2021-04-25T09:04:28.483Z">
+<meta property="og:updated_time" content="2021-04-28T12:40:14.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fastjson 反序列化漏洞复现">
 <meta name="twitter:description" content="Fastjson是什么 Fastjson是阿里巴巴开源JSON解析库，他可以解析JSON格式的字符串。支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。  Fastjson提供了autotype功能，在请求过程中，我们可以在请求包中通过修改@type的值，来反序列化为指定的类型，而fastjson在反序列化过程中会设置和获取类中的属性，如果类中存在恶">
@@ -276,6 +276,8 @@
 <li>攻击机：192.168.30.16</li>
 </ul>
 <p>RCE：<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener">https://github.com/CaijiOrz/fastjson-1.2.47-RCE</a></p>
+<a id="more"></a>
+
 <h3><span id="探测能否利用">探测能否利用</span></h3><p>payload：</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">{</span>
     <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"menghao"</span><span class="token punctuation">,</span>
@@ -613,27 +615,15 @@
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -646,6 +636,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

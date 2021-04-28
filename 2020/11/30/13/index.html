@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://klforever.cn/images/13/15.png">
 <meta property="og:image" content="http://klforever.cn/images/13/16.png">
 <meta property="og:image" content="http://klforever.cn/images/13/17.png">
-<meta property="og:updated_time" content="2021-04-25T09:03:37.139Z">
+<meta property="og:updated_time" content="2021-04-28T12:29:59.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内网穿透-FRP流量改造">
 <meta name="twitter:description" content="前言在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被">
@@ -274,6 +274,7 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h1><span id="前言">前言</span></h1><p>在拿下一台机器作为入口时，内网代理就变得尤为重要。他是我们进行横向渗透一个中间人，没了代理在内网中就寸步难行。而内网穿透的工具有很多，比如frp，reGeorg等等非常优秀的代理工具。使用方法不在赘述，这篇文章主要记录下在FRP内网代理时的流量改造。FRP作为一个开源的项目，它的特征早已被各大厂商掌握了，不进行流量上的改变我们就无法成功的建立连接，如果直接使用github编译后的EXE直接会被360等杀软直接判定为黑客行为，流量改造也是为了能够达到一定程度上的免杀效果。</p>
+<a id="more"></a>
 <h2><span id="改造前的流量">改造前的流量</span></h2><p>在frp默认配置文件 frpc.ini中不开启 tls_enable = true 时，客户端在连接服务端时会把版本信息传给服务端进行认证。下面是在连接时wires hark抓包的流量</p>
 <p><img src="/images/13/1.png" alt></p>
 <p>可以看见非常明显的frp流量特征</p>
@@ -670,27 +671,15 @@ bind_port <span class="token operator">=</span> <span class="token number">9998<
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -703,6 +692,18 @@ bind_port <span class="token operator">=</span> <span class="token number">9998<
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

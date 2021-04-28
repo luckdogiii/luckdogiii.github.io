@@ -19,7 +19,7 @@
 <meta property="og:description" content="前言phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。  PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置">
 <meta property="og:locale" content="cn">
 <meta property="og:image" content="http://klforever.cn/images/2/1.png">
-<meta property="og:updated_time" content="2021-04-25T09:04:37.465Z">
+<meta property="og:updated_time" content="2021-04-28T12:31:12.134Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="phpstudy远程代码执行复现">
 <meta name="twitter:description" content="前言phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。  PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置">
@@ -259,8 +259,11 @@
     
     <h1><span id="前言">前言</span></h1><p>phpstudy是我的第一个环境，也是从大一就开始用到现在的环境，没想到李里面竟然隐藏了三年的木马。免杀三年，细思极恐啊。不过辛亏也只是自己实验用的环境，不是搭的公网的环境。</p>
 <blockquote>
-<p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。<br>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
+<p>PhpStudy软件对于国内众多开发者而言，并不陌生。它是一款免费的PHP调试环境的程序集成包，集成了最新的Apache、PHP、MySQL、phpMyAdmin、ZendOptimizer多款软件一次性安装，无需配置即可直接使用，具有PHP环境调试和PHP开发功能。因为免费公益、简易方便，现已发展到一定的规模，有着近百万PHP语言学习者、开发者用户。<br>然而，如此绿色无公害的“国民”开发软件遭到了黑客的毒手，并且犯罪动机竟然出自黑客的技痒和虚荣心。据杭州公安披露，黑客组织早在2016年就编写了“后门”文件，并非法侵入了PhpStudy的官网，篡改了软件安装包植入“后门”。而该“后门”具有控制计算机的功能，可以远程控制下载运行脚本实现用户个人信息收集。</p>
 </blockquote>
+<a id="more"></a>
+
+<p>从2016年起，黑客利用该“后门”犯罪作恶一发不可收拾，大量中招的电脑沦为“肉鸡”执行危险命令，不计其数的用户账号密码、电脑数据、敏感信息被远程抓取和回传。据统计，黑客已控制了超过67万台电脑，非法获取账号密码类、聊天数据类、设备码类等数据10万余组，而此案也是2019年以来，国内影响最为严重的供应链攻击事件。</p>
 <h1><span id="poc">POC</span></h1><p>紧接着老大发来了POC，所以赶紧复现一波。</p>
 <h2><span id="poc">POC</span></h2><pre class="line-numbers language-java"><code class="language-java">GET <span class="token operator">/</span><span class="token number">110</span><span class="token punctuation">.</span>php HTTP<span class="token operator">/</span><span class="token number">1.1</span>
 Host<span class="token operator">:</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">199.186</span>
@@ -553,27 +556,15 @@ php<span class="token operator">-</span><span class="token number">5.2</span><sp
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -586,6 +577,18 @@ php<span class="token operator">-</span><span class="token number">5.2</span><sp
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

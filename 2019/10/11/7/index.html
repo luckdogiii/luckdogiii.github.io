@@ -10,13 +10,13 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列 查询出有 4列后进行联合">
+  <meta name="description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列">
 <meta name="keywords" content="注入,Web安全,sql server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL SERVER 注入（二）">
 <meta property="og:url" content="http://klforever.cn/2019/10/11/7/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
-<meta property="og:description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列 查询出有 4列后进行联合">
+<meta property="og:description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列">
 <meta property="og:locale" content="cn">
 <meta property="og:image" content="http://klforever.cn/images/7/0.png">
 <meta property="og:image" content="http://klforever.cn/images/7/1.png">
@@ -37,10 +37,10 @@
 <meta property="og:image" content="http://klforever.cn/images/7/16.png">
 <meta property="og:image" content="http://klforever.cn/images/7/17.png">
 <meta property="og:image" content="http://klforever.cn/images/7/18.png">
-<meta property="og:updated_time" content="2021-04-25T09:07:02.117Z">
+<meta property="og:updated_time" content="2021-04-28T12:30:58.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL SERVER 注入（二）">
-<meta name="twitter:description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列 查询出有 4列后进行联合">
+<meta name="twitter:description" content="联合查询注入SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。 首先利用 order by 语句查询出有几列">
 <meta name="twitter:image" content="http://klforever.cn/images/7/0.png">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
@@ -276,7 +276,9 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h1><span id="联合查询注入">联合查询注入</span></h1><p>SQL server 中的联合查询注入和 MySQL 中的联合查询注入非常相似，但是也有不同的地方。相同点是都必须要有回显位，并且要与列数相同。不同的是MySQL占位符一般用1，2，3，4数字，而 SQL server 中要用到 null 作为占位符。因为如果用数字的话会牵扯到隐式转化的问题而导致无法有正常的回显。</p>
-<p>首先利用 order by 语句查询出有几列<br><img src="/images/7/0.png" alt><br><img src="/images/7/1.png" alt></p>
+<p>首先利用 order by 语句查询出有几列</p>
+<a id="more"></a>
+<p><img src="/images/7/0.png" alt><br><img src="/images/7/1.png" alt></p>
 <p>查询出有 4列后进行联合查询注入 ，首先查出所有数据库名。</p>
 <p><img src="/images/7/2.png" alt></p>
 <p>之后爆出 test 库下的所有表</p>
@@ -634,27 +636,15 @@ bases<span class="token punctuation">)</span><span class="token operator">%</spa
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -667,6 +657,18 @@ bases<span class="token punctuation">)</span><span class="token operator">%</spa
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">

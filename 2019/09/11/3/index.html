@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://klforever.cn/images/3/5.png">
 <meta property="og:image" content="http://klforever.cn/images/3/6.png">
 <meta property="og:image" content="http://klforever.cn/images/3/7.png">
-<meta property="og:updated_time" content="2021-04-25T09:04:54.699Z">
+<meta property="og:updated_time" content="2021-04-28T12:31:08.372Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RDP漏洞CVE-2019-0708复现">
 <meta name="twitter:description" content="0x01 漏洞描述 在2019年5月，微软发布了针对远程代码执行漏洞CVE-2019-0708的补丁更新，该漏洞也称为“BlueKeep”，漏洞存在于远程桌面服务（RDS）的代码中。此漏洞是预身份验证，无需用户交互，因此具有潜在武器化蠕虫性性漏洞利用的危险。如果成功利用此漏洞，则可以使用“系统”权限执行任意代码。Microsoft安全响应中心的建议表明这个漏洞也可能会成为一种蠕虫攻击行为，类似于W">
@@ -266,6 +266,7 @@
     <h1><span id="0x01-漏洞描述">0x01 漏洞描述</span></h1><blockquote>
 <p>在2019年5月，微软发布了针对远程代码执行漏洞CVE-2019-0708的补丁更新，该漏洞也称为“BlueKeep”，漏洞存在于远程桌面服务（RDS）的代码中。此漏洞是预身份验证，无需用户交互，因此具有潜在武器化蠕虫性性漏洞利用的危险。如果成功利用此漏洞，则可以使用“系统”权限执行任意代码。Microsoft安全响应中心的建议表明这个漏洞也可能会成为一种蠕虫攻击行为，类似于Wannacry和EsteemAudit等攻击行为。由于此漏洞的严重性及其对用户的潜在影响，微软采取了罕见的预警步骤，为不再受支持的Windows XP操作系统发布补丁，以保护Windows用户。<br>自该补丁于5月发布以来，该漏洞受到了安全行业的广泛关注，在野利用漏洞只是时间问题</p>
 </blockquote>
+<a id="more"></a>
 <p>在9月7号的凌晨GitHub上公布可利用的EXP，可是正忙于项目无法及时复现。于是今晚趁着无聊复现一波，环境如下。</p>
 <p>攻击机ip（kali linux）：192.168.1.105<br>靶   机ip（win7  SP1) ：192.168.1.106<br>win7 SP1 镜像地址：<br><code>ed2k://|file|cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso|3420557312|430BEDC0F22FA18001F717F7AF08C9D5|/</code></p>
 <p>CVE-2019-0708利用套件：<br><code>https://pan.baidu.com/s/1HqmKbp4ZjMsUm0gRlTEVFQ 提取码: vkqw</code></p>
@@ -594,27 +595,15 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">工具使用</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -627,6 +616,18 @@ Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql server</a>
               </li>
              
               <li class="article-tag-list-item">
