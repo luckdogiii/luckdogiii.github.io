@@ -6,17 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://klforever.cn">
-  <title>Tag: sql server | WLSMILE Blog</title>
+  <title>存活资产探测-python | WLSMILE Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="WLSMILE Blog">
-<meta property="og:url" content="http://klforever.cn/tags/sql-server/index.html">
+  <meta name="description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
+<meta name="keywords" content="工具使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="存活资产探测-python">
+<meta property="og:url" content="http://klforever.cn/2021/04/28/存货资产探测/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
+<meta property="og:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
 <meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-04-28T11:37:21.199Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WLSMILE Blog">
+<meta name="twitter:title" content="存活资产探测-python">
+<meta name="twitter:description" content="一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本 批量探测import requests import threading import time import re  http_url = [] https_url = [] th">
   
     <link rel="alternative" href="/atom.xml" title="WLSMILE Blog" type="application/atom+xml">
   
@@ -202,208 +207,290 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-存货资产探测" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/14/8/" class="archive-article-date">
-        <time datetime="2019-10-14T11:13:59.452Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-14</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/14/8/" target="_blank">SQL SERVER 注入（三）</a>
   
+    <h1 class="article-title" itemprop="name">
+      存活资产探测-python
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+<a href="/2021/04/28/存货资产探测/" class="archive-article-date">
+        <time datetime="2021-04-28T11:37:10.705Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-28</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">580字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>一般在收集完资产过后，尤其是子域名较多的情况下，有时候hw甚至是上百的资产。这时候首先要对明面的资产做进一步的动作，一些无法访问的要放在后面。无论是SRC还是项目，Hvv都需要快速探测目标存活情况，由此写了个py脚本</p>
+<h2><span id="批量探测">批量探测</span></h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">import</span> threading
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> re
+
+http_url <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+https_url <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+threads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+threads1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true"># 获取url</span>
+<span class="token keyword">def</span> <span class="token function">Get_urls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'url.txt'</span><span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> url <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+            <span class="token keyword">try</span><span class="token punctuation">:</span>
+                patt <span class="token operator">=</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span>r<span class="token string">'(.*?)://(.*?)\n'</span><span class="token punctuation">,</span> url<span class="token punctuation">,</span> re<span class="token punctuation">.</span>M<span class="token operator">|</span>re<span class="token punctuation">.</span>I<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#匹配出相应协议和域名</span>
+                <span class="token keyword">if</span> patt<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'http'</span><span class="token punctuation">:</span>
+                    http_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+                <span class="token keyword">elif</span> patt<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'https'</span><span class="token punctuation">:</span>
+                    https_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+            <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span> <span class="token comment" spellcheck="true">#子域名挖掘的，不带协议的匹配不到</span>
+                url <span class="token operator">=</span> <span class="token string">'http://'</span> <span class="token operator">+</span> url
+                http_url<span class="token punctuation">.</span>append<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 对url文件去重</span>
+<span class="token keyword">def</span> <span class="token function">Write_File</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    line_seen <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'http.txt'</span><span class="token punctuation">,</span><span class="token string">'w+'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> url <span class="token keyword">in</span> http_url<span class="token punctuation">:</span>
+            url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> url <span class="token operator">not</span> <span class="token keyword">in</span> line_seen<span class="token punctuation">:</span>
+                line_seen<span class="token punctuation">.</span>add<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'https.txt'</span><span class="token punctuation">,</span><span class="token string">'w+'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> url <span class="token keyword">in</span> https_url<span class="token punctuation">:</span>
+            url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> url <span class="token operator">not</span> <span class="token keyword">in</span> line_seen<span class="token punctuation">:</span>
+                line_seen<span class="token punctuation">.</span>add<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+                f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">Get_Code</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    host <span class="token operator">=</span> url<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"https://"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span>
+    host <span class="token operator">=</span> url<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"http://"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span>
+    headers <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"Host"</span><span class="token punctuation">:</span> host<span class="token punctuation">,</span>
+    <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span>
+    <span class="token string">"User-Agent"</span><span class="token punctuation">:</span> <span class="token string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46"</span><span class="token punctuation">,</span>
+    <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token string">"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"</span><span class="token punctuation">,</span>
+    <span class="token string">"Accept-Language"</span><span class="token punctuation">:</span> <span class="token string">"zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2"</span><span class="token punctuation">,</span>
+    <span class="token string">"Connection"</span><span class="token punctuation">:</span> <span class="token string">"close"</span><span class="token punctuation">,</span>
+    <span class="token string">"Upgrade-Insecure-Requests"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+    <span class="token string">"Cache-Control"</span><span class="token punctuation">:</span> <span class="token string">"max-age=0"</span><span class="token punctuation">,</span>
+    <span class="token string">"Content-Length"</span><span class="token punctuation">:</span> <span class="token string">"0"</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">#f1 = open('./result/200.txt','w+',encoding='utf-8')</span>
+    <span class="token comment" spellcheck="true">#f2 = open('./result/异常.txt','w+',encoding='utf-8')</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>timeout<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
+        code <span class="token operator">=</span> r<span class="token punctuation">.</span>status_code
+        <span class="token keyword">if</span> code <span class="token operator">==</span> <span class="token number">200</span> <span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'\033[1;32m{url}  {code} \033[0m'</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> code <span class="token operator">!=</span> <span class="token number">200</span> <span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'\033[1;36m{url}  {code} \033[0m'</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"\033[1;31m此网站访问异常：{url}\033[0m"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">myThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> http_url<span class="token punctuation">:</span>
+        url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将制表符回车去除</span>
+        threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
+            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>Get_Code<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
+        thread<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">#time.sleep(1)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads<span class="token punctuation">:</span>
+        thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"----------进行HTTPS探测----------"</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">#https探测</span>
+    <span class="token keyword">for</span> url <span class="token keyword">in</span> https_url<span class="token punctuation">:</span>
+        url <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将制表符回车去除</span>
+        threads1<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
+            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>Get_Code<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads1<span class="token punctuation">:</span>
+        thread<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">#time.sleep(1)</span>
+    <span class="token keyword">for</span> thread <span class="token keyword">in</span> threads1<span class="token punctuation">:</span>
+        thread<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    Get_urls<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Write_File<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    start <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    myThread<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    end <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"-------用时{end - start}s-------"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>直接把收集到的子域名放在url.txt下后直接运行就好。代码糙的一，轻喷。。。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具使用</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
+    
 
+    
 
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://klforever.cn/2021/04/28/存货资产探测/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/7/" class="archive-article-date">
-        <time datetime="2019-10-11T13:09:17.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
 
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/04/26/域名+CDN隐匿C2服务器/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">域名+CDN隐匿C2服务器【白嫖yyds】</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/7/" target="_blank">SQL SERVER 注入（二）</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">批量探测</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/6/" class="archive-article-date">
-        <time datetime="2019-10-11T02:28:47.791Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/6/" target="_blank">SQL SERVER 注入（一）</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
+
+
+
+
+
+
 
 
           </div>
@@ -432,9 +519,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

